@@ -1,18 +1,23 @@
+import Views from '../components/metrics/views/views.component';
+import Orders from '../components/orders/orders.component';
+import Inventory from '../components/inventory/inventory.component';
+import Products from '../components/products/products.component';
+
 export const adminSidebarMenu = [
   {
     title: 'Metrics',
-    path: '/',
+    component: <Views />
   },
   {
     title: 'Orders',
-    path: '/orders',
+    component: <Orders />
   },
   {
     title: 'Inventory',
-    path: '/inventory',
+    component: <Inventory />
   },
   {
     title: 'Products',
-    path: '/products',
+    component: <Products />
   },
 ];

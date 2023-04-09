@@ -26,53 +26,55 @@ const Views = () => {
     const fetchViews = async () => {
       const res = await client.getViews();
       setViews(res.rows);
-      setTotalViews(null);
+      let totalCount = 0;
       res.rows.map(row => {
-        setTotalViews(totalViews + row.count);
+        return totalCount = totalCount + row.count;
       })
+      setTotalViews(totalCount)
     }
     fetchViews();
   }, []);
 
+  if(!views) {
+    return (
+      <Spinner />
+    )
+  }
+
     return (
       <ViewsContainer>
         <ViewsTitle>Views</ViewsTitle>
-          {views && 
-            <ViewsSubTitle>
-              Total site views: { totalViews }
-            </ViewsSubTitle>
-          }
-        <ViewsTable>
-          <ViewsTableHead>
-            <ViewsTableRow>
-              <ViewsTableHeadData>
-                Date
-              </ViewsTableHeadData>
-              <ViewsTableHeadData>
-                Views
-              </ViewsTableHeadData>
-            </ViewsTableRow>
-          </ViewsTableHead>
-          <ViewsTableBody>
-            {!views ? 
-              <Spinner />
-            :
-            views.map((day, index) => {
-              const formattedDate = new Date(day.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
+          <ViewsSubTitle>
+            Total site views: { totalViews }
+          </ViewsSubTitle>
+          <ViewsTable>
+            <ViewsTableHead>
+              <ViewsTableRow>
+                <ViewsTableHeadData>
+                  Date
+                </ViewsTableHeadData>
+                <ViewsTableHeadData>
+                  Views
+                </ViewsTableHeadData>
+              </ViewsTableRow>
+            </ViewsTableHead>
+            <ViewsTableBody>
+              {views.map((day, index) => {
+                const formattedDate = new Date(day.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
 
-              return (
-                <ViewsTableRow key={index}>
-                  <ViewsTableData>
-                  { formattedDate }
-                  </ViewsTableData>
-                  <ViewsTableData>
-                    { day.count }
-                  </ViewsTableData>
-                </ViewsTableRow>
-              )
-            })}
-          </ViewsTableBody>
-        </ViewsTable>
+                return (
+                  <ViewsTableRow key={index}>
+                    <ViewsTableData>
+                    { formattedDate }
+                    </ViewsTableData>
+                    <ViewsTableData>
+                      { day.count }
+                    </ViewsTableData>
+                  </ViewsTableRow>
+                )
+              })}
+            </ViewsTableBody>
+          </ViewsTable>
       </ViewsContainer>
     );
 }

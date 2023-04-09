@@ -7,15 +7,14 @@ import {
     AdminSidebarOption,
 } from './admin-sidebar.styles';
 
-const AdminSidebar = ({ setAdminView }) => {
+const AdminSidebar = ({ setAdminDisplay }) => {
 
     return (
         <AdminSidebarContainer>
             {adminSidebarMenu.map((item, index) => {
-                
                 return <AdminSidebarOption
                             key={index} 
-                            href={item.path}
+                            onClick={() => setAdminDisplay(index)}
                         >
                             { item.title }
                         </AdminSidebarOption>

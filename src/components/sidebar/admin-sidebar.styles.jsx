@@ -9,8 +9,7 @@ export const AdminSidebarContainer = styled.div`
     border-right: 1px black solid;
 `;
 
-export const AdminSidebarOption = styled.a`
-    text-decoration: none;
+export const AdminSidebarOption = styled.p`
     padding: 1em;
     cursor: pointer;
 `;
