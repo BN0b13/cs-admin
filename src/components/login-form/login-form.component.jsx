@@ -14,7 +14,6 @@ import {
   LoginFormInput,
   LoginFormLabel,
   LoginFormLogo,
-  LoginFormTitle
 } from './login-form.styles';
 
 class LoginForm extends React.Component{
@@ -58,7 +57,7 @@ class LoginForm extends React.Component{
     this.setState({ loading: true });
 
     try {
-      const login = await fetch(`${api}/login`, {
+      const login = await fetch(`${api}/login-admin`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, cors, same-origin
         headers: {
@@ -107,8 +106,6 @@ class LoginForm extends React.Component{
 
     return(
       <LoginFormContainer>
-        <LoginFormTitle>LOGIN</LoginFormTitle>
-
         <LoginFormLogo src={logo} alt="Cosmic Strains Login" />
 
         <LoginFormForm>

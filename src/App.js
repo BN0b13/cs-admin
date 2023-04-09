@@ -15,11 +15,11 @@ import Footer from './components/footer/footer.component';
 import { tokenName } from './config';
 
 function App() {
-  const [ token, setToken ] = useState(true);
+  const [ token, setToken ] = useState(null);
 
   useEffect(() => {
-    // setToken(localStorage.getItem(tokenName));
-  });
+    setToken(localStorage.getItem(tokenName));
+  }, []);
 
 
 

@@ -41,7 +41,3 @@ export const LoginFormLogo = styled.img`
     height: 320px;
     width: 320px;
 `;
-
-export const LoginFormTitle = styled.h1`
-    text-align: center;
-`;
