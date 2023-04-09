@@ -1,0 +1,28 @@
+body {
+    font-family: 'Open Sans Condensed';
+    padding: 10px 40px;
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        padding: 5px 10px;
+    }
+  }
+  
+
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.spinnerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    padding: 10px;
+    color: #8491A3;
+}
