@@ -5,41 +5,50 @@ import {
 
 export default class Client {
     token = localStorage.getItem(tokenName);
+    fetchMethods = {
+        get: 'GET',
+        post: 'POST',
+        patch: 'PATCH',
+        delete: 'DELETE'
+    }
+    
+    fetchOptions(method, body = null, withToken = false) {
+        const headers = new Headers();
+        if(withToken) {
+            headers.append("Authorization", `Bearer ${this.token}`);
+        }
+        headers.append("Accept", "Bearer application/json");
+        headers.append("Content-Type", "application/json");
 
-    // Headers -> put token in bearer auth headers
+        if(body) {
+            return {
+                method,
+                headers,
+                body
+            };
+        }
 
-    // const myHeaders = new Headers();
-    // myHeaders.append("Authorization", `Bearer ${token}`);
-    // myHeaders.append("Accept", "Bearer application/json");
-    // myHeaders.append("Content-Type", "application/json");
-
-    // const requestOptions = {
-    // method: 'GET',
-    // headers: myHeaders
-    // };
-
-    // fetch("http://localhost:8050/inventory", requestOptions)
-    // .then(response => response.text())
-    // .then(result => console.log(result))
-    // .catch(error => console.log('error', error));
+        return {
+            method,
+            headers
+        }   
+    }
 
 
     // Init client
     
     // Helper Functions
     async getAccount() {
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${this.token}`);
-        myHeaders.append("Accept", "Bearer application/json");
-        myHeaders.append("Content-Type", "application/json");
-
-        const requestOptions = {
-        method: 'GET',
-        headers: myHeaders
-        };
-        
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const account = await fetch(`${api}/users`, requestOptions);
-          
+        const res = await account.json();
+
+        return res;
+    }
+
+    async getViews() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/visits`, requestOptions);
         const res = await account.json();
 
         return res;

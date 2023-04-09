@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
 import './App.css';
 
 import AdminPage from './pages/admin/admin.pages';
@@ -29,16 +24,7 @@ function App() {
       return (
         <>
           <Header token={token} />
-          <BrowserRouter>
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <AdminPage />
-                }
-              />
-            </Routes>
-          </BrowserRouter>
+            <AdminPage />
           <Footer />
         </>
       )
@@ -46,16 +32,7 @@ function App() {
     }
 
     return (
-      <BrowserRouter>
-        <Routes>
-          <Route 
-            path="/" 
-            element={ 
-              <LoginPage /> 
-            } 
-          />
-        </Routes>
-      </BrowserRouter>
+      <LoginPage /> 
     );
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { adminSidebarMenu } from '../../../assets/menu-items';
+import { adminSidebarMenu } from '../../assets/menu-items';
 
 import {
     AdminSidebarContainer,
@@ -12,9 +12,10 @@ const AdminSidebar = ({ setAdminView }) => {
     return (
         <AdminSidebarContainer>
             {adminSidebarMenu.map((item, index) => {
+                
                 return <AdminSidebarOption
                             key={index} 
-                            onClick={() => setAdminView(item.option)}
+                            href={item.path}
                         >
                             { item.title }
                         </AdminSidebarOption>

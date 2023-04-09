@@ -1,14 +1,18 @@
 export const adminSidebarMenu = [
   {
-    title: 'Admin Home',
-    option: 1,
+    title: 'Metrics',
+    path: '/',
   },
   {
-    title: 'Order History',
-    option: 2,
+    title: 'Orders',
+    path: '/orders',
   },
   {
-    title: 'Settings',
-    option: 3,
+    title: 'Inventory',
+    path: '/inventory',
+  },
+  {
+    title: 'Products',
+    path: '/products',
   },
 ];
