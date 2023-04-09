@@ -34,17 +34,37 @@ export default class Client {
         }   
     }
 
+    // Accounts
 
-    // Init client
-    
-    // Helper Functions
-    async getAccount() {
+    async getAccounts() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const account = await fetch(`${api}/users`, requestOptions);
+        const account = await fetch(`${api}/admin/accounts`, requestOptions);
         const res = await account.json();
 
         return res;
     }
+
+    // Orders
+
+    async getOrders() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/orders`, requestOptions);
+        const res = await account.json();
+
+        return res;
+    }
+
+    // Products
+
+    async getProducts() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '');
+        const account = await fetch(`${api}/products`, requestOptions);
+        const res = await account.json();
+
+        return res;
+    }
+
+    // Views
 
     async getViews() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);

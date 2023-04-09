@@ -1,43 +1,43 @@
 import styled from "styled-components";
 
-export const OrdersContainer = styled.div`
+export const AccountsContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 `;
 
-export const OrdersTitle = styled.h1`
+export const AccountsTitle = styled.h1`
     text-align: center;
 `;
 
-export const OrdersSubTitle = styled.h4`
+export const AccountsSubTitle = styled.h4`
     text-align: center;
 `;
 
-export const OrdersTable = styled.table`
+export const AccountsTable = styled.table`
     
 `;
 
-export const OrdersTableHead = styled.thead`
+export const AccountsTableHead = styled.thead`
     border-bottom: 1px solid #000;
 `;
 
-export const OrdersTableHeadData = styled.td`
+export const AccountsTableHeadData = styled.td`
     padding: 15px;
     font-weight: bold;
 	font-size: 15px;
 `;
 
-export const OrdersTableBody = styled.tbody`
+export const AccountsTableBody = styled.tbody`
     
 `;
 
-export const OrdersTableRow = styled.tr`
+export const AccountsTableRow = styled.tr`
     
 `;
 
-export const OrdersTableData = styled.td`
+export const AccountsTableData = styled.td`
     padding: 15px;
     width: 150px;
 	font-size: 13px;
