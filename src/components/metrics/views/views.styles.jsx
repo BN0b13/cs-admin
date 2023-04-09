@@ -11,6 +11,10 @@ export const ViewsTitle = styled.h1`
     text-align: center;
 `;
 
+export const ViewsSubTitle = styled.h4`
+    text-align: center;
+`;
+
 export const ViewsTable = styled.table`
     
 `;

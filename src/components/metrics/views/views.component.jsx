@@ -12,6 +12,7 @@ import {
     ViewsTableHead,
     ViewsTableHeadData,
     ViewsTableRow,
+    ViewsSubTitle,
     ViewsTitle
 } from './views.styles';
 
@@ -19,11 +20,16 @@ const client = new Client();
 
 const Views = () => {
   const [ views, setViews ] = useState(null);
+  const [ totalViews, setTotalViews ] = useState(null);
 
   useEffect(() => {
     const fetchViews = async () => {
       const res = await client.getViews();
       setViews(res.rows);
+      setTotalViews(null);
+      res.rows.map(row => {
+        setTotalViews(totalViews + row.count);
+      })
     }
     fetchViews();
   }, []);
@@ -31,7 +37,11 @@ const Views = () => {
     return (
       <ViewsContainer>
         <ViewsTitle>Views</ViewsTitle>
-
+          {views && 
+            <ViewsSubTitle>
+              Total site views: { totalViews }
+            </ViewsSubTitle>
+          }
         <ViewsTable>
           <ViewsTableHead>
             <ViewsTableRow>
