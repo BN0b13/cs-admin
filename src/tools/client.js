@@ -34,12 +34,22 @@ export default class Client {
         }   
     }
 
-    // Accounts
+    // Customers
 
-    async getAccounts() {
+    async getCustomers() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const account = await fetch(`${api}/admin/accounts`, requestOptions);
-        const res = await account.json();
+        const customers = await fetch(`${api}/admin/customers`, requestOptions);
+        const res = await customers.json();
+
+        return res;
+    }
+
+    // Employees
+
+    async getEmployees() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/employees`, requestOptions);
+        const res = await customers.json();
 
         return res;
     }
@@ -59,6 +69,14 @@ export default class Client {
     async getProducts() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '');
         const account = await fetch(`${api}/products`, requestOptions);
+        const res = await account.json();
+
+        return res;
+    }
+
+    async getInventory() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/products`, requestOptions);
         const res = await account.json();
 
         return res;

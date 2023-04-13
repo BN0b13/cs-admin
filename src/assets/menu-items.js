@@ -1,4 +1,5 @@
-import Accounts from '../components/accounts/accounts.component';
+import Customers from '../components/customers/customers.component';
+import Employees from '../components/employees/employees.component';
 import Inventory from '../components/inventory/inventory.component';
 import Orders from '../components/orders/orders.component';
 import Products from '../components/products/products.component';
@@ -10,8 +11,12 @@ export const adminSidebarMenu = [
     component: <Views />
   },
   {
-    title: 'Accounts',
-    component: <Accounts />
+    title: 'Customers',
+    component: <Customers />
+  },
+  {
+    title: 'Employees',
+    component: <Employees />
   },
   {
     title: 'Orders',
