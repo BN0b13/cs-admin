@@ -90,7 +90,7 @@ const Inventory = () => {
                     { inventory.name }
                     </InventoryTableData>
                     <InventoryTableData>
-                    { inventory.Inventory.quantity }
+                    { inventory.quantity }
                     </InventoryTableData>
                     <InventoryTableData>
                     { inventory.price }
