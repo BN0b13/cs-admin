@@ -142,7 +142,6 @@ export default class Client {
 
     async deleteImages(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
-        console.log('Request options: ', requestOptions);
         const welcomeImage = await fetch(`${api}/admin/welcome/images`, requestOptions);
         const res = await welcomeImage.json();
         return res;
@@ -208,10 +207,10 @@ export default class Client {
         return res;
     }
 
-    async getFlavorProfiles() {
+    async getProductProfiles() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
-        const flavorProfiles = await fetch(`${api}/products/flavor-profiles/all`, requestOptions);
-        const res = await flavorProfiles.json();
+        const productProfiles = await fetch(`${api}/products/profiles/all`, requestOptions);
+        const res = await productProfiles.json();
         return res;
     }
 
@@ -222,18 +221,10 @@ export default class Client {
         return res;
     }
 
-    async createFlavorProfile(data) {
+    async createProductProfile(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true, true);
-        const product = await fetch(`${api}/admin/products/flavor-profiles`, requestOptions);
-        const res = await product.json();
-        return res;
-    }
-
-    async addFlavorProfileIcon(data) {
-        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true, true);
-        console.log('Request Options: ', requestOptions);
-        const product = await fetch(`${api}/admin/products/flavor-profiles/icon`, requestOptions);
-        const res = await product.json();
+        const productProfile = await fetch(`${api}/admin/products/profiles`, requestOptions);
+        const res = await productProfile.json();
         return res;
     }
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import Contents from '../../components/welcome/contents/contents.component';
-import CurrentWelcomeImages from '../../components/welcome/current/current.component';
-import ImportWelcomeImage from '../../components/welcome/import/import.component';
+import Contents from '../../components/configuration/welcome/contents/contents.component';
+import CurrentWelcomeImages from '../../components/configuration/welcome/current/current.component';
+import ImportWelcomeImage from '../../components/configuration/welcome/import/import.component';
 
 import Client from "../../tools/client";
 

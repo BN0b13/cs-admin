@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import AddProduct from '../../components/add-product/add-product.component';
-import FlavorProfile from '../../components/flavor-profile/flavor-profile.component';
-import Spinner from '../../components/spinner/spinner.component';
-import ProductsTable from '../../components/products-table/products-table.component';
+import AddProduct from '../../components/add/add-product/add-product.component';
+import ProductProfile from '../../components/product-profile/product-profile.component';
+import Spinner from '../../components/reusable/spinner/spinner.component';
+import ProductsTable from '../../components/reusable/tables/products-table/products-table.component';
 
 import Client from '../../tools/client';
 
@@ -63,7 +63,7 @@ const ProductsPage = () => {
 
         if(currentTab === 3) {
             return (
-                <FlavorProfile />
+                <ProductProfile />
             )
         }
 
@@ -83,7 +83,7 @@ const ProductsPage = () => {
             <TabContainer>
                 <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Products</TabSelector>
                 <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Add Product</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Flavor Profiles</TabSelector>
+                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Product Profiles</TabSelector>
             </TabContainer>
             { showCurrentTab() }
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import OrdersItem from './orders-item/orders-item.component';
-import Spinner from '../spinner/spinner.component';
+import Spinner from '../reusable/spinner/spinner.component';
 
 import Client from '../../tools/client';
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 
-import AddCategory from '../../components/add-category/add-category.component';
-import CategoriesTable from '../../components/categories-table/categories-table.component';
-import Spinner from '../../components/spinner/spinner.component';
+import AddCategory from '../../components/add/add-category/add-category.component';
+import CategoriesTable from '../../components/reusable/tables/categories-table/categories-table.component';
+import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import Client from '../../tools/client';
 

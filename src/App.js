@@ -1,22 +1,23 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import HamburgerMenu from './components/hamburger-menu/hamburger-menu.component';
 
 import AccountPage from './pages/account/account.pages';
 import AccountsPage from './pages/accounts/accounts.pages';
-import AdminHomePage from './pages/admin-home/admin-home.pages';
 import CategoryPage from './pages/category/category.page';
 import CategoriesPage from './pages/categories/categories.pages';
 import ConfigurationPage from './pages/configuration/configuration.pages';
+import InventoryPage from './pages/inventory/inventory.pages';
 import LoginPage from './pages/login/login.pages';
+import MetricsPage from './pages/metrics/metrics.pages';
 import Order from './pages/order/order.pages';
 import Orders from './pages/orders/orders.pages';
 import ProductPage from './pages/product/product.pages';
 import ProductsPage from './pages/products/products.pages';
 
-import Header from './components/header/header.component';
-import Footer from './components/footer/footer.component';
+import HamburgerMenu from './components/app/hamburger-menu/hamburger-menu.component';
+import Header from './components/app/header/header.component';
+import Footer from './components/app/footer/footer.component';
 
 import { tokenName } from './config';
 
@@ -40,16 +41,17 @@ function App() {
         <div id="page-wrap">
           <Header />
           <Routes>
-              <Route index element={<AdminHomePage />} />
+              <Route index element={<MetricsPage />} />
               <Route path="/accounts" element={<AccountsPage />} />
               <Route path="/accounts/:id" element={<AccountPage />} />
-              <Route path="/configure" element={<ConfigurationPage />} />
+              <Route path="/configuration" element={<ConfigurationPage />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:order" element={<Order />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:id" element={<CategoryPage />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:id" element={<ProductPage />} />
+              <Route path="/inventory" element={<InventoryPage />} />
           </Routes>
           <Footer />
         </div>

@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 
+import Views from '../../components/metrics/views/views.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
-import UsersTable from '../../components/reusable/tables/users-table/users-table.component';
 
 import Client from '../../tools/client';
 
 import {
-    AccountsTitle,
+    MainTitle,
     TabContainer,
     TabSelector
-} from './accounts.styles';
+} from './inventory.styles';
 
 const client = new Client();
 
-const Accounts = () => {
+const InventoryPage = () => {
     const [ loading, setLoading ] = useState(true);
-    const [ customerAccounts, setCustomerAccounts ] = useState(null);
-    const [ employeeAccounts, setEmployeeAccounts ] = useState(null);
+    const [ products, setProducts ] = useState(null);
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
@@ -24,15 +23,13 @@ const Accounts = () => {
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
 
     useEffect(() => {
-        getCustomerAccounts();
+        getProducts();
     }, []);
 
-    const getCustomerAccounts = async () => {
-        const customers = await client.getCustomers();
-        const employees = await client.getEmployees();
+    const getProducts = async () => {
+        const res = await client.getProducts();
 
-        setCustomerAccounts(customers.rows);
-        setEmployeeAccounts(employees.rows);
+        setProducts(res.rows);
         setLoading(false);
     }
 
@@ -61,16 +58,13 @@ const Accounts = () => {
 
         if(currentTab === 2) {
             return (
-                <>
-                    <AccountsTitle>Employees</AccountsTitle>
-                    <UsersTable users={employeeAccounts} />
-                </>
+                <MainTitle>Inventory Count</MainTitle>
             )
         }
 
         if(currentTab === 3) {
             return (
-                <AccountsTitle>Add Account</AccountsTitle>
+                <MainTitle>tab 3</MainTitle>
             )
         }
 
@@ -79,10 +73,7 @@ const Accounts = () => {
                 {loading ?
                     <Spinner />
                 :
-                    <>
-                        <AccountsTitle>Customers</AccountsTitle>
-                        <UsersTable users={customerAccounts} />
-                    </>
+                <MainTitle>Inventory Page</MainTitle>
                 }
             </>
         )
@@ -91,13 +82,13 @@ const Accounts = () => {
     return (
         <div>
             <TabContainer>
-                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Customers</TabSelector>
-                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Employees</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Add Account</TabSelector>
+                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Inventory</TabSelector>
+                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Inventory Count</TabSelector>
+                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Tab 3</TabSelector>
             </TabContainer>
             { showCurrentTab() }
         </div>
     )
 }
 
-export default Accounts;
+export default InventoryPage;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import ProductsTable from '../../components/products-table/products-table.component';
-import Spinner from '../../components/spinner/spinner.component';
+import ProductsTable from '../../components/reusable/tables/products-table/products-table.component';
+import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import { api } from '../../config';
 

@@ -7,6 +7,7 @@ import {
   VscFile,
   VscFolder,
   VscPieChart,
+  VscChecklist,
   VscSettingsGear
 } from 'react-icons/vsc';
 
@@ -37,8 +38,13 @@ export const menuItemsLoggedIn = [
     icon: (<VscFile />)
   },
   {
-    title: 'Configure',
-    path: '/configure',
+    title: 'Inventory',
+    path: '/inventory',
+    icon: (<VscChecklist />)
+  },
+  {
+    title: 'Configuration',
+    path: '/configuration',
     icon: (<VscSettingsGear />)
   },
 ];
