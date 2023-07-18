@@ -1,33 +1,37 @@
-import Customers from '../components/customers/customers.component';
-import Employees from '../components/employees/employees.component';
-import Inventory from '../components/inventory/inventory.component';
-import Orders from '../components/orders/orders.component';
-import Products from '../components/products/products.component';
-import Views from '../components/metrics/views/views.component';
+import {
+  FaStoreAlt
+} from 'react-icons/fa';
 
-export const adminSidebarMenu = [
+import {
+  VscAccount,
+  VscHistory,
+  VscSettingsGear
+} from 'react-icons/vsc';
+
+export const menuItemsLoggedIn = [
+  {
+    title: 'Accounts',
+    path: '/accounts',
+    icon: (<FaStoreAlt />)
+  },
   {
     title: 'Metrics',
-    component: <Views />
-  },
-  {
-    title: 'Customers',
-    component: <Customers />
-  },
-  {
-    title: 'Employees',
-    component: <Employees />
+    path: '/',
+    icon: (<FaStoreAlt />)
   },
   {
     title: 'Orders',
-    component: <Orders />
-  },
-  {
-    title: 'Inventory',
-    component: <Inventory />
+    path: '/orders',
+    icon: (<FaStoreAlt />)
   },
   {
     title: 'Products',
-    component: <Products />
+    path: '/products',
+    icon: (<FaStoreAlt />)
+  },
+  {
+    title: 'Configure',
+    path: '/configure',
+    icon: (<FaStoreAlt />)
   },
 ];

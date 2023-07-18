@@ -10,7 +10,7 @@ import {
   ProductsTableBody,
   ProductsTableData,
   ProductsTableHead,
-  ProductsTableHeadData,
+  ProductsTableHeader,
   ProductsTableRow,
   ProductsSubTitle,
   ProductsTitle
@@ -43,80 +43,44 @@ const Products = () => {
           <ProductsSubTitle>No Products to display.</ProductsSubTitle>
         :
           <ProductsTable>
-            <ProductsTableHead>
-                <ProductsTableRow>
-                  <ProductsTableHeadData>
-                    Category
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Name
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Description
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Price
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Time
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Parents
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Profile
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Sex
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Image
-                  </ProductsTableHeadData>
-                  <ProductsTableHeadData>
-                    Date Added
-                  </ProductsTableHeadData>
-                </ProductsTableRow>
-              </ProductsTableHead>
-              <ProductsTableBody>
-                {products.map((product, index) => {
-                  const formattedDate = new Date(product.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
+            <ProductsTableHeader>
+              <ProductsTableRow>
+                <ProductsTableHead>
+                  Name
+                </ProductsTableHead>
+                <ProductsTableHead>
+                  Category
+                </ProductsTableHead>
+                <ProductsTableHead>
+                  Description
+                </ProductsTableHead>
+                <ProductsTableHead>
+                  Date Added
+                </ProductsTableHead>
+              </ProductsTableRow>
+            </ProductsTableHeader>
+            <ProductsTableBody>
+              {products.map((product, index) => {
+                const formattedDate = new Date(product.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
 
-                  return (
-                    <ProductsTableRow key={index}>
-                      <ProductsTableData>
-                      { product.categoryId }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.name }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.description }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.price }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.time }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.mother } x { product.father }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.profile }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.sex }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { product.image ? product.image : 'N/A' }
-                      </ProductsTableData>
-                      <ProductsTableData>
-                      { formattedDate }
-                      </ProductsTableData>
-                    </ProductsTableRow>
-                  )
-                })}
-              </ProductsTableBody>
+                return (
+                  <ProductsTableRow key={index}>
+                    <ProductsTableData>
+                    { product.name }
+                    </ProductsTableData>
+                    <ProductsTableData>
+                    { product.Category.name }
+                    </ProductsTableData>
+                    <ProductsTableData>
+                    { product.description }
+                    </ProductsTableData>
+                    <ProductsTableData>
+                    { formattedDate }
+                    </ProductsTableData>
+                  </ProductsTableRow>
+                )
+              })}
+            </ProductsTableBody>
           </ProductsTable>
         }
       </ProductsContainer>

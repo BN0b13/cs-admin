@@ -1,45 +1,38 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const OrdersContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    
 `;
 
-export const OrdersTitle = styled.h1`
+export const OrdersTitle = styled.h2`
     text-align: center;
 `;
 
-export const OrdersSubTitle = styled.h4`
+export const OrdersText = styled.h4`
+    text-align: center;
+    margin-top: 60px;
+`;
+
+export const OrderTable = styled.table`
+    text-align: center;
+    
+`;
+
+export const OrderTableHead = styled.thead`
     text-align: center;
 `;
 
-export const OrdersTable = styled.table`
-    
+export const OrderTableBody = styled.tbody`
+
 `;
 
-export const OrdersTableHead = styled.thead`
-    border-bottom: 1px solid #000;
+export const OrderTableRow = styled.tr`
+    text-align: center;
 `;
 
-export const OrdersTableHeadData = styled.td`
-    padding: 15px;
-    font-weight: bold;
-	font-size: 15px;
-`;
-
-export const OrdersTableBody = styled.tbody`
-    
-`;
-
-export const OrdersTableRow = styled.tr`
-    
-`;
-
-export const OrdersTableData = styled.td`
-    padding: 15px;
-    width: 150px;
-	font-size: 13px;
-	border: 1px solid #000;
+export const OrderTableHeading = styled.th`
+    text-align: center;
 `;

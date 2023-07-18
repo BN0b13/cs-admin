@@ -16,17 +16,17 @@ export const ProductsSubTitle = styled.h4`
 `;
 
 export const ProductsTable = styled.table`
-    
+    border: 1px solid;
+    border-collapse: collapse;
 `;
 
-export const ProductsTableHead = styled.thead`
-    border-bottom: 1px solid #000;
+export const ProductsTableHeader = styled.thead`
+
 `;
 
-export const ProductsTableHeadData = styled.td`
-    padding: 15px;
-    font-weight: bold;
-	font-size: 15px;
+export const ProductsTableHead = styled.th`
+    padding: 8px;
+    border: 1px solid;
 `;
 
 export const ProductsTableBody = styled.tbody`
@@ -38,8 +38,6 @@ export const ProductsTableRow = styled.tr`
 `;
 
 export const ProductsTableData = styled.td`
-    padding: 15px;
-    width: 150px;
-	font-size: 13px;
-	border: 1px solid #000;
+    padding: 8px;
+    border: 1px solid;
 `;

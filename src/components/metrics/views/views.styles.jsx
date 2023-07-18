@@ -20,13 +20,11 @@ export const ViewsTable = styled.table`
 `;
 
 export const ViewsTableHead = styled.thead`
-    border-bottom: 1px solid #000;
+
 `;
 
 export const ViewsTableHeadData = styled.td`
-    padding: 15px;
-    font-weight: bold;
-	font-size: 15px;
+    
 `;
 
 export const ViewsTableBody = styled.tbody`
@@ -41,5 +39,4 @@ export const ViewsTableData = styled.td`
     padding: 15px;
     width: 150px;
 	font-size: 13px;
-	border: 1px solid #000;
 `;

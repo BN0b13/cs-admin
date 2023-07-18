@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GrClose } from 'react-icons/gr';
+import { VscChromeClose } from "react-icons/vsc";
 
 import {
   SnackbarContainer,
@@ -12,7 +12,7 @@ const Snackbar = ({ msg, type="err", show }) => {
     return (
       <SnackbarContainer type={ type }>
         <SnackbarHeader>
-          <GrClose onClick={() => show()} />
+          <VscChromeClose onClick={() => show()} />
         </SnackbarHeader>
         { msg }
       </SnackbarContainer>

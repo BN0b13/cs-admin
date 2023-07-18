@@ -9,9 +9,9 @@ export const SnackbarContainer = styled.div`
     margin: 3px;
     padding: 5px;
     width: 290px;
-    background-color: ${({type}) => (type === 'success' ? '#D4EDD9' : '#F8D7D9')} !important;
-    text: #145824${({type}) => (type === 'success' ? '#145824' : '#731C23')} !important;
-    border: solid 1px #C3E6CB;${({type}) => (type === 'success' ? '#C3E6CB' : '#F5C6CA')} !important;
+    background-color: ${({type}) => (type === 'success' ? '#D4EDD9' : '#F8D7D9')};
+    color: ${({type}) => (type === 'success' ? '#145824' : '#731C23')};
+    border: solid 1px ${({type}) => (type === 'success' ? '#C3E6CB' : '#F5C6CA')};
     border-radius: 5px;
 `;
 

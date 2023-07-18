@@ -1,0 +1,11 @@
+import styled from 'styled-components';
+
+export const AdminHomeContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+`;
+
+export const AdminHomeTitle = styled.h1`
+    
+`;
