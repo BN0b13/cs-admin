@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import AddCategory from '../add-category/add-category.component';
 import Spinner from '../spinner/spinner.component';
 
+import { url } from '../../config';
+
 import Client from '../../tools/client';
 
 import { 
@@ -14,24 +16,16 @@ import {
     CategoryTableHeader,
     CategoryTableRow,
     CategoryTableData,
-} from "./categories.styles";
+} from "./categories-table.styles";
 
 const client = new Client();
 
-const Categories = () => {
+const CategoriesTable = () => {
     const [ loading, setLoading ] = useState(true);
     const [ categories, setCategories ] = useState('');
-    const [ productTypes, setProductTypes ] = useState('');
 
     useEffect(() => {
-        const getProductTypes = async () => {
-            const res = await client.getProductTypes();
-
-            setProductTypes(res.rows);
-
-            getCategories();
-        }
-        getProductTypes();
+        getCategories();
     }, []);
 
     const getCategories = async () => {
@@ -48,8 +42,7 @@ const Categories = () => {
                 <Spinner />
             :
                 <>
-                    <AddCategory getCategories={getCategories} productTypes={productTypes} />
-                    <CategoriesTitle>Current Categories</CategoriesTitle>
+                    <CategoriesTitle>Categories</CategoriesTitle>
                     <CategoryTable>
                         <CategoryTableHeader>
                             <CategoryTableRow>
@@ -61,7 +54,7 @@ const Categories = () => {
                         <CategoryTableBody>
                         {categories.map((category, index) => (
                                 <CategoryTableRow key={index}>
-                                    <CategoryTableData>{category.name}</CategoryTableData>
+                                    <CategoryTableData><a href={`${url}/categories/${category.id}`}>{category.name}</a></CategoryTableData>
                                     <CategoryTableData>{category.description}</CategoryTableData>
                                     <CategoryTableData>{category.type}</CategoryTableData>
                                 </CategoryTableRow>
@@ -74,4 +67,4 @@ const Categories = () => {
     )
 }
 
-export default Categories;
+export default CategoriesTable;

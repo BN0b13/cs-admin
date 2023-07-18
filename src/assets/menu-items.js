@@ -4,20 +4,22 @@ import {
 
 import {
   VscAccount,
-  VscHistory,
+  VscFile,
+  VscFolder,
+  VscPieChart,
   VscSettingsGear
 } from 'react-icons/vsc';
 
 export const menuItemsLoggedIn = [
   {
-    title: 'Accounts',
-    path: '/accounts',
-    icon: (<FaStoreAlt />)
-  },
-  {
     title: 'Metrics',
     path: '/',
-    icon: (<FaStoreAlt />)
+    icon: (<VscPieChart />)
+  },
+  {
+    title: 'Accounts',
+    path: '/accounts',
+    icon: (<VscAccount />)
   },
   {
     title: 'Orders',
@@ -25,13 +27,18 @@ export const menuItemsLoggedIn = [
     icon: (<FaStoreAlt />)
   },
   {
+    title: 'Categories',
+    path: '/categories',
+    icon: (<VscFolder />)
+  },
+  {
     title: 'Products',
     path: '/products',
-    icon: (<FaStoreAlt />)
+    icon: (<VscFile />)
   },
   {
     title: 'Configure',
     path: '/configure',
-    icon: (<FaStoreAlt />)
+    icon: (<VscSettingsGear />)
   },
 ];

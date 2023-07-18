@@ -39,6 +39,15 @@ export default class Client {
         }   
     }
 
+    // Accounts
+
+    async getAccountById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/user/${id}`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
     // Categories
 
     async getCategories() {
@@ -70,7 +79,7 @@ export default class Client {
     }
 
     async createCategory(data) {
-        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true, true);
         const categories = await fetch(`${api}/admin/categories`, requestOptions);
         const res = await categories.json();
         return res;
@@ -171,10 +180,24 @@ export default class Client {
         return res;
     }
 
+    async getProductById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get);
+        const product = await fetch(`${api}/products/${id}`, requestOptions);
+        const res = await product.json();
+        return res;
+    }
+
     async getInventory() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const inventory = await fetch(`${api}/admin/products`, requestOptions);
         const res = await inventory.json();
+        return res;
+    }
+
+    async getProductsByCategoryId(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const productTypes = await fetch(`${api}/admin/products/category/${id}`, requestOptions);
+        const res = await productTypes.json();
         return res;
     }
 

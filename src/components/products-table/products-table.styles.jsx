@@ -15,7 +15,7 @@ export const ProductsSubTitle = styled.h4`
     text-align: center;
 `;
 
-export const ProductsTable = styled.table`
+export const ProductsMainTable = styled.table`
     border: 1px solid;
     border-collapse: collapse;
 `;

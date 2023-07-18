@@ -17,6 +17,10 @@ export const AddCategoryTitle = styled.h2`
 
 `;
 
+export const AddCategorySubtitle = styled.h4`
+    margin: 10px;
+`;
+
 export const AddCategoryInput = styled.input`
     margin: 8px;
     padding: 2px;    
@@ -28,7 +32,7 @@ export const AddCategoryLabel = styled.label`
 `;
 
 export const AddCategorySelector = styled.select`
-    margin: 8px;
+    margin: 10px;
     padding: 2px;
 `;
 

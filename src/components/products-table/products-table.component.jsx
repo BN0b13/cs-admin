@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import Spinner from '../spinner/spinner.component';
-
-import Client from '../../tools/client';
+import { url } from '../../config';
 
 import {
   ProductsContainer,
-  ProductsTable,
+  ProductsMainTable,
   ProductsTableBody,
   ProductsTableData,
   ProductsTableHead,
@@ -14,27 +12,11 @@ import {
   ProductsTableRow,
   ProductsSubTitle,
   ProductsTitle
-} from './products.styles';
+} from './products-table.styles';
 
-const client = new Client();
+const ProductsTable = ({ products }) => {
 
-const Products = () => {
-  const [ products, setProducts ] = useState(null);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const res = await client.getProducts();
-      setProducts(res.rows);
-    }
-
-    getProducts();
-  }, []);
-
-  if(!products) {
-    return (
-      <Spinner />
-    );
-  }
+  console.log('Products: ', products);
 
     return (
       <ProductsContainer>
@@ -42,7 +24,7 @@ const Products = () => {
         {products.length === 0 ? 
           <ProductsSubTitle>No Products to display.</ProductsSubTitle>
         :
-          <ProductsTable>
+          <ProductsMainTable>
             <ProductsTableHeader>
               <ProductsTableRow>
                 <ProductsTableHead>
@@ -66,10 +48,14 @@ const Products = () => {
                 return (
                   <ProductsTableRow key={index}>
                     <ProductsTableData>
+                    <a href={`${url}/products/${product.id}`}>
                     { product.name }
+                    </a>
                     </ProductsTableData>
                     <ProductsTableData>
+                    <a href={`${url}/categories/${product.Category.id}`}>
                     { product.Category.name }
+                    </a>
                     </ProductsTableData>
                     <ProductsTableData>
                     { product.description }
@@ -81,10 +67,10 @@ const Products = () => {
                 )
               })}
             </ProductsTableBody>
-          </ProductsTable>
+          </ProductsMainTable>
         }
       </ProductsContainer>
     );
 }
 
-export default Products;
+export default ProductsTable;
