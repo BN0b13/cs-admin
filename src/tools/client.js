@@ -17,7 +17,6 @@ export default class Client {
         const headers = new Headers();
         if(withToken) {
             headers.append("Authorization", `Bearer ${this.token}`);
-            headers.append("Origin", "https://admin.cosmicstrains.com");
         }
         if(image) {
             modifiedBody = body;
