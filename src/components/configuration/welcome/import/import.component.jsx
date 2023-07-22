@@ -8,6 +8,7 @@ import Client from "../../../../tools/client";
 import {
     ImageFileInput,
     MainContainer,
+    MainForm,
     MainTitle
 } from './import.styles';
 
@@ -71,14 +72,14 @@ const ImportWelcomeImage = ({ refreshImages }) => {
     return (
         <MainContainer>
             <MainTitle>Add New Welcome Image</MainTitle>
-
-            {imagePreview && <img src={imagePreview} width='200' height='200' />}
-            <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
-            
-            <ImageFileInput type='text' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption' />
-            <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
-            <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
-
+            <MainForm>
+                {imagePreview && <img src={imagePreview} width='200' height='200' />}
+                <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
+                
+                <ImageFileInput type='text' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption' />
+                <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
+                <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
+            </MainForm>
             {showMsg &&
                 <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
             }
