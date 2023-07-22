@@ -17,6 +17,8 @@ export default class Client {
         const headers = new Headers();
         if(withToken) {
             headers.append("Authorization", `Bearer ${this.token}`);
+            headers.append("Access-Control-Request-Method", `${method}`);
+            headers.append("Access-Control-Request-Headers", 'origin, x-requested-with');
             headers.append("Origin", "https://admin.cosmicstrains.com");
         }
         if(image) {
@@ -24,7 +26,6 @@ export default class Client {
         } else {
             headers.append("Accept", "Bearer application/json");
             headers.append("Content-Type", "application/json");
-            headers.append("Origin", "https://admin.cosmicstrains.com");
         }
 
         if(body) {
