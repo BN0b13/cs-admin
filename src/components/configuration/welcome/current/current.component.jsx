@@ -15,9 +15,13 @@ const CurrentWelcomeImages = ({ images, refreshImages }) => {
                 images.length === 0 || images === null ?
                     <CurrentSubtitle>No Current Welcome Images. Add your first below.</CurrentSubtitle>
                 :
-                    images.map((image, index) => (
+                    images.map((image, index) => {
+                    if(image.position === null) {
+                        image.position = '';
+                    }
+                    return (
                         <Image key={index} image={image} refreshImages={refreshImages} />
-                    ))
+                    )})
             }
         </MainContainer>
     )

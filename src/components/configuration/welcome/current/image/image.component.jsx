@@ -30,7 +30,7 @@ const Image = ({ image, refreshImages }) => {
 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
     const [ showEdit, setShowEdit ] = useState(false);
-    const [ name, setName ] = useState(image.name);
+    const [ caption, setCaption ] = useState(image.caption);
     const [ link, setLink ] = useState(image.link);
     const [ position, setPosition ] = useState(image.position);
     const [ showMsg, setShowMsg ] = useState(false);
@@ -40,7 +40,7 @@ const Image = ({ image, refreshImages }) => {
     const updateImage = async () => {
         let data = {
             id: image.id,
-            name,
+            caption,
             link,
         }
 
@@ -83,8 +83,8 @@ const Image = ({ image, refreshImages }) => {
         return (
             <>
                 <DetailContainer>
-                    <DetailLabel>Name: </DetailLabel>
-                    <DetailText>{image.name}</DetailText>
+                    <DetailLabel>Caption: </DetailLabel>
+                    <DetailText>{image.caption}</DetailText>
                 </DetailContainer>
                 <DetailContainer>
                     <DetailLabel>Link: </DetailLabel>
@@ -105,7 +105,7 @@ const Image = ({ image, refreshImages }) => {
                 <CloseIconContainer>
                     <VscChromeClose onClick={() => setShowEdit(false)} />
                 </CloseIconContainer>
-                <EditDetailsInput type='text' onChange={e => setName(e.target.value)} value={name} placeholder={name} />
+                <EditDetailsInput type='text' onChange={e => setCaption(e.target.value)} value={caption} placeholder={caption} />
                 <EditDetailsInput type='text' onChange={e => setLink(e.target.value)} value={link} placeholder={link} />
                 <EditDetailsInput type='number' onChange={e => setPosition(e.target.value)} value={position} placeholder={position} />
                 <EditDetailsDeleteButton onClick={() => confirmDelete()}>Delete</EditDetailsDeleteButton>

@@ -16,7 +16,8 @@ const client = new Client();
 const ImportWelcomeImage = ({ refreshImages }) => {
     const [ image, setImage ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
-    const [ name, setName ] = useState('');
+    const [ fileInput, setFileInput ] = useState('');
+    const [ caption, setCaption ] = useState('');
     const [ link, setLink ] = useState('');
     const [ position, setPosition ] = useState('');
 
@@ -35,12 +36,8 @@ const ImportWelcomeImage = ({ refreshImages }) => {
       }
 
     const createWelcomeImage = async () => {
-        if(image === '' ||
-            name === '' ||
-            link === '' ||
-            position === ''
-        ) {
-            setMsgContent('Please fill out all fields and select an image.');
+        if(image === '') {
+            setMsgContent('Please select an image.');
             setMsgType('error');
             setShowMsg(true);
             return
@@ -49,15 +46,22 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         let formData = new FormData();
 
         formData.append('files', image);
-        formData.append('name', name);
-        formData.append('link', link);
-        formData.append('position', position);
+        if(caption !== '') {
+            formData.append('caption', caption);
+        }
+        if(caption !== '') {
+            formData.append('link', link);
+        }
+        if(position !== '') {
+            formData.append('position', position);
+        }
 
         await client.postWelcomeImage(formData);
 
         setImage('');
         setImagePreview('');
-        setName('');
+        setFileInput('');
+        setCaption('');
         setLink('');
         setPosition('');
 
@@ -68,10 +72,10 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         <MainContainer>
             <MainTitle>Add New Welcome Image</MainTitle>
 
-            {imagePreview && <img src={imagePreview} width='100' height='100' />}
-            <ImageFileInput type="file" accept='image/*' name="files" onChange={e => handleFileChange(e)} />
+            {imagePreview && <img src={imagePreview} width='200' height='200' />}
+            <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
             
-            <ImageFileInput type='text' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
+            <ImageFileInput type='text' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption' />
             <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
             <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
 
