@@ -23,7 +23,6 @@ export default class Client {
         } else {
             headers.append("Accept", "Bearer application/json");
             headers.append("Content-Type", "application/json");
-            headers.append("Origin", "http://admin.cosmicstrains.com");
         }
 
         if(body) {
