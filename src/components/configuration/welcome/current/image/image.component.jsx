@@ -64,7 +64,7 @@ const Image = ({ image, refreshImages }) => {
     }
 
     const confirmDelete = () => {
-        setShowDeleteModal(true)
+        setShowDeleteModal(true);
     }
 
     const deleteImage = async () => {

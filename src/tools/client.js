@@ -102,25 +102,7 @@ export default class Client {
         return res;
     }
 
-    // Customers
-
-    async getCustomers() {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const customers = await fetch(`${api}/admin/customers`, requestOptions);
-        const res = await customers.json();
-        return res;
-    }
-
-    // Employees
-
-    async getEmployees() {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const customers = await fetch(`${api}/admin/employees`, requestOptions);
-        const res = await customers.json();
-        return res;
-    }
-
-    // Welcome
+    // Configuration
 
     async getWelcomeImages() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
@@ -157,6 +139,54 @@ export default class Client {
         return res;
     }
 
+    // Customers
+
+    async getCustomers() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/customers`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
+    // Employees
+
+    async getEmployees() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/employees`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
+    // Inventory
+
+    async getInventory() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
+        const res = await inventory.json();
+        return res;
+    }
+
+    async getInventoryById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const inventory = await fetch(`${api}/admin/inventory/id`, requestOptions);
+        const res = await inventory.json();
+        return res;
+    }
+
+    async updateInventory(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
+        const res = await inventory.json();
+        return res;
+    }
+
+    async deleteInventory(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
+        const res = await inventory.json();
+        return res;
+    }
+
     // Orders
 
     async getOrders() {
@@ -189,7 +219,7 @@ export default class Client {
         return res;
     }
 
-    async getInventory() {
+    async getProductInventory() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const inventory = await fetch(`${api}/admin/products`, requestOptions);
         const res = await inventory.json();
@@ -228,6 +258,27 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true, true);
         const productProfile = await fetch(`${api}/admin/products/profiles`, requestOptions);
         const res = await productProfile.json();
+        return res;
+    }
+
+    async addProductImage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true, true);
+        const productImage = await fetch(`${api}/admin/products/images`, requestOptions);
+        const res = await productImage.json();
+        return res;
+    }
+
+    async updateProduct(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const updateProduct = await fetch(`${api}/admin/products`, requestOptions);
+        const res = await updateProduct.json();
+        return res;
+    }
+
+    async deleteProduct(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const deleteProduct = await fetch(`${api}/admin/products`, requestOptions);
+        const res = await deleteProduct.json();
         return res;
     }
 

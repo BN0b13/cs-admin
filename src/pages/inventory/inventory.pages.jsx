@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Views from '../../components/metrics/views/views.component';
+import Inventory from '../../components/inventory/inventory.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import Client from '../../tools/client';
@@ -15,7 +15,7 @@ const client = new Client();
 
 const InventoryPage = () => {
     const [ loading, setLoading ] = useState(true);
-    const [ products, setProducts ] = useState(null);
+    const [ inventory, setInventory ] = useState('');
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
@@ -23,13 +23,13 @@ const InventoryPage = () => {
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
 
     useEffect(() => {
-        getProducts();
+        getInventory();
     }, []);
 
-    const getProducts = async () => {
-        const res = await client.getProducts();
-
-        setProducts(res.rows);
+    const getInventory = async () => {
+        const res = await client.getInventory();
+        console.log('Inventory: ', res);
+        setInventory(res.rows);
         setLoading(false);
     }
 
@@ -73,7 +73,7 @@ const InventoryPage = () => {
                 {loading ?
                     <Spinner />
                 :
-                <MainTitle>Inventory Page</MainTitle>
+                    <Inventory inventory={inventory} />
                 }
             </>
         )

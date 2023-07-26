@@ -57,8 +57,7 @@ const AddCategory = () => {
     const addCategory = async () => {
         if(name === '' || 
         description === '' || 
-        type === '' ||
-        thumbnail === '') {
+        type === '') {
             setMsgContent('Please fill out all fields.');
             setMsgType('error');
             setShowMsg(true);

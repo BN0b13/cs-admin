@@ -18,28 +18,12 @@ import {
 
 const client = new Client();
 
-const Inventory = () => {
-  const [ inventory, setInventory ] = useState(null);
-
-  useEffect(() => {
-    const getInventory = async () => {
-      const res = await client.getInventory();
-      setInventory(res);
-    }
-
-    getInventory();
-  }, []);
-
-  if(!inventory) {
-    return (
-      <Spinner />
-    );
-  }
+const Inventory = ({ inventory }) => {
 
   return (
     <InventoryContainer>
       <InventoryTitle>Inventory</InventoryTitle>
-      {inventory.length === 0 ? 
+      {inventory === '' || inventory == undefined ? 
         <InventorySubTitle>No Inventory to display.</InventorySubTitle>
       :
         <InventoryTable>
