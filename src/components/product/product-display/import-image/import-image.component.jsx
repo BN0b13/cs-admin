@@ -7,20 +7,19 @@ import Client from "../../../../tools/client";
 
 import {
     ImageFileInput,
+    ImagePlaceholder,
     MainContainer,
     MainForm,
     MainTitle
-} from './import.styles';
+} from './import-image.styles';
 
 const client = new Client();
 
-const ImportWelcomeImage = ({ refreshImages }) => {
+const ImportImage = ({ id, name, getProduct }) => {
     const [ image, setImage ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
     const [ caption, setCaption ] = useState('');
-    const [ link, setLink ] = useState('');
-    const [ position, setPosition ] = useState('');
 
     const [ showMsg, setShowMsg ] = useState(false);
     const [ msgContent, setMsgContent ] = useState('');
@@ -36,7 +35,7 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         setImagePreview(URL.createObjectURL(e.target.files[0]));
       }
 
-    const createWelcomeImage = async () => {
+    const addProductImage = async () => {
         if(image === '') {
             setMsgContent('Please select an image.');
             setMsgType('error');
@@ -47,46 +46,42 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         let formData = new FormData();
 
         formData.append('files', image);
-        if(caption !== '') {
-            formData.append('caption', caption);
-        }
-        if(caption !== '') {
-            formData.append('link', link);
-        }
-        if(position !== '') {
-            formData.append('position', position);
+        formData.append('id', id);
+        if(caption === '') {
+            formData.append('caption', name);
         }
 
-        await client.postWelcomeImage(formData);
+        await client.addProductImage(formData);
 
         setImage('');
         setImagePreview('');
         setFileInput('');
         setCaption('');
-        setLink('');
-        setPosition('');
 
-        refreshImages();
+        getProduct();
     }
 
     return (
         <MainContainer>
-            <MainTitle>Add New Welcome Image</MainTitle>
             <MainForm>
-                {imagePreview && <img src={imagePreview} width='200' height='200' />}
+                {imagePreview ? 
+                    <img src={imagePreview} width='200px' height='200px' />    
+                :
+                <>
+                    <ImagePlaceholder />
+                    <MainTitle>Add Product Image</MainTitle>
+                </>
+                }
+                <ImageFileInput type="text" name="caption" value={caption} onChange={e => setCaption(e.target.value)} placeholder={'Image Caption'} />
                 <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
-                
-                <ImageFileInput type='text' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption' />
-                <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
-                <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
             </MainForm>
             {showMsg &&
                 <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
             }
 
-            <Button onClick={() => createWelcomeImage()}>Add</Button>
+            <Button onClick={() => addProductImage()}>Add Image</Button>
         </MainContainer>
     )
 }
 
-export default ImportWelcomeImage;
+export default ImportImage;

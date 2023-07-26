@@ -3,9 +3,11 @@ import styled from "styled-components";
 export const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+`;
+
+export const ImagePlaceholder = styled.div`
+    height: 270px;
+    width: 270px;
 `;
 
 export const MainForm = styled.form`
@@ -16,9 +18,9 @@ export const MainForm = styled.form`
 `;
 
 export const MainTitle = styled.h2`
-    
+
 `;
 
 export const ImageFileInput = styled.input`
-    margin: 10px auto;
+    margin: 20px auto;
 `;

@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import ProductDisplay from '../../components/product/product-display/product-display.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
+import UpdateProduct from '../../components/product/update-product/update-product.component';
 
 import Client from '../../tools/client';
 import { url } from '../../config';
+
+import {
+    MainContainer,
+    MainTitle,
+    TabContainer,
+    TabSelector
+} from './product.styles';
 
 const client = new Client();
 
@@ -13,42 +22,81 @@ const ProductPage = () => {
     const { id } = useParams();
     const [ product, setProduct ] = useState('');
 
+    const [ currentTab, setCurrentTab ] = useState(1);
+    const [ tabOneActive, setTabOneActive ] = useState(true);
+    const [ tabTwoActive, setTabTwoActive ] = useState(false);
+    const [ tabThreeActive, setTabThreeActive ] = useState(false);
+
     useEffect(() => {
-        const getProduct = async () => {
-            const res = await client.getProductById(id);
-
-            setProduct(res.rows[0]);
-            setLoading(false);
-        }
-
         getProduct();
     }, []);
 
-    const productDisplay = () => {
+    const getProduct = async () => {
+        const res = await client.getProductById(id);
 
-        return (
-            <>
-                <h6 onClick={() => window.location.href = `${url}/products`}>Back to Products</h6>
-                <h4>Name: {product.name}</h4>
-                <h4>Description: {product.description}</h4>
-                <h4>Time: {product.time}</h4>
-                <h4>Lineage: {product.mother} x {product.father}</h4>
-                <h4>Sex: {product.sex}</h4>
-            </>
-        )
+        if(res.count !== 0) {
+            setProduct(res.rows[0]);
+        }
+
+        setLoading(false);
+    }
+
+    const activateTabOne = () => {
+        setCurrentTab(1);
+        setTabOneActive(true);
+        setTabTwoActive(false);
+        setTabThreeActive(false);
+    }
+
+    const activateTabTwo = () => {
+        setCurrentTab(2);
+        setTabOneActive(false);
+        setTabTwoActive(true);
+        setTabThreeActive(false);
+    }
+
+    const activateTabThree = () => {
+        setCurrentTab(3);
+        setTabOneActive(false);
+        setTabTwoActive(false);
+        setTabThreeActive(true);
+    }
+
+    const showCurrentTab = () => {
+
+        if(currentTab === 2) {
+            return (
+                <MainContainer>
+                    <MainTitle>Images</MainTitle>
+                </MainContainer>
+            )
+        }
+
+        if(currentTab === 3) {
+            return (
+                <UpdateProduct product={product} getProduct={getProduct} />
+            )
+        }
+
+        return (<ProductDisplay product={product} getProduct={getProduct} />);
     }
 
     return (
-        <div>
+        <MainContainer>
+            <TabContainer>
+                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Product</TabSelector>
+                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Images</TabSelector>
+                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Update Product</TabSelector>
+            </TabContainer>
             {loading ?
                 <Spinner />
             :
                 product.length === 0 ?
-                    <h2>No Product to Display</h2>
+                    <MainTitle>No Product to Display</MainTitle>
                 :
-                    productDisplay()
+                    showCurrentTab() 
             }
-        </div>
+        </MainContainer>
     )
 }
 
