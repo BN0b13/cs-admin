@@ -21,6 +21,14 @@ const MetricsPage = () => {
     const [ tabTwoActive, setTabTwoActive ] = useState(false);
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
 
+    // Possible metrics:
+    // User sign ups - by date: monthly, weekly, daily etc
+    // Amount of orders
+    // Amount of orders by repeat customers
+    // Amount of products sold
+    // Amount of users deleting their accounts
+    // News letter accepts and cancels
+
     useEffect(() => {
         getProducts();
     }, []);

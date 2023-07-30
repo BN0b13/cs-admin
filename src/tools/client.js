@@ -196,6 +196,20 @@ export default class Client {
         return res;
     }
 
+    async getOrderByRefId(refId) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const orders = await fetch(`${api}/admin/orders/search/ref-id/${refId}`, requestOptions);
+        const res = await orders.json();
+        return res;
+    }
+
+    async updateOrder(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const patchOrder = await fetch(`${api}/admin/orders`, requestOptions);
+        const res = await patchOrder.json();
+        return res;
+    }
+
     // Products
 
     async getProducts() {

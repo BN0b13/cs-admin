@@ -1,7 +1,6 @@
 import { useEffect, useParams, useState } from 'react';
 
-
-import Button from '../../reusable/button/button.component';
+import AddProductInventory from '../add-product-inventory/add-product-inventory.component';
 import ImportImage from './import-image/import-image.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 import Snackbar from '../../reusable/snackbar/snackbar.component';
@@ -60,12 +59,12 @@ const ProductDisplay = ({ product, getProduct }) => {
             
                 <ProductInformation>
                     <ProductText>{product.name}</ProductText>
+                    <ProductText>{product.type}</ProductText>
                     <ProductDescriptionText>{product.description}</ProductDescriptionText>
                     <ProductSubtext>Lineage: {product.mother} x {product.father}</ProductSubtext>
                     <ProductSubtext>Time: {product.time}</ProductSubtext>
-                    <ProductSubtext>Pack: 10+ {product.sex} seeds</ProductSubtext>
+                    <ProductSubtext>Sex: {product.sex}</ProductSubtext>
                     <ProductSubtext>Price: {product.price}</ProductSubtext>
-                    <ProductSubtext>Inventory: {product.Inventories[0].quantity}</ProductSubtext>
                     <ProductButtonContainer>
                         {showMessage && 
                             <Snackbar type={messageType} msg={messageContents} show={() => setShowMessage(false)} />
@@ -83,21 +82,26 @@ const ProductDisplay = ({ product, getProduct }) => {
             {loading ? 
                 <Spinner />
             :
-                <ProductContainer>
-                    <ProductImage>
-                        {images.length === 0 ?
-                            <ImportImage id={product.id} name={product.name} getProduct={getProduct} />
-                        :
-                            images.length === 1 ?
+                <>
+                    <ProductContainer>
+                        <ProductImage>
+                            {images.length === 0 ?
+                                <ImportImage id={product.id} name={product.name} getProduct={getProduct} />
+                                :
+                                images.length === 1 ?
                                 <img src={`${api}${images[0].path}`} alt={images[0].name} height='300' width='300' />
-                            :
+                                :
                                 images.map((image, index) => (
                                     <img key={index} src={`${api}${image.path}`} alt={`${image.name}`} height='100' width='100' />
-                                ))
-                        }
-                    </ProductImage>
-                    { productDisplayContents() }
-                </ProductContainer>
+                                    ))
+                                }
+                        </ProductImage>
+
+                        { productDisplayContents() }
+
+                    </ProductContainer>
+                    <AddProductInventory />
+                </>
             }
         </ProductDisplayContainer>
     )

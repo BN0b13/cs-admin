@@ -46,7 +46,7 @@ function App() {
               <Route path="/accounts/:id" element={<AccountPage />} />
               <Route path="/configuration" element={<ConfigurationPage />} />
               <Route path="/orders" element={<Orders />} />
-              <Route path="/orders/:order" element={<Order />} />
+              <Route path="/orders/:refId" element={<Order />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:id" element={<CategoryPage />} />
               <Route path="/products" element={<ProductsPage />} />

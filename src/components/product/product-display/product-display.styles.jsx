@@ -37,7 +37,10 @@ export const UpdateButtonContainer = styled.div`
 `;
 
 export const ProductDisplayContainer = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ProductImage = styled.div`
