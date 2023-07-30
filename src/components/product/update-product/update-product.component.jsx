@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
+import ProductInventory from '../product-inventory/product-inventory.component';
 import Snackbar from '../../reusable/snackbar/snackbar.component';
 
 import { convertProductPrice } from '../../../tools/tools';
@@ -25,7 +26,7 @@ import {
     UpdateLabel,
     UpdateOption,
     UpdateSelect,
-    UpdateTextarea
+    UpdateTextarea,
 } from './update-product.styles';
 
 const client = new Client();
@@ -44,6 +45,7 @@ const UpdateProduct = ({ product, getProduct }) => {
     const [ father, setFather ] = useState(product.father);
     const [ sex, setSex ] = useState(product.sex);
     const [ price, setPrice ] = useState(product.price);
+
     const [ productInventoryId, setProductInventoryId ] = useState(product.Inventories[0].id);
     const [ quantity, setQuantity ] = useState(product.Inventories[0].quantity);
     const [ size, setSize ] = useState(product.Inventories[0].size);
@@ -102,6 +104,17 @@ const UpdateProduct = ({ product, getProduct }) => {
                 profile.checked = !profile.checked;
             }
         }
+    }
+
+    const handleInventoryUpdateDisplay = (index) => {
+        console.log('index: ', index);
+        setProductInventoryId(product.Inventories[index].id);
+        setQuantity(product.Inventories[index].quantity);
+        setSize(product.Inventories[index].size);
+        setSku(product.Inventories[index].sku);
+        setAddress(product.Inventories[index].address);
+        setBay(product.Inventories[index].bay);
+        setAvailable(product.Inventories[index].available);
     }
 
     const updateProduct = async () => {
@@ -180,7 +193,10 @@ const UpdateProduct = ({ product, getProduct }) => {
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Type:</UpdateLabel>
-                        <UpdateInput value={type} onChange={(e) => setType(e.target.value)} />
+                        <UpdateSelect value={type} onChange={(e) => setType(e.target.value)}>
+                            <UpdateOption value={'clothing'}>Clothing</UpdateOption>
+                            <UpdateOption value={'seeds'}>Seeds</UpdateOption>
+                        </UpdateSelect>
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Time:</UpdateLabel>
@@ -205,7 +221,10 @@ const UpdateProduct = ({ product, getProduct }) => {
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Sex:</UpdateLabel>
-                        <UpdateInput value={sex} onChange={(e) => setSex(e.target.value)} />
+                        <UpdateSelect value={sex} onChange={(e) => setSex(e.target.value)}>
+                            <UpdateOption value={'feminized'}>Feminized</UpdateOption>
+                            <UpdateOption value={'regular'}>Regular</UpdateOption>
+                        </UpdateSelect>
                     </InputContainer>
                     <MainSubtitle>{ priceDisplay }</MainSubtitle>
                     <InputContainer>
@@ -221,7 +240,7 @@ const UpdateProduct = ({ product, getProduct }) => {
                     </InputContainer>
                     <InputContainer>
                     <UpdateLabel>Size:</UpdateLabel>
-                    <UpdateSelect defaultValue={product.Inventories[0].size} onChange={(e) => setSize(e.target.value)}>
+                    <UpdateSelect value={product.Inventories[0].size} onChange={(e) => setSize(e.target.value)}>
                         <UpdateOption value={'6 seeds'}>Half Pack</UpdateOption>
                         <UpdateOption value={'12 seeds'}>Full Pack</UpdateOption>
                     </UpdateSelect>
@@ -254,6 +273,7 @@ const UpdateProduct = ({ product, getProduct }) => {
                     </ButtonContainer>
                 </InventoryContent>
             </MainContent>
+            <ProductInventory inventories={product.Inventories} handleInventoryUpdateDisplay={handleInventoryUpdateDisplay} />
         </MainContainer>
     )
 }

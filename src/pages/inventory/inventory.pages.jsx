@@ -28,7 +28,6 @@ const InventoryPage = () => {
 
     const getInventory = async () => {
         const res = await client.getInventory();
-        console.log('Inventory: ', res);
         setInventory(res.rows);
         setLoading(false);
     }
