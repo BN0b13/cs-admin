@@ -37,6 +37,13 @@ const Image = ({ image, refreshImages }) => {
     const [ msgType, setMsgType ] = useState('error');
     const [ msgContent, setMsgContent ] = useState('Please complete all fields to update password');
 
+    const handleEditDisplay = () => {
+        setShowEdit(false);
+        setCaption(image.caption);
+        setLink(image.link);
+        setPosition(image.position);
+    }
+
     const updateImage = async () => {
         let data = {
             id: image.id,
@@ -105,12 +112,12 @@ const Image = ({ image, refreshImages }) => {
                 <CloseIconContainer>
                     <VscChromeClose onClick={() => setShowEdit(false)} />
                 </CloseIconContainer>
-                <EditDetailsInput type='text' onChange={e => setCaption(e.target.value)} value={caption} placeholder={caption} />
-                <EditDetailsInput type='text' onChange={e => setLink(e.target.value)} value={link} placeholder={link} />
-                <EditDetailsInput type='number' onChange={e => setPosition(e.target.value)} value={position} placeholder={position} />
+                <EditDetailsInput type='text' onChange={e => setCaption(e.target.value)} value={caption} placeholder={image.caption} />
+                <EditDetailsInput type='text' onChange={e => setLink(e.target.value)} value={link} placeholder={image.link} />
+                <EditDetailsInput type='number' onChange={e => setPosition(e.target.value)} value={position} placeholder={image.position} />
                 <EditDetailsDeleteButton onClick={() => confirmDelete()}>Delete</EditDetailsDeleteButton>
                 <EditDetailsButtonContainer>
-                    <EditDetailsButton onClick={() => setShowEdit(false)}>Cancel</EditDetailsButton>
+                    <EditDetailsButton onClick={() => handleEditDisplay()}>Cancel</EditDetailsButton>
                     <EditDetailsButton onClick={() => updateImage()}>Submit</EditDetailsButton>
                 </EditDetailsButtonContainer>
             </>
