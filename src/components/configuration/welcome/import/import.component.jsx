@@ -50,7 +50,7 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         if(caption !== '') {
             formData.append('caption', caption);
         }
-        if(caption !== '') {
+        if(link !== '') {
             formData.append('link', link);
         }
         if(position !== '') {

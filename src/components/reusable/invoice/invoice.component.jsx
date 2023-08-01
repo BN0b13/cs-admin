@@ -42,6 +42,7 @@ const client = new Client();
 
 const Invoice = ({ order, products, getOrder }) => {
     const componentRef = useRef();
+    const [ user, setUser ] = useState('');
     const [ subtotal, setSubtotal ] = useState('');
     const [ tracking, setTracking ] = useState('');
     const [ title, setTitle ] = useState('');
@@ -51,9 +52,16 @@ const Invoice = ({ order, products, getOrder }) => {
 
 
     useEffect(() => {
+        const getUser = async () => {
+            const userRes = await client.getAccountById(order.userId);
+
+            setUser(userRes[0]);
+        }
         let subtotalCount = 0;
         products.map(item => subtotalCount = subtotalCount + (item.quantity * item.product.price));
         setSubtotal(subtotalCount);
+
+        getUser();
     }, []);
 
     const confirmProcessOrder = () => {
@@ -87,12 +95,14 @@ const Invoice = ({ order, products, getOrder }) => {
 
     const shipOrder = async () => {
         const data = {
+            email: user.email,
+            refId: order.refId,
             orderId: order.id,
             status: 'SHIPPED',
             tracking: tracking
         }
 
-        await client.updateOrder(data);
+        await client.shipOrder(data);
         setShowOrderModal(false);
         getOrder();
     }

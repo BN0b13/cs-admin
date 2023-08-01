@@ -176,7 +176,7 @@ const AddSeedProduct = ({category, productType}) => {
         const res = await client.createProduct(formData);
 
         if(res) {
-            return window.location.href = `${url}/products/${res.id}`;
+            return window.location.href = `${url}/products/${res.result.id}`;
         }
 
         setMsgContent('There was an error creating category. Please try again.');
