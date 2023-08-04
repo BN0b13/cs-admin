@@ -33,8 +33,9 @@ const AddSeedProduct = ({category, productType}) => {
     const [ time, setTime ] = useState('');
     const [ mother, setMother ] = useState('');
     const [ father, setFather ] = useState('');
-    const [ sex, setSex ] = useState('');
+    const [ inventoryType, setInventoryType ] = useState('');
     const [ size, setSize ] = useState('');
+    const [ sizeDescription, setSizeDescription ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ priceDisplay, setPriceDisplay ] = useState('');
     const [ cents, setCents ] = useState('00');
@@ -137,8 +138,9 @@ const AddSeedProduct = ({category, productType}) => {
             time === '' ||
             mother === '' ||
             father === '' ||
-            sex === '' ||
+            inventoryType === '' ||
             size === '' ||
+            sizeDescription === '' ||
             price === '' ||
             quantity === ''
         ) {
@@ -168,7 +170,7 @@ const AddSeedProduct = ({category, productType}) => {
         formData.append('mother', mother);
         formData.append('father', father);
         formData.append('profile', profile);
-        formData.append('sex', sex);
+        formData.append('inventoryType', inventoryType);
         formData.append('size', size);
         formData.append('price', price);
         formData.append('quantity', quantity);
@@ -210,8 +212,9 @@ const AddSeedProduct = ({category, productType}) => {
                         ))}
                     </ProductProfileContainer>
 
-                    <AddProductInput type='text' name='sex' value={sex} onChange={(e) => setSex(e.target.value)} placeholder='Sex' />
+                    <AddProductInput type='text' name='inventoryType' value={inventoryType} onChange={(e) => setInventoryType(e.target.value)} placeholder='Inventory Type' />
                     <AddProductInput type='text' name='size' value={size} onChange={(e) => setSize(e.target.value)} placeholder='Size' />
+                    <AddProductInput type='text' name='sizeDescription' value={sizeDescription} onChange={(e) => setSizeDescription(e.target.value)} placeholder='Size Description' />
 
                     <AddProductText>${dollars}.{cents}</AddProductText>
                     <AddProductInput type='text' name='price' value={priceDisplay} onChange={(e) => handleMoneyInput(e.target.value)} placeholder='Price' />

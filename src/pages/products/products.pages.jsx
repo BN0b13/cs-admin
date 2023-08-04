@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import AddProduct from '../../components/add/add-product/add-product.component';
+import AddProduct from '../../components/product/add-product/add-product.component';
 import ProductProfile from '../../components/product-profile/product-profile.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import ProductsTable from '../../components/reusable/tables/products-table/products-table.component';

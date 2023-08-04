@@ -44,6 +44,7 @@ const Invoice = ({ order, products, getOrder }) => {
     const componentRef = useRef();
     const [ user, setUser ] = useState('');
     const [ subtotal, setSubtotal ] = useState('');
+    const [ paymentLink, setPaymentLink ] = useState('');
     const [ tracking, setTracking ] = useState('');
     const [ title, setTitle ] = useState('');
     const [ message, setMessage ] = useState('');
@@ -58,11 +59,29 @@ const Invoice = ({ order, products, getOrder }) => {
             setUser(userRes[0]);
         }
         let subtotalCount = 0;
-        products.map(item => subtotalCount = subtotalCount + (item.quantity * item.product.price));
+        products.map(item => subtotalCount = subtotalCount + (item.quantity * item.product.Inventories[0].price));
         setSubtotal(subtotalCount);
 
         getUser();
     }, []);
+
+    const confirmSendPaymentLink = () => {
+        if(paymentLink.length === 0) {
+            console.log('Please add a Payment Link to update order status to BILLED.');
+            return
+        }
+        setTitle('Send Payment Link');
+        setMessage(`Are you sure you want to send the payment link: ${paymentLink}?`);
+        setAction(() => sendPaymentLink);
+        setShowOrderModal(true);
+    }
+
+    const confirmMarkPaid = () => {
+        setTitle('Mark Paid');
+        setMessage('Are you sure you want to mark the order as PAID? Please ensure the customer has paid the correct invoice');
+        setAction(() => markBillPaid);
+        setShowOrderModal(true);
+    }
 
     const confirmProcessOrder = () => {
         setTitle('Process Order');
@@ -80,6 +99,34 @@ const Invoice = ({ order, products, getOrder }) => {
         setMessage(`Are you sure you want to ship the order with tracking number: ${tracking}? The customer will automatically get an email with the status update and tracking number.`);
         setAction(() =>shipOrder);
         setShowOrderModal(true);
+    }
+
+
+    const sendPaymentLink = async () => {
+        const data = {
+            email: user.email,
+            refId: order.refId,
+            orderId: order.id,
+            status: 'BILLED',
+            paymentLink
+        }
+
+        await client.sendPaymentLink(data);
+        setShowOrderModal(false);
+        getOrder();
+    }
+
+    const markBillPaid = async () => {
+        const data = {
+            email: user.email,
+            refId: order.refId,
+            orderId: order.id,
+            status: 'PAID'
+        }
+
+        await client.updateOrder(data);
+        setShowOrderModal(false);
+        getOrder();
     }
 
     const processOrder = async () => {
@@ -202,13 +249,25 @@ const Invoice = ({ order, products, getOrder }) => {
             </InvoiceContainer>
             {order.status.toLowerCase() === 'new' &&
                 <ButtonContainer>
+                    <label>Payment Link: </label>
+                    <input value={paymentLink} onChange={(e) => setPaymentLink(e.target.value)} placeholder='Payment Link' />
+                    <Button onClick={() => confirmSendPaymentLink()} >Send Payment</Button>
+                </ButtonContainer>
+            }
+            {order.status.toLowerCase() === 'billed' &&
+                <ButtonContainer>
+                    <Button onClick={() => confirmMarkPaid()} >Bill Paid</Button>
+                </ButtonContainer>
+            }
+            {order.status.toLowerCase() === 'paid' &&
+                <ButtonContainer>
                     <Button onClick={() => confirmProcessOrder()} >Process Order</Button>
                 </ButtonContainer>
             }
             {order.status.toLowerCase() === 'processing' &&
                 <ButtonContainer>
                     <label>Tracking: </label>
-                    <input value={tracking} onChange={(e) => setTracking(e.target.value)} />
+                    <input value={tracking} onChange={(e) => setTracking(e.target.value)} placeholder='Tracking' />
                     <Button onClick={() => confirmShipOrder()} >Ship Order</Button>
                 </ButtonContainer>
             }

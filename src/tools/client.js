@@ -210,6 +210,13 @@ export default class Client {
         return res;
     }
 
+    async sendPaymentLink(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const patchOrder = await fetch(`${api}/admin/orders/payment-link`, requestOptions);
+        const res = await patchOrder.json();
+        return res;
+    }
+
     async shipOrder(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
         const patchOrder = await fetch(`${api}/admin/orders/ship`, requestOptions);

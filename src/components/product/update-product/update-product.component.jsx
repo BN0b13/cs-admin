@@ -37,28 +37,27 @@ const UpdateProduct = ({ product, getProduct }) => {
     const [ profileArr, setProfileArr ] = useState([]);
 
     const [ categoryId, setCategoryId ] = useState(product.categoryId);
+    const [ type, setType ] = useState(product.type);
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
-    const [ type, setType ] = useState(product.type);
     const [ time, setTime ] = useState(product.time);
     const [ mother, setMother ] = useState(product.mother);
     const [ father, setFather ] = useState(product.father);
-    const [ sex, setSex ] = useState(product.sex);
-    const [ price, setPrice ] = useState(product.price);
-
+    
     const [ productInventoryId, setProductInventoryId ] = useState(product.Inventories[0].id);
+    const [ inventoryType, setInventoryType ] = useState(product.Inventories[0].type);
+    const [ price, setPrice ] = useState(product.Inventories[0].price);
     const [ quantity, setQuantity ] = useState(product.Inventories[0].quantity);
     const [ size, setSize ] = useState(product.Inventories[0].size);
+    const [ sizeDescription, setSizeDescription ] = useState(product.Inventories[0].size);
     const [ sku, setSku ] = useState(product.Inventories[0].sku);
     const [ address, setAddress ] = useState(product.Inventories[0].address);
     const [ bay, setBay ] = useState(product.Inventories[0].bay);
-    const [ available, setAvailable ] = useState(product.Inventories[0].available);
 
     const [ showMsg, setShowMsg] = useState(false);
     const [ msgContent, setMsgContent ] = useState('');
     const [ msgType, setMsgType ] = useState('error');
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
-    const [ priceDisplay, setPriceDisplay ] = useState(convertProductPrice(product.price));
 
     useEffect(() => {
         if(product.ProductImages.length !== 0) {
@@ -90,11 +89,6 @@ const UpdateProduct = ({ product, getProduct }) => {
         }
         getProductProfiles();
     }, []);
-    
-    const updatePrice = (amount) => {
-        setPriceDisplay(convertProductPrice(amount));
-        setPrice(amount);
-    }
 
     const handleProductProfile = (e) => {
         const checkboxId = parseInt(e);
@@ -107,14 +101,14 @@ const UpdateProduct = ({ product, getProduct }) => {
     }
 
     const handleInventoryUpdateDisplay = (index) => {
-        console.log('index: ', index);
         setProductInventoryId(product.Inventories[index].id);
+        setPrice(product.Inventories[index].price);
         setQuantity(product.Inventories[index].quantity);
         setSize(product.Inventories[index].size);
+        setSizeDescription(product.Inventories[index].sizeDescription);
         setSku(product.Inventories[index].sku);
         setAddress(product.Inventories[index].address);
         setBay(product.Inventories[index].bay);
-        setAvailable(product.Inventories[index].available);
     }
 
     const updateProduct = async () => {
@@ -122,22 +116,22 @@ const UpdateProduct = ({ product, getProduct }) => {
         const params = {
             id: product.id,
             categoryId,
+            type,
             name,
             description,
-            type,
             time,
             mother,
             father,
             profile: productProfileArr,
-            sex,
-            price,
+            inventoryType,
             productInventoryId,
+            price,
             quantity,
             size,
+            sizeDescription,
             sku,
             address,
-            bay,
-            available
+            bay
         };
 
 
@@ -220,16 +214,16 @@ const UpdateProduct = ({ product, getProduct }) => {
                             ))}
                     </InputContainer>
                     <InputContainer>
-                        <UpdateLabel>Sex:</UpdateLabel>
-                        <UpdateSelect value={sex} onChange={(e) => setSex(e.target.value)}>
+                        <UpdateLabel>Inventory Type:</UpdateLabel>
+                        <UpdateSelect value={inventoryType} onChange={(e) => setInventoryType(e.target.value)}>
                             <UpdateOption value={'feminized'}>Feminized</UpdateOption>
                             <UpdateOption value={'regular'}>Regular</UpdateOption>
                         </UpdateSelect>
                     </InputContainer>
-                    <MainSubtitle>{ priceDisplay }</MainSubtitle>
+                    <MainSubtitle>{ `$${price / 100}` }</MainSubtitle>
                     <InputContainer>
                         <UpdateLabel>Price:</UpdateLabel>
-                        <UpdateInput value={price} onChange={(e) => updatePrice(e.target.value)} />
+                        <UpdateInput value={price} onChange={(e) => setPrice(e.target.value)} />
                     </InputContainer>
                 </ProductContent>
                 <InventoryContent>
@@ -244,6 +238,10 @@ const UpdateProduct = ({ product, getProduct }) => {
                         <UpdateOption value={'6 seeds'}>Half Pack</UpdateOption>
                         <UpdateOption value={'12 seeds'}>Full Pack</UpdateOption>
                     </UpdateSelect>
+                    </InputContainer>
+                    <InputContainer>
+                    <UpdateLabel>Size Description:</UpdateLabel>
+                        <UpdateInput type='text' value={sizeDescription} onChange={(e) => setSizeDescription(e.target.value)} />
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Sku:</UpdateLabel>
