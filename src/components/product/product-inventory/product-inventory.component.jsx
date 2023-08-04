@@ -31,9 +31,6 @@ const ProductInventory = ({ inventories, handleInventoryUpdateDisplay = () => {}
                   Bay
                 </ProductInventoryTableHead>
                 <ProductInventoryTableHead>
-                  Available
-                </ProductInventoryTableHead>
-                <ProductInventoryTableHead>
                   Date Created
                 </ProductInventoryTableHead>
               </ProductInventoryTableRow>
@@ -58,9 +55,6 @@ const ProductInventory = ({ inventories, handleInventoryUpdateDisplay = () => {}
                     </ProductInventoryTableData>
                     <ProductInventoryTableData>
                         { inventory.bay }
-                    </ProductInventoryTableData>
-                    <ProductInventoryTableData>
-                        { inventory.available ? 'Available' : 'Unavailable' }
                     </ProductInventoryTableData>
                     <ProductInventoryTableData>
                         { formattedDate }

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import AddSeedProduct from './add-seed-product/add-seed-product.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 
+import { productTypes } from '../../../config';
+
 import Client from '../../../tools/client';
 
 import {
@@ -20,24 +22,14 @@ const client = new Client();
 
 const AddProduct = () => {
     const [ loading, setLoading ] = useState(true);
-    const [ productTypes, setProductTypes ] = useState('');
     const [ productType, setProductType ] = useState('');
     const [ categories, setCategories ] = useState('');
     const [ categoryOptions, setCategoryOptions ] = useState([]);
     const [ category, setCategory ] = useState('');
-    const [ products, setProducts ] = useState('');
     
 
     useEffect(() => {
-        const getProductTypes = async () => {
-            const res = await client.getProductTypes();
-
-            setProductTypes(res.rows);
-
-            getCategories();
-        }
-
-        getProductTypes();
+        getCategories();
     }, []);
 
     const selectProductType = (productType) => {

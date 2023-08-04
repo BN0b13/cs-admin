@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 
-import AddCategory from '../../components/add/add-category/add-category.component';
+import AddCategory from '../../components/category/add-category/add-category.component';
 import CategoriesTable from '../../components/reusable/tables/categories-table/categories-table.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 

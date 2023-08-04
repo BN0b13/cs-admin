@@ -10,7 +10,7 @@ const InvoiceItem = ({ product }) => {
         <InvoiceItemRow>
             <InvoiceItemData>{ product.product.name }</InvoiceItemData>
             <InvoiceItemData>{ product.quantity }</InvoiceItemData>
-            <InvoiceItemData>{ convertProductPrice(product.quantity * product.product.price) }</InvoiceItemData>
+            <InvoiceItemData>{ convertProductPrice(product.quantity * product.product.Inventories[0].price) }</InvoiceItemData>
         </InvoiceItemRow>
     )
 }

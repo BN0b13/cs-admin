@@ -5,7 +5,7 @@ import Spinner from '../../reusable/spinner/spinner.component';
 
 import Client from '../../../tools/client';
 
-import { url } from '../../../config';
+import { productTypes, url } from '../../../config';
 
 import {
     AddCategoryButton,
@@ -23,7 +23,7 @@ import {
 const client = new Client();
 
 const AddCategory = () => {
-    const [ loading, setLoading ] = useState(true);
+    const [ loading, setLoading ] = useState(false);
     const [ thumbnail, setThumbnail ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
     const [ name, setName ] = useState('');
@@ -32,17 +32,6 @@ const AddCategory = () => {
     const [ showMsg, setShowMsg ] = useState(false);
     const [ msgContent, setMsgContent ] = useState('');
     const [ msgType, setMsgType ] = useState('error');
-    const [ productTypes, setProductTypes ] = useState('');
-
-    useEffect(() => {
-        const getProductTypes = async () => {
-            const res = await client.getProductTypes();
-
-            setProductTypes(res.rows);
-            setLoading(false);
-        }
-        getProductTypes();
-    }, []);
 
     const handleFileChange = (e) => {
         setThumbnail(e.target.files[0]);
