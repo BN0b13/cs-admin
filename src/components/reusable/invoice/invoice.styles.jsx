@@ -18,6 +18,14 @@ export const InvoiceContainer = styled.div`
     width: 800px;
 `;
 
+export const AccountDetailsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+`;
+
 export const PrintContainer = styled.div`
     display: flex;
     flex-direction: colum;
