@@ -31,7 +31,7 @@ const OrderTable = ({ orders }) => {
                     <OrderTableBody>
                     {orders.map((order, index) => (
                             <OrderTableRow key={index}>
-                                <OrderTableData><a href={`${url}/orders/${order.id}`}>{order.status}</a></OrderTableData>
+                                <OrderTableData><a href={`${url}/orders/${order.refId}`}>{order.status}</a></OrderTableData>
                                 <OrderTableData>{order.creationDate}</OrderTableData>
                             </OrderTableRow>
                     ))}

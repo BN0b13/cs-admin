@@ -15,6 +15,7 @@ import { convertProductPrice } from '../../../tools/tools';
 import Client from '../../../tools/client';
 
 import {
+    AccountDetailsContainer,
     ButtonContainer,
     InvoiceContainer,
     InvoiceAddressesContainer,
@@ -173,6 +174,11 @@ const Invoice = ({ order, products, getOrder }) => {
                     content={() => componentRef.current}
                 />
             </PrintContainer>
+            <AccountDetailsContainer onClick={() => window.location.href = `/accounts/${user.id}`}>
+                <InvoiceSubtitle>{user.firstName} {user.lastName}</InvoiceSubtitle>
+                <InvoiceSubtitle>{user.email}</InvoiceSubtitle>
+                <InvoiceSubtitle>{user.phone}</InvoiceSubtitle>
+            </AccountDetailsContainer>
             <InvoiceContainer ref={componentRef}>
                 <InvoiceHeaderContainer>
                             
