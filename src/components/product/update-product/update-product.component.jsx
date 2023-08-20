@@ -40,9 +40,9 @@ const UpdateProduct = ({ product, getProduct }) => {
     const [ type, setType ] = useState(product.type);
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
-    const [ time, setTime ] = useState(product.time);
-    const [ mother, setMother ] = useState(product.mother);
-    const [ father, setFather ] = useState(product.father);
+    const [ time, setTime ] = useState(product.details.time);
+    const [ mother, setMother ] = useState(product.details.mother);
+    const [ father, setFather ] = useState(product.details.father);
     
     const [ productInventoryId, setProductInventoryId ] = useState(product.Inventories[0].id);
     const [ inventoryType, setInventoryType ] = useState(product.Inventories[0].type);

@@ -60,6 +60,8 @@ const AddCategory = () => {
         formData.append('description', description);
         formData.append('type', type);
         formData.append('files', thumbnail);
+        formData.append('motherProductId', null);
+        formData.append('fatherProductId', null);
 
         const res = await client.createCategory(formData);
 

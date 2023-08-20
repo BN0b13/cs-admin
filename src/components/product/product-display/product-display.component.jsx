@@ -58,13 +58,11 @@ const ProductDisplay = ({ product, getProduct }) => {
         return (
             
                 <ProductInformation>
-                    <ProductText>{product.name}</ProductText>
-                    <ProductText>{product.type}</ProductText>
-                    <ProductDescriptionText>{product.description}</ProductDescriptionText>
-                    <ProductSubtext>Lineage: {product.mother} x {product.father}</ProductSubtext>
-                    <ProductSubtext>Time: {product.time}</ProductSubtext>
-                    <ProductSubtext>Sex: {product.sex}</ProductSubtext>
-                    <ProductSubtext>Price: {product.price}</ProductSubtext>
+                    <ProductText>Name: {product.name}</ProductText>
+                    <ProductText>Type: {product.type}</ProductText>
+                    <ProductDescriptionText>Description: {product.description}</ProductDescriptionText>
+                    <ProductSubtext>Lineage: {product.details.mother} x {product.details.father}</ProductSubtext>
+                    <ProductSubtext>Time: {product.details.time}</ProductSubtext>
                     <ProductButtonContainer>
                         {showMessage && 
                             <Snackbar type={messageType} msg={messageContents} show={() => setShowMessage(false)} />

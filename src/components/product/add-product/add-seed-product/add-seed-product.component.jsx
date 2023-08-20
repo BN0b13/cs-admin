@@ -164,6 +164,7 @@ const AddSeedProduct = ({category, productType}) => {
 
         formData.append('files', image);
         formData.append('categoryId', category);
+        formData.append('type', productType);
         formData.append('name', name);
         formData.append('description', description);
         formData.append('time', time);
