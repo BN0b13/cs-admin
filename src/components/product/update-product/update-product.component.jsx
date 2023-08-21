@@ -32,6 +32,7 @@ import {
 const client = new Client();
 
 const UpdateProduct = ({ product, getProduct }) => {
+    console.log('Product: ', product);
     const [ productDefaultImage, setProductDefaultImage ] = useState('');
     const [ productProfiles, setProductProfiles ] = useState([]);
     const [ profileArr, setProfileArr ] = useState([]);
@@ -49,7 +50,7 @@ const UpdateProduct = ({ product, getProduct }) => {
     const [ price, setPrice ] = useState(product.Inventories[0].price);
     const [ quantity, setQuantity ] = useState(product.Inventories[0].quantity);
     const [ size, setSize ] = useState(product.Inventories[0].size);
-    const [ sizeDescription, setSizeDescription ] = useState(product.Inventories[0].size);
+    const [ sizeDescription, setSizeDescription ] = useState(product.Inventories[0].sizeDescription);
     const [ sku, setSku ] = useState(product.Inventories[0].sku);
     const [ address, setAddress ] = useState(product.Inventories[0].address);
     const [ bay, setBay ] = useState(product.Inventories[0].bay);
@@ -137,9 +138,16 @@ const UpdateProduct = ({ product, getProduct }) => {
 
         const updateProductRes = await client.updateProduct(params);
 
-        console.log('Update Product res: ', updateProductRes);
-
-        getProduct();
+        if(updateProductRes.status === 200) {
+            setMsgContent('Product Updated');
+            setMsgType('success');
+            setShowMsg(true);
+            getProduct();
+        } else {
+            setMsgContent('There was an error. Please try again later.');
+            setMsgType('error');
+            setShowMsg(true);
+        }
     }
 
     const confirmDelete = () => {
@@ -235,8 +243,8 @@ const UpdateProduct = ({ product, getProduct }) => {
                     <InputContainer>
                     <UpdateLabel>Size:</UpdateLabel>
                     <UpdateSelect value={product.Inventories[0].size} onChange={(e) => setSize(e.target.value)}>
-                        <UpdateOption value={'6 seeds'}>Half Pack</UpdateOption>
-                        <UpdateOption value={'12 seeds'}>Full Pack</UpdateOption>
+                        <UpdateOption value={'Half Pack'}>Half Pack</UpdateOption>
+                        <UpdateOption value={'Full Pack'}>Full Pack</UpdateOption>
                     </UpdateSelect>
                     </InputContainer>
                     <InputContainer>
@@ -249,7 +257,7 @@ const UpdateProduct = ({ product, getProduct }) => {
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Address:</UpdateLabel>
-                        <UpdateInput value={address} onChange={(e) => setAddress(e.target.value)} />
+                        {/* <UpdateInput value={address} onChange={(e) => setAddress(e.target.value)} /> */}
                     </InputContainer>
                     <InputContainer>
                         <UpdateLabel>Bay:</UpdateLabel>

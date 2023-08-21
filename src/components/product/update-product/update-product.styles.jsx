@@ -34,9 +34,10 @@ export const InputContainer = styled.div`
 export const ButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     margin: 40px;
     height: 150px;
+    width: 310px;
 `;
 
 export const MainTitle = styled.h2`
