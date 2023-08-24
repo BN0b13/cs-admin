@@ -310,6 +310,13 @@ export default class Client {
         return res;
     }
 
+    async deleteProductImage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const deleteProductImage = await fetch(`${api}/admin/products/product-image`, requestOptions);
+        const res = await deleteProductImage.json();
+        return res;
+    }
+
     // Views
 
     async getViews() {

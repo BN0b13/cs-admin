@@ -98,18 +98,7 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
                 <Spinner />
             :
                 <>
-                    <h6 onClick={() => window.location.href = `${url}/categories`}>Back to Categories</h6>
                     <h2>{ category.name }</h2>
-                    {category.backSplashPath ?
-                        <img src={api + category.backSplashPath} alt='back-splash' width='800' height='300' />
-                    :
-                        <h4>No Category Back Splash Image</h4>
-                    }
-                    {category.thumbnailPath ?
-                        <img src={api + category.thumbnailPath} alt='thumbnail' width='200' height='200' />
-                    :
-                        <h4>No Category Thumbnail Image</h4>
-                    }
                     <UpdateCategoryInput value={name} onChange={(e) => setName(e.target.value)} />
                     <UpdateCategoryTextarea value={description} onChange={(e) => setDescription(e.target.value)} />
                     <UpdateCategorySelect value={type} onChange={(e) => setType(e.target.value)}>

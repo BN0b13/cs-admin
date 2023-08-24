@@ -1,7 +1,6 @@
 import { useEffect, useParams, useState } from 'react';
 
 import AddProductInventory from '../add-product-inventory/add-product-inventory.component';
-import ImportImage from './import-image/import-image.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 import Snackbar from '../../reusable/snackbar/snackbar.component';
 
@@ -84,14 +83,9 @@ const ProductDisplay = ({ product, getProduct }) => {
                     <ProductContainer>
                         <ProductImage>
                             {images.length === 0 ?
-                                <ImportImage id={product.id} name={product.name} getProduct={getProduct} />
-                                :
-                                images.length === 1 ?
+                                null
+                            :
                                 <img src={`${api}${images[0].path}`} alt={images[0].name} height='300' width='300' />
-                                :
-                                images.map((image, index) => (
-                                    <img key={index} src={`${api}${image.path}`} alt={`${image.name}`} height='100' width='100' />
-                                    ))
                                 }
                         </ProductImage>
 
