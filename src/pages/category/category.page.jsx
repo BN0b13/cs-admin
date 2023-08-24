@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import CategoryDisplay from '../../components/category/category-display/category-display.component';
+import CategoryImages from '../../components/category/category-images/category-images.component';
 import ProductsTable from '../../components/reusable/tables/products-table/products-table.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import UpdateCategory from '../../components/category/update-category/update-category.component';
@@ -44,6 +45,7 @@ const CategoryPage = () => {
 
     return (
         <div>
+            <h6 onClick={() => window.location.href = `${url}/categories`}>Back to Categories</h6>
             {loading ?
                 <Spinner />
             :
@@ -51,6 +53,7 @@ const CategoryPage = () => {
                     <h2>No Category to Display</h2>
                 :
                     <>
+                        <CategoryImages category={category} />
                         { categoryContent() }
                         <ProductsTable products={products} />
                     </>

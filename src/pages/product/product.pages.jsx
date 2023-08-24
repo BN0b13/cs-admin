@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ProductDisplay from '../../components/product/product-display/product-display.component';
+import ProductImages from '../../components/product/product-images/product-images.component';
 import ProductInventory from '../../components/product/product-inventory/product-inventory.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import UpdateProduct from '../../components/product/update-product/update-product.component';
@@ -38,8 +39,9 @@ const ProductPage = () => {
         if(res.count !== 0) {
             setProduct(res.rows[0]);
         }
-
+        
         setLoading(false);
+        return res.rows[0];
     }
 
     const activateTabOne = () => {
@@ -67,9 +69,7 @@ const ProductPage = () => {
 
         if(currentTab === 2) {
             return (
-                <MainContainer>
-                    <MainTitle>Images</MainTitle>
-                </MainContainer>
+                <ProductImages product={product} getProduct={getProduct} />
             )
         }
 

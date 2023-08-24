@@ -17,7 +17,11 @@ const AddProductInventory = () => {
     const [ sku, setSku ] = useState('');
     const [ size, setSize ] = useState('');
     const [ quantity, setQuantity ] = useState('');
-    const [ address, setAddress ] = useState('');
+    const [ addressOne, setAddressOne ] = useState('');
+    const [ addressTwo, setAddressTwo ] = useState('');
+    const [ city, setCity ] = useState('');
+    const [ state, setState ] = useState('');
+    const [ zipCode, setZipCode ] = useState('');
     const [ bay, setBay ] = useState('');
     const [ available, setAvailable ] = useState('');
 
@@ -43,7 +47,11 @@ const AddProductInventory = () => {
                     </InputContainer>
                     <InputContainer>
                         <ProductInventoryLabel>Address: </ProductInventoryLabel>
-                        <ProductInventoryInput type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
+                        <ProductInventoryInput type='text' value={addressOne} onChange={(e) => setAddressOne(e.target.value)} />
+                        <ProductInventoryInput type='text' value={addressTwo} onChange={(e) => setAddressTwo(e.target.value)} />
+                        <ProductInventoryInput type='text' value={city} onChange={(e) => setCity(e.target.value)} />
+                        <ProductInventoryInput type='text' value={state} onChange={(e) => setState(e.target.value)} />
+                        <ProductInventoryInput type='text' value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
                     </InputContainer>
                     <InputContainer>
                         <ProductInventoryLabel>Bay: </ProductInventoryLabel>
@@ -57,7 +65,7 @@ const AddProductInventory = () => {
             )
         }
 
-        return(<Button onClick={() => setShowAdd(true)}>Add Product</Button>)
+        return(<Button onClick={() => setShowAdd(true)}>New Inventory</Button>)
     }
 
     return (
