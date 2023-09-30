@@ -11,6 +11,8 @@ import {
     AddProductButton,
     AddProductInput,
     AddProductLabel,
+    AddProductOption,
+    AddProductSelect,
     AddProductTextarea,
     AddProductText,
     AddProductContainer,
@@ -132,8 +134,7 @@ const AddSeedProduct = ({category, productType}) => {
     }
 
     const addProduct = async () => {
-        if(image === '' ||
-            name === '' || 
+        if(name === '' || 
             description === '' ||
             time === '' ||
             mother === '' ||
@@ -213,10 +214,20 @@ const AddSeedProduct = ({category, productType}) => {
                         ))}
                     </ProductProfileContainer>
 
-                    <AddProductInput type='text' name='inventoryType' value={inventoryType} onChange={(e) => setInventoryType(e.target.value)} placeholder='Inventory Type' />
-                    <AddProductInput type='text' name='size' value={size} onChange={(e) => setSize(e.target.value)} placeholder='Size' />
-                    <AddProductInput type='text' name='sizeDescription' value={sizeDescription} onChange={(e) => setSizeDescription(e.target.value)} placeholder='Size Description' />
+                    <AddProductSelect name='inventoryType' onChange={(e) => setInventoryType(e.target.value)} defaultValue={0}>
+                        <AddProductOption value={0} disabled> -- Seed Type -- </AddProductOption>
+                        <AddProductOption value={'regular'}>Regular</AddProductOption>
+                        <AddProductOption value={'feminized'}>Feminized</AddProductOption>
+                    </AddProductSelect>
 
+                    <AddProductSelect name='size' onChange={(e) => setSize(e.target.value)} defaultValue={0}>
+                        <AddProductOption value={0} disabled> -- Pack Size -- </AddProductOption>
+                        <AddProductOption value={'Full Pack'}>Full Pack</AddProductOption>
+                        <AddProductOption value={'Half Pack'}>Half Pack</AddProductOption>
+                    </AddProductSelect>
+                    <AddProductLabel>Pack Quantity:
+                        <AddProductInput type='number' name='sizeDescription' onChange={(e) => setSizeDescription(`${e.target.value} seeds`)} />
+                    </AddProductLabel>
                     <AddProductText>${dollars}.{cents}</AddProductText>
                     <AddProductInput type='text' name='price' value={priceDisplay} onChange={(e) => handleMoneyInput(e.target.value)} placeholder='Price' />
 

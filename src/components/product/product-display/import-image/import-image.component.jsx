@@ -33,7 +33,7 @@ const ImportImage = ({ id, name, getProduct }) => {
         }
 
         setImagePreview(URL.createObjectURL(e.target.files[0]));
-      }
+    }
 
     const addProductImage = async () => {
         if(image === '') {
