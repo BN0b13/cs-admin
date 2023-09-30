@@ -88,6 +88,13 @@ export default class Client {
         return res;
     }
 
+    async addCategoryImage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true, true);
+        const categories = await fetch(`${api}/admin/categories/images/thumbnail`, requestOptions);
+        const res = await categories.json();
+        return res;
+    }
+
     async updateCategory(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
         const categories = await fetch(`${api}/admin/categories`, requestOptions);

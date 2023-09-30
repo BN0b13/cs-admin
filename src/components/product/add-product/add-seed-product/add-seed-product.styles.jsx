@@ -61,3 +61,15 @@ export const AddProductButton = styled.button`
         border: #000 solid 1px;
     }
 `;
+
+export const AddProductSelect = styled.select`
+    margin: 8px;
+    padding: 2px;
+`;
+
+export const AddProductOption = styled.option`
+    margin: 8px;
+    padding: 2px;    
+    width: 300px;
+    height: 100px;
+`;
