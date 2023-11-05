@@ -42,3 +42,15 @@ export const passwordValidation = (password) => {
     }
     return true;
 }
+
+export const sortByDateDescending = (data) => {
+    return data.sort(function(a,b){
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+}
+
+export const sortByDateAscending = (data) => {
+    return data.sort(function(a,b){
+        return new Date(a.createdAt) - new Date(b.createdAt);
+    });
+}
