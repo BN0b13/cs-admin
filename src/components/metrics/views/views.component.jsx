@@ -4,6 +4,7 @@ import LineChart from '../../reusable/chart/chart.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 
 import Client from '../../../tools/client';
+import { sortByDateAscending } from '../../../tools/tools';
 
 import {
   ChartContainer,
@@ -27,7 +28,8 @@ const Views = () => {
   useEffect(() => {
     const fetchViews = async () => {
       const res = await client.getViews();
-      setViews(res.rows);
+      const sortedViews = sortByDateAscending(res.rows);
+      setViews(sortedViews);
       let totalCount = 0;
       res.rows.map(row => {
         return totalCount = totalCount + row.count;
