@@ -9,6 +9,8 @@ import CategoriesPage from './pages/categories/categories.pages';
 import ConfigurationPage from './pages/configuration/configuration.pages';
 import InventoryPage from './pages/inventory/inventory.pages';
 import LoginPage from './pages/login/login.pages';
+import MessagePage from './pages/message/message.pages';
+import MessagesPage from './pages/messages/messages.pages';
 import MetricsPage from './pages/metrics/metrics.pages';
 import Order from './pages/order/order.pages';
 import Orders from './pages/orders/orders.pages';
@@ -44,14 +46,16 @@ function App() {
               <Route index element={<MetricsPage />} />
               <Route path="/accounts" element={<AccountsPage />} />
               <Route path="/accounts/:id" element={<AccountPage />} />
-              <Route path="/configuration" element={<ConfigurationPage />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/orders/:refId" element={<Order />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:id" element={<CategoryPage />} />
+              <Route path="/configuration" element={<ConfigurationPage />} />
+              <Route path="/inventory" element={<InventoryPage />} />
+              <Route path='/messages' element={<MessagesPage />} />
+              <Route path='/messages/:id' element={<MessagePage />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:refId" element={<Order />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:id" element={<ProductPage />} />
-              <Route path="/inventory" element={<InventoryPage />} />
           </Routes>
           <Footer />
         </div>

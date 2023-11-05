@@ -85,7 +85,7 @@ const AddProduct = () => {
                                             <AddProductSubtitle>Select Product's Category</AddProductSubtitle>
                                             <AddProductCategoryLabel htmlFor='categories'>Category: </AddProductCategoryLabel>
                                             <AddProductCategorySelector name='categories' onChange={(e) => setCategory(e.target.value)} defaultValue={0}>
-                                                <AddProductCategoryOption key={0}  disabled value={0}> -- select an option -- </AddProductCategoryOption>
+                                                <AddProductCategoryOption key={0} disabled value={0}> -- select an option -- </AddProductCategoryOption>
                                                 {categories.map((item, index) => (
                                                         <AddProductCategoryOption key={index + 1} value={item.id}>{item.name}</AddProductCategoryOption>
                                                 ))}

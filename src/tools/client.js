@@ -88,6 +88,13 @@ export default class Client {
         return res;
     }
 
+    async addCategoryImage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true, true);
+        const categories = await fetch(`${api}/admin/categories/images/thumbnail`, requestOptions);
+        const res = await categories.json();
+        return res;
+    }
+
     async updateCategory(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
         const categories = await fetch(`${api}/admin/categories`, requestOptions);
@@ -184,6 +191,29 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
         const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
         const res = await inventory.json();
+        return res;
+    }
+
+    // Messages
+
+    async getMessages() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/messages`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async getMessageById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/messages/${id}`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async updateMessage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const patchWelcomeImage = await fetch(`${api}/admin/messages`, requestOptions);
+        const res = await patchWelcomeImage.json();
         return res;
     }
 

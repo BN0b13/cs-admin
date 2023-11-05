@@ -1,26 +1,55 @@
+import { useState } from 'react';
 
+import Button from '../../reusable/button/button.component';
 
 import { api } from "../../../config";
 
 import Client from "../../../tools/client";
 
 import {
-    MainContainer,
+    CategoryImage,
     ImagesContainer,
-    CategoryImage
+    ImageFileInput,
+    ImagePlaceholder,
+    MainContainer,
+    MainTitle
 } from './category-images.styles';
 
 const client = new Client();
 
 const CategoryImages = ({ category }) => {
+    console.log('Category: ', category);
+    const [ image, setImage ] = useState('');
+    const [ imagePreview, setImagePreview ] = useState('');
+    const [ fileInput, setFileInput ] = useState('');
 
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
 
-    const addCategoryThumbnail = async () => {
-        console.log('Add Category Thumbnail hit');
+        if(e.target.files[0] === undefined) {
+            return setImagePreview('');
+        }
+
+        setImagePreview(URL.createObjectURL(e.target.files[0]));
     }
 
-    const addCategoryBackSplash = async () => {
-        console.log('Add Category Back Splash hit');
+    const addCategoryImage = async () => {
+        if(image === '') {
+            return
+        }
+
+        let formData = new FormData();
+
+        formData.append('files', image);
+        formData.append('id', category.id);
+
+        const res = await client.addCategoryImage(formData);
+
+        console.log('Add Category image res: ', res);
+
+        setImage('');
+        setImagePreview('');
+        setFileInput('');
     }
 
     return (
@@ -38,6 +67,16 @@ const CategoryImages = ({ category }) => {
                     <h4>No Category Thumbnail Image</h4>
                 }
             </ImagesContainer>
+            {imagePreview ? 
+                    <img src={imagePreview} width='200px' height='200px' />    
+                :
+                <>
+                    <ImagePlaceholder />
+                    <MainTitle>Add Product Image</MainTitle>
+                </>
+                }
+                <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
+            <Button onClick={() => addCategoryImage()}>Add Thumbnail</Button>
         </MainContainer>
     )
 }

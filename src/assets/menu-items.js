@@ -23,6 +23,11 @@ export const menuItemsLoggedIn = [
     icon: (<VscAccount />)
   },
   {
+    title: 'Messages',
+    path: '/messages',
+    icon: (<VscAccount />)
+  },
+  {
     title: 'Orders',
     path: '/orders',
     icon: (<FaStoreAlt />)
