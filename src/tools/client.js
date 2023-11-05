@@ -194,6 +194,29 @@ export default class Client {
         return res;
     }
 
+    // Messages
+
+    async getMessages() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/messages`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async getMessageById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/messages/${id}`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async updateMessage(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const patchWelcomeImage = await fetch(`${api}/admin/messages`, requestOptions);
+        const res = await patchWelcomeImage.json();
+        return res;
+    }
+
     // Orders
 
     async getOrders() {
