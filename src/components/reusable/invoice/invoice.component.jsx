@@ -128,7 +128,7 @@ const Invoice = ({ order, products, getOrder }) => {
             paymentLink
         }
 
-        await client.sendPaymentLink(data);
+        await client.updateOrder(data);
         setShowOrderModal(false);
         getOrder();
     }
