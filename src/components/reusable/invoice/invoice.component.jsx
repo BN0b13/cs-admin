@@ -119,6 +119,20 @@ const Invoice = ({ order, products, getOrder }) => {
         getOrder();
     }
 
+    const invoicePaid = async () => {
+        const data = {
+            email: user.email,
+            refId: order.refId,
+            orderId: order.id,
+            status: 'PAID',
+            paymentLink
+        }
+
+        await client.sendPaymentLink(data);
+        setShowOrderModal(false);
+        getOrder();
+    }
+
     const markBillPaid = async () => {
         const data = {
             email: user.email,
@@ -256,11 +270,14 @@ const Invoice = ({ order, products, getOrder }) => {
                 </InvoiceTotalContainer>
             </InvoiceContainer>
             {order.status.toLowerCase() === 'new' &&
+            <>
                 <ButtonContainer>
                     <label>Payment Link: </label>
                     <input value={paymentLink} onChange={(e) => setPaymentLink(e.target.value)} placeholder='Payment Link' />
                     <Button onClick={() => confirmSendPaymentLink()} >Send Payment</Button>
                 </ButtonContainer>
+                <Button onClick={() => invoicePaid()} >Invoice Paid</Button>
+            </>
             }
             {order.status.toLowerCase() === 'billed' &&
                 <ButtonContainer>
