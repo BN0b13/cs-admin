@@ -1,106 +1,68 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import ProductDisplay from '../../components/product/product-display/product-display.component';
+import ProductData from '../../components/product/product-data/product-data.component';
 import ProductImages from '../../components/product/product-images/product-images.component';
 import ProductInventory from '../../components/product/product-inventory/product-inventory.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
-import UpdateProduct from '../../components/product/update-product/update-product.component';
 
-import Client from '../../tools/client';
+import ClientHelper from '../../tools/client-helper';
 import { url } from '../../config';
 
 import {
     MainContainer,
     MainTitle,
-    TabContainer,
-    TabSelector
+    ProductsLink
 } from './product.styles';
 
-const client = new Client();
+const clientHelper = new ClientHelper();
 
 const ProductPage = () => {
     const [ loading, setLoading ] = useState(true);
     const { id } = useParams();
     const [ product, setProduct ] = useState('');
 
-    const [ currentTab, setCurrentTab ] = useState(1);
-    const [ tabOneActive, setTabOneActive ] = useState(true);
-    const [ tabTwoActive, setTabTwoActive ] = useState(false);
-    const [ tabThreeActive, setTabThreeActive ] = useState(false);
-
     useEffect(() => {
         getProduct();
     }, []);
 
     const getProduct = async () => {
-        const res = await client.getProductById(id);
+        setLoading(true);
+        const res = await clientHelper.getProductById(id);
 
-        if(res.count !== 0) {
-            setProduct(res.rows[0]);
+        if(res.statusCode === 200) {
+            setProduct(res.data);
         }
-        
+
         setLoading(false);
-        return res.rows[0];
+
+        return res;
     }
 
-    const activateTabOne = () => {
-        setCurrentTab(1);
-        setTabOneActive(true);
-        setTabTwoActive(false);
-        setTabThreeActive(false);
-    }
+    // display
 
-    const activateTabTwo = () => {
-        setCurrentTab(2);
-        setTabOneActive(false);
-        setTabTwoActive(true);
-        setTabThreeActive(false);
-    }
+    // product images - main image, gallery and add/delete image
 
-    const activateTabThree = () => {
-        setCurrentTab(3);
-        setTabOneActive(false);
-        setTabTwoActive(false);
-        setTabThreeActive(true);
-    }
+    // product data - update and delete product
 
-    const showCurrentTab = () => {
-
-        if(currentTab === 2) {
-            return (
-                <ProductImages product={product} getProduct={getProduct} />
-            )
-        }
-
-        if(currentTab === 3) {
-            return (
-                <UpdateProduct product={product} getProduct={getProduct} />
-            )
-        }
-
-        return (
-            <>
-                <ProductDisplay product={product} getProduct={getProduct} />
-                <ProductInventory inventories={product.Inventories} />
-            </>
-        );
-    }
+    // product inventory - current inventory, add, update and delete inventory.
 
     return (
         <MainContainer>
-            <TabContainer>
-                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Product</TabSelector>
-                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Images</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Update Product</TabSelector>
-            </TabContainer>
+            <ProductsLink onClick={() => window.location.href = `${url}/Products`}>
+                Back To Products
+            </ProductsLink>
             {loading ?
                 <Spinner />
             :
                 product.length === 0 ?
                     <MainTitle>No Product to Display</MainTitle>
                 :
-                    showCurrentTab() 
+                    <>
+                        <ProductImages product={product} getProduct={getProduct} />
+                        <ProductData product={product} getProduct={getProduct} />
+                        <ProductInventory inventories={product.Inventories} />
+                    </>
             }
         </MainContainer>
     )

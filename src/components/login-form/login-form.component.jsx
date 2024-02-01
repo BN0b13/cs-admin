@@ -57,7 +57,7 @@ class LoginForm extends React.Component{
     this.setState({ loading: true });
 
     try {
-      const login = await fetch(`${api}/login-admin`, {
+      const login = await fetch(`${api}/admin/login`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, cors, same-origin
         headers: {

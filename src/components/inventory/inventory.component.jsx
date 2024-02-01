@@ -30,10 +30,10 @@ const Inventory = ({ inventory }) => {
           <InventoryTableHead>
               <InventoryTableRow>
                 <InventoryTableHeadData>
-                  Category
+                  Size
                 </InventoryTableHeadData>
                 <InventoryTableHeadData>
-                  Name
+                  Size Description
                 </InventoryTableHeadData>
                 <InventoryTableHeadData>
                   Quantity
@@ -42,22 +42,7 @@ const Inventory = ({ inventory }) => {
                   Price
                 </InventoryTableHeadData>
                 <InventoryTableHeadData>
-                  Time
-                </InventoryTableHeadData>
-                <InventoryTableHeadData>
-                  Parents
-                </InventoryTableHeadData>
-                <InventoryTableHeadData>
-                  Profile
-                </InventoryTableHeadData>
-                <InventoryTableHeadData>
-                  Sex
-                </InventoryTableHeadData>
-                <InventoryTableHeadData>
-                  Image
-                </InventoryTableHeadData>
-                <InventoryTableHeadData>
-                  Date Added
+                  Created At
                 </InventoryTableHeadData>
               </InventoryTableRow>
             </InventoryTableHead>
@@ -68,31 +53,16 @@ const Inventory = ({ inventory }) => {
                 return (
                   <InventoryTableRow key={index}>
                     <InventoryTableData>
-                    { inventory.categoryId }
+                    { inventory.size }
                     </InventoryTableData>
                     <InventoryTableData>
-                    { inventory.name }
+                    { inventory.sizeDescription }
                     </InventoryTableData>
                     <InventoryTableData>
                     { inventory.quantity }
                     </InventoryTableData>
                     <InventoryTableData>
                     { inventory.price }
-                    </InventoryTableData>
-                    <InventoryTableData>
-                    { inventory.time }
-                    </InventoryTableData>
-                    <InventoryTableData>
-                    { inventory.mother } x { inventory.father }
-                    </InventoryTableData>
-                    <InventoryTableData>
-                    { inventory.profile }
-                    </InventoryTableData>
-                    <InventoryTableData>
-                    { inventory.sex }
-                    </InventoryTableData>
-                    <InventoryTableData>
-                    { inventory.image ? inventory.image : 'N/A' }
                     </InventoryTableData>
                     <InventoryTableData>
                     { formattedDate }

@@ -5,12 +5,7 @@ export const MainContainer = styled.div`
     flex-direction: column;
 `;
 
-export const ImagePlaceholder = styled.div`
-    height: 270px;
-    width: 270px;
-`;
-
-export const MainForm = styled.form`
+export const MainForm = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
