@@ -41,7 +41,7 @@ const ProductImages = ({ product, getProduct }) => {
                         <AddImage id={product.id} name={product.name} getProduct={getProduct} />
                     </AddImageContainer>
                     <ImagesGrid>
-                        {images.map((image, index) => <ProductImage key={index} image={image} deleteImage={deleteImage} />)}
+                        {images.length > 0 && images.map((image, index) => <ProductImage key={index} image={image} deleteImage={deleteImage} />)}
                     </ImagesGrid>
                 </>
             }
