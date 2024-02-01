@@ -36,7 +36,9 @@ const ProductPage = () => {
 
         setLoading(false);
 
-        return res;
+        console.log('Product Page - GET product by id res: ', res);
+
+        return res.data;
     }
 
     // display
