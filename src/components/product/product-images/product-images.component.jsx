@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ImportImage from '../product-display/import-image/import-image.component';
+import AddImage from './add-image/add-image.component';
 import ProductImage from './product-image/product-image.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 
@@ -21,9 +21,10 @@ const ProductImages = ({ product, getProduct }) => {
         setLoading(true);
         const data = { id };
         const res = await client.deleteProductImage(data);
+
         if(res.status === 200) {
             const newGetProduct = await getProduct();
-            setImages(newGetProduct.ProductImages);
+            setImages(newGetProduct.data.ProductImages);
         } else {
             console.log('DELETE product image failed');
         }
@@ -37,7 +38,7 @@ const ProductImages = ({ product, getProduct }) => {
             :
                 <>
                     <AddImageContainer>
-                        <ImportImage id={product.id} name={product.name} getProduct={getProduct} />
+                        <AddImage id={product.id} name={product.name} getProduct={getProduct} />
                     </AddImageContainer>
                     <ImagesGrid>
                         {images.map((image, index) => <ProductImage key={index} image={image} deleteImage={deleteImage} />)}

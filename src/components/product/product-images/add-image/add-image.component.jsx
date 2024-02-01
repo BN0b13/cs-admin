@@ -7,15 +7,14 @@ import Client from "../../../../tools/client";
 
 import {
     ImageFileInput,
-    ImagePlaceholder,
     MainContainer,
     MainForm,
     MainTitle
-} from './import-image.styles';
+} from './add-image.styles';
 
 const client = new Client();
 
-const ImportImage = ({ id, name, getProduct }) => {
+const AddImage = ({ id, name, getProduct }) => {
     const [ image, setImage ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
@@ -47,7 +46,7 @@ const ImportImage = ({ id, name, getProduct }) => {
 
         formData.append('files', image);
         formData.append('id', id);
-        if(caption === '') {
+        if(caption !== '') {
             formData.append('caption', name);
         }
 
@@ -64,24 +63,23 @@ const ImportImage = ({ id, name, getProduct }) => {
     return (
         <MainContainer>
             <MainForm>
-                {imagePreview ? 
-                    <img src={imagePreview} width='200px' height='200px' />    
+                {imagePreview ?
+                    <>
+                        <img src={imagePreview} width='200px' height='200px' />  
+                        <Button onClick={() => addProductImage()}>Add Image</Button>  
+                    </>
                 :
-                <>
-                    <ImagePlaceholder />
-                    <MainTitle>Add Product Image</MainTitle>
-                </>
+                    <>
+                        <MainTitle>Add Image</MainTitle>
+                        <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
+                    </>
                 }
-                <ImageFileInput type="text" name="caption" value={caption} onChange={e => setCaption(e.target.value)} placeholder={'Image Caption'} />
-                <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
             </MainForm>
             {showMsg &&
                 <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
             }
-
-            <Button onClick={() => addProductImage()}>Add Image</Button>
         </MainContainer>
     )
 }
 
-export default ImportImage;
+export default AddImage;
