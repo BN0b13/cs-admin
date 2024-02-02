@@ -25,8 +25,9 @@ const OrderPage = () => {
         
         for(let product in orderProducts) {
             const res = await client.getProductById(orderProducts[product].productId);
-            orderProducts[product].product = res.rows[0];
+            orderProducts[product].product = res.data;
         }
+
 
         setProducts(orderProducts);
         setOrder(res.rows[0]);

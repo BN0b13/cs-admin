@@ -347,6 +347,36 @@ export default class Client {
         return res;
     }
 
+    // Sales
+
+    async getSales() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const sales = await fetch(`${api}/admin/sales`, requestOptions);
+        const res = await sales.json();
+        return res;
+    }
+
+    async createSale(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const product = await fetch(`${api}/admin/sales`, requestOptions);
+        const res = await product.json();
+        return res;
+    }
+
+    async updateSale(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const updateSale = await fetch(`${api}/admin/sales`, requestOptions);
+        const res = await updateSale.json();
+        return res;
+    }
+
+    async changeSaleActivationStatus(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const updateSale = await fetch(`${api}/admin/sales/activation`, requestOptions);
+        const res = await updateSale.json();
+        return res;
+    }
+
     // Views
 
     async getViews() {
