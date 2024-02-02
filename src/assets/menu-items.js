@@ -1,4 +1,5 @@
 import {
+  FaMoneyBillAlt,
   FaStoreAlt
 } from 'react-icons/fa';
 
@@ -46,6 +47,11 @@ export const menuItemsLoggedIn = [
     title: 'Inventory',
     path: '/inventory',
     icon: (<VscChecklist />)
+  },
+  {
+    title: 'Sales',
+    path: '/sales',
+    icon: (<FaMoneyBillAlt />)
   },
   {
     title: 'Configuration',

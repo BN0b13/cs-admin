@@ -16,6 +16,7 @@ import Order from './pages/order/order.pages';
 import Orders from './pages/orders/orders.pages';
 import ProductPage from './pages/product/product.pages';
 import ProductsPage from './pages/products/products.pages';
+import SalesPage from './pages/sales/sales.pages';
 
 import HamburgerMenu from './components/app/hamburger-menu/hamburger-menu.component';
 import Header from './components/app/header/header.component';
@@ -56,6 +57,7 @@ function App() {
               <Route path="/orders/:refId" element={<Order />} />
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:id" element={<ProductPage />} />
+              <Route path="/sales" element={<SalesPage />} />
           </Routes>
           <Footer />
         </div>
