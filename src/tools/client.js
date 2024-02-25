@@ -164,6 +164,15 @@ export default class Client {
         return res;
     }
 
+    // Giveaway
+
+    async getGiveawaySignUp(amount = 1) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/giveaway/signup/today/${amount}`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
     // Inventory
 
     async getInventory() {
