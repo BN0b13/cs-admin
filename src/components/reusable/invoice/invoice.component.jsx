@@ -201,6 +201,7 @@ const Invoice = ({ order, products, getOrder }) => {
                             <InvoiceSubtitle>{ dayjs(order.createdAt).format('MM/DD/YY') }</InvoiceSubtitle>
                             <InvoiceSubtitle>Status: { order.status.toUpperCase()}</InvoiceSubtitle>
                             <InvoiceSubtitle>Reference ID: { order.refId }</InvoiceSubtitle>
+                            <InvoiceSubtitle>Payment Type: { order.paymentType ? order.paymentType : 'Card' }</InvoiceSubtitle>
                             <TrackingContainer>
                                 <TrackingSubtitle>Tracking: </TrackingSubtitle>
                                 { order.tracking ? 
