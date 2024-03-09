@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import Snackbar from '../../reusable/snackbar/snackbar.component';
 import Spinner from '../../reusable/spinner/spinner.component';
+import Toasted from '../../reusable/toasted/toasted.component';
 
 import Client from '../../../tools/client';
 
@@ -29,9 +29,17 @@ const AddCategory = () => {
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ type, setType ] = useState('');
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
+
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const handleFileChange = (e) => {
         setThumbnail(e.target.files[0]);
@@ -47,9 +55,7 @@ const AddCategory = () => {
         if(name === '' || 
         description === '' || 
         type === '') {
-            setMsgContent('Please fill out all fields.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields.');
             return;
         }
         setLoading(true);
@@ -69,9 +75,7 @@ const AddCategory = () => {
             return window.location.href = `${url}/categories/${res.id}`;
         }
 
-        setMsgContent('There was an error creating category. Please try again.');
-        setMsgType('error');
-        setShowMsg(true);
+        errorToast('There was an error creating category. Please try again.');
         setLoading(false);
     }
 
@@ -82,7 +86,7 @@ const AddCategory = () => {
                 <Spinner />
             :
                 <NewCategoryContainer>
-                    {imagePreview && <img src={imagePreview} width='300' height='300' />}
+                    {imagePreview && <img src={imagePreview} width='300' height='300' alt='Category Preview' />}
                     <AddCategoryLabel>Thumbnail:
                         <AddCategoryInput type='file' accept='image/*' name='thumbnail' onChange={e => handleFileChange(e)} />
                     </AddCategoryLabel>
@@ -95,12 +99,16 @@ const AddCategory = () => {
                                 <AddCategoryOption key={index + 1} value={item.type}>{item.type}</AddCategoryOption>
                         ))}
                     </AddCategorySelector>
-                    {showMsg &&
-                        <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-                    }
                     <AddCategoryButton onClick={() => addCategory()}>Add Category</AddCategoryButton>
                 </NewCategoryContainer>
             }
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </AddCategoryContainer>
     )
 }

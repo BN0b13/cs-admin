@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "../../../reusable/button/button.component";
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
+import Toasted from "../../../reusable/toasted/toasted.component";
 
 import Client from "../../../../tools/client";
 
@@ -19,10 +19,17 @@ const AddImage = ({ id, name, getProduct }) => {
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
     const [ caption, setCaption ] = useState('');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
 
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -36,9 +43,7 @@ const AddImage = ({ id, name, getProduct }) => {
 
     const addProductImage = async () => {
         if(image === '') {
-            setMsgContent('Please select an image.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please select an image.');
             return
         }
 
@@ -75,9 +80,13 @@ const AddImage = ({ id, name, getProduct }) => {
                     </>
                 }
             </MainForm>
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </MainContainer>
     )
 }

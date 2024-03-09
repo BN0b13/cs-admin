@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import AdminModal from '../../../reusable/admin-modal/admin-modal.component';
 import Button from '../../../reusable/button/button.component';
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
+import Toasted from '../../../reusable/toasted/toasted.component';
 
 import { api } from '../../../../config';
 
@@ -37,11 +37,10 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
     const [ time, setTime ] = useState(product.details.time);
     const [ mother, setMother ] = useState(product.details.mother);
     const [ father, setFather ] = useState(product.details.father);
-
-    const [ showMsg, setShowMsg] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
 
     useEffect(() => {
         if(product.ProductImages.length !== 0) {
@@ -74,6 +73,14 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
         getProductProfiles();
     }, []);
 
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
+
     const handleProductProfile = (e) => {
         const checkboxId = parseInt(e);
 
@@ -104,9 +111,7 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
             await getProduct();
             setShowUpdate(false);
         } else {
-            setMsgContent('There was an error. Please try again later.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('There was an error. Please try again later.');
         }
     }
 
@@ -118,9 +123,7 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
         const res = await client.deleteProduct({ id: product.id });
         if(res.status) {
             setShowDeleteModal(false);
-            setMsgContent(res.message);
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast(res.message);
             return
         }
         
@@ -182,10 +185,14 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
                     <Button onClick={() => setShowUpdate(false)}>Cancel</Button>
                     <Button onClick={() => updateProduct()}>Update</Button>
                 </ButtonRowContainer>
-                {showMsg &&
-                    <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-                }
             </ButtonContainer>
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </MainContainer>
     )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Snackbar from '../reusable/snackbar/snackbar.component';
+import Toasted from '../reusable/toasted/toasted.component';
 
 import Client from '../../tools/client';
 
@@ -30,14 +30,27 @@ const ProductProfile = () => {
     const [ description, setDescription ] = useState('');
     const [ icon, setIcon ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
-
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
 
     useEffect(() => {
         getProductProfiles();
     }, []);
+
+    const getToasted = (toast) => toast();
+
+    const successToast = (message) => {
+        setToastMessage(message);
+        setToastError(false);
+        setShowToast(true);
+    }
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const getProductProfiles = async () => {
         const res = await client.getProductProfiles();
@@ -47,9 +60,7 @@ const ProductProfile = () => {
 
     const addProductProfile = async () => {
         if(name === '' || description === '' || icon === '') {
-            setMsgContent('Please fill out all fields and select an icon.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields and select an icon.');
             return;
         }
 
@@ -61,9 +72,7 @@ const ProductProfile = () => {
 
         await client.createProductProfile(formData);
 
-        setMsgContent('Product Profile created successfully.');
-        setMsgType('success');
-        setShowMsg(true);
+        successToast('Product Profile created successfully.');
         setName('');
         setDescription('');
         setImagePreview('');
@@ -91,10 +100,6 @@ const ProductProfile = () => {
             </AddProductProfileLabel>
             <AddProductProfileInput type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
             <AddProductProfileTextarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
-
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
             <AddProductProfileButton onClick={() => addProductProfile()}>Add Product Profile</AddProductProfileButton>
             <MainTitle>Current Product Profiles</MainTitle>
             {productProfiles.length === 0 ? 
@@ -122,6 +127,13 @@ const ProductProfile = () => {
 
                 </AddProductProfileTable>
             }
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </MainContainer>
     )
 }

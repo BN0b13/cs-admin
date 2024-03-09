@@ -1,5 +1,7 @@
 import {
+  FaGift,
   FaMoneyBillAlt,
+  FaRegBuilding,
   FaStoreAlt
 } from 'react-icons/fa';
 
@@ -12,7 +14,7 @@ import {
   VscSettingsGear
 } from 'react-icons/vsc';
 
-export const menuItemsLoggedIn = [
+export const menuItemsAdmin = [
   {
     title: 'Metrics',
     path: '/',
@@ -22,6 +24,11 @@ export const menuItemsLoggedIn = [
     title: 'Accounts',
     path: '/accounts',
     icon: (<VscAccount />)
+  },
+  {
+    title: 'Companies',
+    path: '/companies',
+    icon: (<FaRegBuilding />)
   },
   {
     title: 'Messages',
@@ -54,8 +61,31 @@ export const menuItemsLoggedIn = [
     icon: (<FaMoneyBillAlt />)
   },
   {
+    title: 'Giveaways',
+    path: '/giveaways',
+    icon: (<FaGift />)
+  },
+  {
     title: 'Configuration',
     path: '/configuration',
     icon: (<VscSettingsGear />)
   },
+];
+
+export const menuItemsContributor = [
+  {
+    title: 'Home',
+    path: '/',
+    icon: (<VscAccount />)
+  },
+  {
+    title: 'Company',
+    path: '/company',
+    icon: (<FaRegBuilding />)
+  },
+  {
+    title: 'Giveaways',
+    path: '/giveaways',
+    icon: (<FaGift />)
+  }
 ];

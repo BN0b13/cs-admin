@@ -7,7 +7,7 @@ import {
 
 const Footer = () => (
   <FooterContainer>
-    <FooterText>Copyright ©2023</FooterText>
+    <FooterText>Copyright ©2024</FooterText>
   </FooterContainer>
 );
 

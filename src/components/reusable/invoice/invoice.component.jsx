@@ -42,8 +42,6 @@ import {
 const client = new Client();
 
 const Invoice = ({ order, products, getOrder }) => {
-    console.log('Order: ', order);
-    console.log('Products: ', products);
     const componentRef = useRef();
     const [ user, setUser ] = useState('');
     const [ subtotal, setSubtotal ] = useState('');

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "../../../reusable/button/button.component";
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
+import Toasted from "../../../reusable/toasted/toasted.component";
 
 import Client from "../../../../tools/client";
 
@@ -21,10 +21,17 @@ const ImportWelcomeImage = ({ refreshImages }) => {
     const [ caption, setCaption ] = useState('');
     const [ link, setLink ] = useState('');
     const [ position, setPosition ] = useState('');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
 
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -38,9 +45,7 @@ const ImportWelcomeImage = ({ refreshImages }) => {
 
     const createWelcomeImage = async () => {
         if(image === '') {
-            setMsgContent('Please select an image.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please select an image.');
             return
         }
 
@@ -80,11 +85,15 @@ const ImportWelcomeImage = ({ refreshImages }) => {
                 <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
                 <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
             </MainForm>
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
 
             <Button onClick={() => createWelcomeImage()}>Add</Button>
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </MainContainer>
     )
 }

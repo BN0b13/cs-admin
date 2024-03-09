@@ -3,12 +3,11 @@ import styled from 'styled-components';
 export const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
-export const MainTitle = styled.h2`
-    text-align: center;
-`;
-
-export const ProductsLink = styled.h4`
-  cursor: pointer;
+export const ProductImg = styled.img`
+    height: 200px;
+    width: 200px;
 `;

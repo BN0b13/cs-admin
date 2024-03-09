@@ -5,7 +5,7 @@ import {
 
 import Button from "../../../../reusable/button/button.component";
 import AdminModal from '../../../../reusable/admin-modal/admin-modal.component';
-import Snackbar from '../../../../reusable/snackbar/snackbar.component';
+import Toasted from "../../../../reusable/toasted/toasted.component";
 
 import { api } from '../../../../../config';
 import Client from "../../../../../tools/client";
@@ -33,9 +33,17 @@ const Image = ({ image, refreshImages }) => {
     const [ caption, setCaption ] = useState(image.caption);
     const [ link, setLink ] = useState(image.link);
     const [ position, setPosition ] = useState(image.position);
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgType, setMsgType ] = useState('error');
-    const [ msgContent, setMsgContent ] = useState('Please complete all fields to update password');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
+
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const handleEditDisplay = () => {
         setShowEdit(false);
@@ -54,9 +62,7 @@ const Image = ({ image, refreshImages }) => {
         if(position) {
             const positionAsInt = parseInt(position);
             if(positionAsInt < 1) {
-                setMsgContent('Position cannot be less than 1');
-                setMsgType('error');
-                setShowMsg(true);
+                errorToast('Position cannot be less than 1');
                 setPosition(1);
                 return
             }
@@ -144,10 +150,14 @@ const Image = ({ image, refreshImages }) => {
             :
                 textDetails()
             }
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
             </ImageDetailContainer>
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </MainContainer>
     )
 }

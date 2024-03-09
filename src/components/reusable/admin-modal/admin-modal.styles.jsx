@@ -76,3 +76,7 @@ export const Modal = styled.div`
     width: 100vw;
     background: rgba(0,0,0,0.5);
 `;
+
+export const ModalInput = styled.input`
+    margin: 20px 0;
+`;

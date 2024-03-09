@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
 import Spinner from '../../../reusable/spinner/spinner.component';
+import Toasted from '../../../reusable/toasted/toasted.component';
 
 import Client from '../../../../tools/client';
 
@@ -43,10 +43,9 @@ const AddSeedProduct = ({category, productType}) => {
     const [ cents, setCents ] = useState('00');
     const [ dollars, setDollars ] = useState('0');
     const [ quantity, setQuantity ] = useState('');
-
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    const [ toastMessage, setToastMessage ] = useState('');
+    const [ toastError, setToastError ] = useState(false);
+    const [ showToast, setShowToast ] = useState(false);
 
     useEffect(() => {
         const getProductProfiles = async () => {
@@ -67,6 +66,14 @@ const AddSeedProduct = ({category, productType}) => {
 
         getProductProfiles();
     }, []);
+
+    const getToasted = (toast) => toast();
+
+    const errorToast = (message) => {
+        setToastMessage(message);
+        setToastError(true);
+        setShowToast(true);
+    }
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -145,9 +152,7 @@ const AddSeedProduct = ({category, productType}) => {
             price === '' ||
             quantity === ''
         ) {
-            setMsgContent('Please fill out all fields.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields.');
             return;
         }
 
@@ -183,9 +188,7 @@ const AddSeedProduct = ({category, productType}) => {
             return window.location.href = `${url}/products/${res.result.id}`;
         }
 
-        setMsgContent('There was an error creating category. Please try again.');
-        setMsgType('error');
-        setShowMsg(true);
+        errorToast('There was an error creating category. Please try again.');
         setLoading(false);
     }
 
@@ -232,12 +235,16 @@ const AddSeedProduct = ({category, productType}) => {
                     <AddProductInput type='text' name='price' value={priceDisplay} onChange={(e) => handleMoneyInput(e.target.value)} placeholder='Price' />
 
                     <AddProductInput type='number' name='quantity' value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder='Quantity' />
-                    {showMsg &&
-                        <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-                    }
                     <AddProductButton onClick={() => addProduct()}>Add Product</AddProductButton>
                 </>
             }
+            <Toasted 
+                message={toastMessage}
+                showToast={showToast}
+                setShowToast={setShowToast}
+                getToasted={getToasted}
+                error={toastError}
+            />
         </AddProductContainer>
     )
 }

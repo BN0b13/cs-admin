@@ -1,71 +1,62 @@
-import { useState } from 'react';
-
 import Button from '../reusable/button/button.component';
 
 import Client from '../../tools/client';
 
 import {
     MainContainer,
-    GiveawayInput,
-    GiveawayTable,
-    GiveawayTableBody,
-    GiveawayTableHead,
-    GiveawayTableHeader,
-    GiveawayTableRow,
-    GiveawayTableData
-} from './giveaway.styles';
+    Text,
+    Title
+} from '../../styles/component.styles';
 
 const client = new Client();
 
-const Giveaway = () => {
-    const [amount, setAmount] = useState(0);
-    const [giveawayResults, setGiveawayResults] = useState([]);
+const Giveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
 
-    const getGiveawayResults = async () => {
-        if(amount <= 0) {
-            return
+    const changeManualGiveawayStatus = async () => {
+        const data = {
+            id: giveaway.id,
+        };
+
+        if(giveaway.status === 'created') {
+            data.status = 'active';
         }
-        const res = await client.getGiveawaySignUp(amount);
 
-        setGiveawayResults(res.users);
+        if(giveaway.status === 'active') {
+            data.status = 'completed';
+        }
+
+        const res = await client.updateGiveaway(data);
+
+        await getGiveaway();
     }
 
     return (
         <MainContainer>
-            {giveawayResults.length === 0 &&
-            <>
-                <GiveawayInput>
-                    <input type='number' value={amount} onChange={(e) => setAmount(e.target.value)} />
-                </GiveawayInput>
-                <GiveawayInput>
-                    <Button onClick={() => getGiveawayResults()}>Get Results</Button>
-                </GiveawayInput>
-            </>}
+            <Title>Giveaway</Title>
+            <Text>Status: { giveaway.status }</Text>
+            <Text>Type: { giveaway.type }</Text>
+            <Text>Name: { giveaway.name }</Text>
+            <Text>Description: { giveaway.description }</Text>
+            <Text>Rules:</Text>
+            {!giveaway.rules ?
+                <Text>No Rules associated with Giveaway</Text>
+            :
+                giveaway.rules.map((rule, index) => (
+                    <Text key={index}>{ index + 1 }. { rule.rule }</Text>
+                ))
+            }
+            <Text>Prizes: </Text>
+            {giveaway.prizes.map((prize, index) => (
+                <Text key={index}>{ index + 1 }. { prize.prize }</Text>
+            ))}
 
-            <GiveawayTable>
-                <GiveawayTableHeader>
-                    <GiveawayTableRow>
-                        <GiveawayTableHead>Email</GiveawayTableHead>
-                        <GiveawayTableHead>Name</GiveawayTableHead>
-                        <GiveawayTableHead>Created</GiveawayTableHead>
-                    </GiveawayTableRow>
-                </GiveawayTableHeader>
-                <GiveawayTableBody>
-                {giveawayResults.length > 0 &&
-                    giveawayResults.map((result, index) => {
-                        const formattedDate = new Date(result.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
-                        console.log('Giveaway result: ', result);
+            {giveaway.type === 'manual' && (giveaway.status === 'created' || giveaway.status === 'active') &&
+                <Button onClick={() => changeManualGiveawayStatus()}>{giveaway.status == 'created' ? 'Start' : 'End'} Giveaway</Button>
+            }
 
-                        return (
-                            <GiveawayTableRow key={index}>
-                                <GiveawayTableData>{ result.email }</GiveawayTableData>
-                                <GiveawayTableData>{ result.firstName } {result.lastName}</GiveawayTableData>
-                                <GiveawayTableData>{formattedDate}</GiveawayTableData>
-                            </GiveawayTableRow>
-                    )})
-                }
-                </GiveawayTableBody>
-            </GiveawayTable>
+            {giveaway.status === 'created' &&
+                <Button onClick={() => setShowUpdate(true)}>Update Giveaway</Button>
+            }
         </MainContainer>
     )
 }

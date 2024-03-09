@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import Client from '../../../tools/client';
+
+import { UserContext } from '../../../contexts/user.context';
 
 import { HeaderNav } from './header.styles';
 
@@ -11,10 +13,14 @@ const Header = () => {
     const [ newAccounts, setNewAccounts ] = useState(0);
     const [ newOrders, setNewOrders ] = useState(0);
 
+    const { currentUser } = useContext(UserContext);
+
     useEffect(() => {
-        getAccounts();
-        getOrders();
-    }, []);
+        if(currentUser?.roleId < 4) {
+            getAccounts();
+            getOrders();
+        }
+    }, [ currentUser ]);
 
     const getAccounts = async () => {
         const res = await client.getCustomers();
