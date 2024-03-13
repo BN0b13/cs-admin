@@ -1,31 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import AdminModal from '../../components/reusable/admin-modal/admin-modal.component';
 import Button from '../../components/reusable/button/button.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
-import Toasted from '../../components/reusable/toasted/toasted.component';
+import TermsAndConditions from '../../components/reusable/terms-and-conditions/terms-and-conditions.component';
 
-import Client from '../../tools/client';
-import { states } from '../../tools/states';
-import {
-    passwordValidation,
-    phoneInputValidation,
-    usernameInputValidation,
-    zipCodeInputValidation
-} from '../../tools/user';
+import { ToastContext } from '../../contexts/toast.context.jsx';
+
+import Client from '../../tools/client.js';
+import Tools from '../../tools/tools.js';
 import { tokenName } from '../../config';
+
+import logo from '../../assets/img/logo.png';
 
 import {
     ActivateAccountInput,
+    ActivateAccountLabel,
     ActivateAccountOption,
     ActivateAccountSelect,
     AddressBottomContainer,
     AddressBottomInput,
     ButtonContainer,
-    MainContainer
+    MainContainer,
+    MainImage,
+    MainText,
+    MainTitle,
+    TermsContainer,
+    TermsCheckbox,
+    TermsText
 } from './activate-account.styles';
 
+import {
+    InputSubtext
+} from '../../styles/page.styles';
+
 const client = new Client();
+const tools = new Tools();
 
 const ActivateAccountPage = () => {
     const [ loading, setLoading ] = useState(true);
@@ -44,10 +55,12 @@ const ActivateAccountPage = () => {
     const [ city, setCity ] = useState('');
     const [ state, setState ] = useState('');
     const [ zipCode, setZipCode ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('Account has been created successfully');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
+    const [ showTermsAndConditions, setShowTermsAndConditions ] = useState(false);
+    const [ eulaChecked, setEulaChecked ] = useState(false);
+    const [ accountData, setAccountData ] = useState({});
+    const [ showModal, setShowModal ] = useState(false);
+    
+    const { errorToast } = useContext(ToastContext);
     
     useEffect(() => {
         const getAccount = async () => {
@@ -64,56 +77,8 @@ const ActivateAccountPage = () => {
         
         getAccount();
     }, [passwordToken]);
-    
-    const getToasted = (toast) => toast();
 
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
-
-    const validateFields = async () => {
-        if(username === '' ||
-            password === '' ||
-            confirmPassword === '' ||
-            phone === '' ||
-            addressOne === '' ||
-            city === '' ||
-            state === '' ||
-            zipCode === '') {
-            errorToast('Please fill out all fields to activate account.');
-            return false;
-        }
-
-        if(password !== confirmPassword) {
-            errorToast('Password and Confirm Password needs to match.');
-            return false;
-        }
-
-        if(!passwordValidation(password)) {
-            errorToast('Password needs to be between 8 and 30 characters long with at least one number and one special character.');
-            return false;
-        }
-
-        if(phone.length < 10) {
-            errorToast('Phone needs to be 10 numbers long.');
-            return false;
-        }
-
-        if(zipCode.length < 5) {
-            errorToast('Zip Code needs to be 5 numbers long.');
-            return false;
-        }
-
-        return true;
-    }
-
-    const activateAccount = async () => {
-        if(!validateFields()) {
-            return
-        }
-
+    const showAccountCreationDisclaimer = async () => {
         const data = {
             passwordToken,
             username,
@@ -127,12 +92,28 @@ const ActivateAccountPage = () => {
                 city,
                 state,
                 zipCode
-            }
+            },
+            eula: eulaChecked
         }
 
+        const validationResult = tools.validate(data);
+        if(validationResult.error) {
+            errorToast(validationResult.error);
+            return
+        }
+
+        setAccountData(data);
+        setShowModal(true);
+    }
+
+    const activateAccount = async () => {
+        if(!accountData) {
+            errorToast('Something went wrong. Please try again.');
+            return
+        }
         setLoading(true);
 
-        const res = await client.activateAdminCreatedAccount(data);
+        const res = await client.activateAdminCreatedAccount(accountData);
 
         if(res && res.token) {
             localStorage.setItem(tokenName, res.token);
@@ -148,22 +129,33 @@ const ActivateAccountPage = () => {
 
         return (
             <>
-                <h2>Activate Account</h2>
-                <h4>Email: { account.email }</h4>
+                <AdminModal 
+                    show={showModal}
+                    setShow={setShowModal}
+                    title={'Create Account'}
+                    message={`A Contributor account gives you the ability to upload data, links and images to the Cosmic Strains website. Any malicious data, links or images are grounds for account termination. Please treat all customers with respect as you are not only representing your company, but Cosmic Strains as well. Any giveaways featuring or promoting illegal items are strictly prohibited. Do you want to continue?`}
+                    action={() => activateAccount()} 
+                    actionText={'Confirm'}
+                />
+                <TermsAndConditions show={showTermsAndConditions} setShow={setShowTermsAndConditions} />
+                <MainImage src={logo} alt='Company Logo' height='200px' width='200px' />
+                <MainTitle>Activate Account</MainTitle>
+                <MainText>Email: { account.email }</MainText>
 
-                <ActivateAccountInput type='text' name='username' value={username} onChange={(e) => usernameInputValidation(e.target.value, setUsername)} placeholder='Username' />
+                <ActivateAccountInput type='text' name='username' value={username} onChange={(e) => tools.usernameInputValidation(e.target.value, setUsername)} placeholder='Username' />
+                <InputSubtext margin={'10px 0'}>In order to create a welcoming environment for all, usernames that are hateful, homophobic, racist, sexist, derogatory, harassing, or otherwise uncivil are grounds for account termination.</InputSubtext>
                 <ActivateAccountInput type={passwordTextVisible ? 'text' : 'password'} name='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
                 <ActivateAccountInput type={confirmPasswordTextVisible ? 'text' : 'password'} name='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder='Confirm Password' />
                 <ActivateAccountInput type='text' name='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' />
                 <ActivateAccountInput type='text' name='lastName'  value={lastName}onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
-                <ActivateAccountInput type='text' name='phone'  value={phone} onChange={(e) => phoneInputValidation(e.target.value, setPhone)} placeholder='Phone' />
+                <ActivateAccountInput type='text' name='phone'  value={phone} onChange={(e) => tools.phoneInputValidation(e.target.value, setPhone)} placeholder='Phone' />
                 <ActivateAccountInput type='text' name='addressOne' value={addressOne} onChange={(e) => setAddressOne(e.target.value)} placeholder='Address Line One' />
                 <ActivateAccountInput type='text' name='addressTwo' value={addressTwo} onChange={(e) => setAddressTwo(e.target.value)} placeholder='Address Line Two' />
                 <AddressBottomContainer>
                     <AddressBottomInput type='text' name='city' value={city} onChange={(e) => setCity(e.target.value)} placeholder='City' />
                     <ActivateAccountSelect name='state' value={state} onChange={(e) => setState(e.target.value)}>
                         <ActivateAccountOption key={0} value={''} disabled> -- State -- </ActivateAccountOption>
-                        {states.map((state, index) => 
+                        {tools.states.map((state, index) => 
                             <ActivateAccountOption
                                 key={index + 1}
                                 value={state.abbreviation}
@@ -172,11 +164,14 @@ const ActivateAccountPage = () => {
                             </ActivateAccountOption>
                         )}
                     </ActivateAccountSelect>
-                    <AddressBottomInput type='text' name='zipCode' value={zipCode} onChange={(e) => zipCodeInputValidation(e.target.value, setZipCode)} placeholder='Zip Code' />
+                    <AddressBottomInput type='text' name='zipCode' value={zipCode} onChange={(e) => tools.zipCodeInputValidation(e.target.value, setZipCode)} placeholder='Zip Code' />
                 </AddressBottomContainer>
-
+                <TermsContainer>
+                  <TermsCheckbox type='checkbox' value={eulaChecked} onChange={(e) => setEulaChecked(e.target.checked)} />
+                  <ActivateAccountLabel>I am 21 years of age or older and I accept the <TermsText onClick={() => setShowTermsAndConditions(!showTermsAndConditions)}>Terms and Conditions</TermsText></ActivateAccountLabel>
+                </TermsContainer>
                 <ButtonContainer>
-                    <Button onClick={() => activateAccount()}>Activate Account</Button>
+                    <Button onClick={() => showAccountCreationDisclaimer()}>Activate Account</Button>
                 </ButtonContainer>
             </>
         )
@@ -192,13 +187,6 @@ const ActivateAccountPage = () => {
                 :
                     accountDisplay()
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

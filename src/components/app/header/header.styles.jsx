@@ -9,3 +9,7 @@ export const HeaderNav = styled.div`
     align-items: end;
     border-bottom: 1px solid black;
 `;
+
+export const InfoLinks = styled.h4`
+    cursor: pointer;
+`;

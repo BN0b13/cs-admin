@@ -28,8 +28,10 @@ import HamburgerMenu from './components/app/hamburger-menu/hamburger-menu.compon
 import Header from './components/app/header/header.component';
 import Footer from './components/app/footer/footer.component';
 import Spinner from './components/reusable/spinner/spinner.component';
+import Toasted from './components/reusable/toasted/toasted.component';
 
 import { ConfigurationContext } from './contexts/configuration.context';
+import { ToastContext } from './contexts/toast.context';
 import { UserContext } from './contexts/user.context';
 
 import Client from './tools/client';
@@ -48,6 +50,7 @@ function App() {
   const [ loading, setLoading ] = useState(false);
 
   const { theme, setAppTheme } = useContext(ConfigurationContext);
+  const { showToast, setShowToast, getToasted, toastError, toastMessage } = useContext(ToastContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -181,6 +184,13 @@ function App() {
           { routes() }
         </BrowserRouter>
       }
+      <Toasted 
+          message={toastMessage}
+          showToast={showToast}
+          setShowToast={setShowToast}
+          getToasted={getToasted}
+          error={toastError}
+      />
     </MainContainer>
   );
 }

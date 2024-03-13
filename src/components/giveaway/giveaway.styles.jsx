@@ -8,8 +8,8 @@ export const GiveawayRowContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 300px;
-    margin-bottom: 10px;
+    max-width: 320px;
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
 `;
 
 export const GiveawayColumnContainer = styled.div`
@@ -17,17 +17,18 @@ export const GiveawayColumnContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 300px;
-    margin-bottom: 10px;
+    max-width: 320px;
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
 `;
 
 export const GiveawayText = styled.h5`
-    margin-bottom: 5px;
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
 `;
 
 export const GiveawayTextarea = styled.textarea`
-    width: 200px;
+    width: 300px;
     height: 150px;
+    margin: 10px 0;
 `;
 
 export const GiveawayButton = styled.button`

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 import { api, url } from '../../../config';
@@ -27,23 +28,8 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
 
     const [ loading, setLoading ] = useState(false);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
-    const getToasted = (toast) => toast();
-
-    const successToast = (message) => {
-        setToastMessage(message);
-        setToastError(false);
-        setShowToast(true);
-    }
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    
+    const { errorToast, successToast } = useContext(ToastContext);
 
 
     const confirmDelete = () => {
@@ -122,13 +108,6 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
                     <h2>Products in Category</h2>
                 </>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import Toasted from '../reusable/toasted/toasted.component';
+import { ToastContext } from '../../contexts/toast.context';
 
 import Client from '../../tools/client';
 
@@ -30,27 +30,12 @@ const ProductProfile = () => {
     const [ description, setDescription ] = useState('');
     const [ icon, setIcon ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    
+    const { errorToast, successToast } = useContext(ToastContext);
 
     useEffect(() => {
         getProductProfiles();
     }, []);
-
-    const getToasted = (toast) => toast();
-
-    const successToast = (message) => {
-        setToastMessage(message);
-        setToastError(false);
-        setShowToast(true);
-    }
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
 
     const getProductProfiles = async () => {
         const res = await client.getProductProfiles();
@@ -127,13 +112,6 @@ const ProductProfile = () => {
 
                 </AddProductProfileTable>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

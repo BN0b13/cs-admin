@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 
@@ -22,9 +23,8 @@ const AddAccount = ({ getAccounts }) => {
     const [ roles, setRoles ] = useState([]);
     const [ role, setRole ] = useState('');
     const [ passwordToken, setPasswordToken ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('Account has been created successfully');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+
+    const { errorToast, successToast } = useContext(ToastContext);
 
     useEffect(() => {
         const getRoles = async () => {
@@ -35,20 +35,6 @@ const AddAccount = ({ getAccounts }) => {
 
         getRoles();
     }, []);
-
-    const getToasted = (toast) => toast();
-
-    const successToast = (message) => {
-        setToastMessage(message);
-        setToastError(false);
-        setShowToast(true);
-    }
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
 
     const submitAccount = async () => {
         if(email === '' || role === '') {
@@ -89,13 +75,6 @@ const AddAccount = ({ getAccounts }) => {
                     <Button onClick={() => submitAccount()}>Create Account</Button>
                 </>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

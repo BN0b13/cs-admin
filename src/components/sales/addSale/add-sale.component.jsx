@@ -58,8 +58,6 @@ const AddSale = () => {
             setExpirationDate('');
             setExpirationType('');
         }
-
-        console.log('CREATE sale res: ', res);
     }
 
     return (

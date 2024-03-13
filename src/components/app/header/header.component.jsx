@@ -5,7 +5,10 @@ import Client from '../../../tools/client';
 
 import { UserContext } from '../../../contexts/user.context';
 
-import { HeaderNav } from './header.styles';
+import { 
+    HeaderNav,
+    InfoLinks
+} from './header.styles';
 
 const client = new Client();
 
@@ -37,12 +40,14 @@ const Header = () => {
 
     return(
         <HeaderNav>
-            {newAccounts !== 0 &&
-                <h4 onClick={() => window.location.href = '/accounts'}>{newAccounts} New Account(s)</h4>
-            }
-            {newOrders !== 0 &&
-                <h4 onClick={() => window.location.href = '/orders'}>{newOrders} New Order(s)</h4>
-            }
+            <div>
+                {newAccounts !== 0 &&
+                    <InfoLinks onClick={() => window.location.href = '/accounts'}>{newAccounts} New Account(s)</InfoLinks>
+                }
+                {newOrders !== 0 &&
+                    <InfoLinks onClick={() => window.location.href = '/orders'}>{newOrders} New Order(s)</InfoLinks>
+                }
+            </div>
         </HeaderNav>
     )
 };

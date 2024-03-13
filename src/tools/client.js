@@ -310,6 +310,13 @@ export default class Client {
         return res;
     }
 
+    async deleteGiveaway(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const giveaway = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await giveaway.json();
+        return res;
+    }
+
     // Inventory
 
     async getInventory() {

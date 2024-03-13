@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import OrderTable from '../../components/reusable/tables/order-table/order-table.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
-import Toasted from '../../components/reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../contexts/toast.context';
 
 import Client from '../../tools/client';
 import { url } from '../../config';
@@ -23,9 +24,8 @@ const AccountPage = () => {
     const { id } = useParams();
     const [ account, setAccount ] = useState('');
     const [ activationLink, setActivationLink ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    
+    const { successToast } = useContext(ToastContext);
 
     useEffect(() => {
         const getAccount = async () => {
@@ -42,14 +42,6 @@ const AccountPage = () => {
 
         getAccount();
     }, []);
-
-    const getToasted = (toast) => toast();
-
-    const successToast = (message) => {
-        setToastMessage(message);
-        setToastError(false);
-        setShowToast(true);
-    }
 
     const copyActivationLinkToClipBoard = () => {
         navigator.clipboard.writeText(activationLink);
@@ -89,6 +81,7 @@ const AccountPage = () => {
                         <h4>{ account.shippingAddress.city }</h4>
                         <h4>{ account.shippingAddress.state }</h4>
                         <h4>{ account.shippingAddress.zipCode }</h4>
+                        <h4>Credit ${ account.credit/100 }</h4>
                         <OrderTable orders={account.Orders} />
                     </>
                 }
@@ -107,13 +100,6 @@ const AccountPage = () => {
                 :
                     accountDisplay()
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
     VscChromeClose
 } from "react-icons/vsc";
 
 import Button from "../../../../reusable/button/button.component";
 import AdminModal from '../../../../reusable/admin-modal/admin-modal.component';
-import Toasted from "../../../../reusable/toasted/toasted.component";
+
+import { ToastContext } from '../../../../../contexts/toast.context';
 
 import { api } from '../../../../../config';
 import Client from "../../../../../tools/client";
@@ -33,17 +34,8 @@ const Image = ({ image, refreshImages }) => {
     const [ caption, setCaption ] = useState(image.caption);
     const [ link, setLink ] = useState(image.link);
     const [ position, setPosition ] = useState(image.position);
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleEditDisplay = () => {
         setShowEdit(false);
@@ -151,13 +143,6 @@ const Image = ({ image, refreshImages }) => {
                 textDetails()
             }
             </ImageDetailContainer>
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

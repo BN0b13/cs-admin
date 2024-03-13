@@ -4,19 +4,16 @@ import Address from '../../reusable/address/address.component';
 import Button from '../../reusable/button/button.component';
 import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
 import UpdatePassword from '../update-password/update-password.component';
 
+import { ToastContext } from '../../../contexts/toast.context';
 import { UserContext } from '../../../contexts/user.context';
 
 import { tokenName } from '../../../config';
 
-import Client from '../../../tools/client';
+import Client from '../../../tools/client.js';
+import Tools from '../../../tools/tools.js';
 import { setMobileView } from '../../../tools/mobileView';
-import {
-    phoneInputValidation,
-    usernameInputValidation
-} from '../../../tools/user';
 
 import {
     AccountDetailsContainer,
@@ -36,7 +33,12 @@ import {
     UpdatePasswordLink
 } from './account-details.styles';
 
+import {
+    InputSubtext
+} from '../../../styles/component.styles';
+
 const client = new Client();
+const tools = new Tools();
 
 const AccountDetails = () => {
     const [ loading, setLoading ] = useState(false);
@@ -51,10 +53,8 @@ const AccountDetails = () => {
     const [ showModal, setShowModal ] = useState(false);
     const [ input, setInput ] = useState('');
     const [ showUpdatePassword, setShowUpdatePassword ] = useState(false);
-    const [ toastMessage, setToastMessage ] = useState('Account has been created successfully');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
 
+    const { errorToast } = useContext(ToastContext);
     const { currentUser } = useContext(UserContext);
 
     useEffect(() => {
@@ -62,14 +62,6 @@ const AccountDetails = () => {
             initializeForm();
         }
     }, [ currentUser ]);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
 
     const initializeForm = () => {
         setUsername(currentUser.username);
@@ -186,10 +178,11 @@ const AccountDetails = () => {
                         <AccountDetailsTitle>
                             Update Account
                         </AccountDetailsTitle>
-                        <AccountDetailsInput type={'text'} name={'username'} value={username} onChange={(e) => usernameInputValidation(e.target.value, setUsername)} placeholder={'Username'} />
+                        <AccountDetailsInput type={'text'} name={'username'} value={username} onChange={(e) => tools.usernameInputValidation(e.target.value, setUsername)} placeholder={'Username'} />
+                        <InputSubtext>In order to create a welcoming environment for all, usernames that are hateful, homophobic, racist, sexist, derogatory, harassing, or otherwise uncivil are grounds for account termination.</InputSubtext>
                         <AccountDetailsInput type={'text'} name={'firstName'} value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder={'First Name'} />
                         <AccountDetailsInput type={'text'} name={'lastName'} value={lastName} onChange={(e) => setLastName(e.target.value)}  placeholder={'Last Name'} />
-                        <AccountDetailsInput type={'text'} name={'phone'} value={phone} onChange={(e) => phoneInputValidation(e.target.value, setPhone)} maxLength={12}  placeholder={'Phone'} />
+                        <AccountDetailsInput type={'text'} name={'phone'} value={phone} onChange={(e) => tools.phoneInputValidation(e.target.value, setPhone)} maxLength={12}  placeholder={'Phone'} />
                         <AccountAddressContainer setMobileView={setMobileView()}>
                             <AddressContainer setMobileView={setMobileView()}>
                                 <AccountDetailsSubtitle>Billing Address</AccountDetailsSubtitle>
@@ -255,20 +248,13 @@ const AccountDetails = () => {
                                 <AccountDetailsText id='shippingAddressState'>{ shippingAddress.state } </AccountDetailsText>
                                 <AccountDetailsText id='shippingAddressZipCode'>{ shippingAddress.zipCode }</AccountDetailsText>
                             </AddressBottomContainer>
+                            <AccountDetailsText>Credit: ${currentUser.credit/100}</AccountDetailsText>
                         </AccountDetailsTextContainer>
                         <UpdateButtonContainer>
                             <Button onClick={() => setShowEdit(true)}>Update Account</Button>
                         </UpdateButtonContainer>
                     </AccountDetailsContainer>
-                
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </>
     );
 }

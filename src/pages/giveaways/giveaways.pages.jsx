@@ -10,7 +10,9 @@ import Client from '../../tools/client';
 import {
     ContentContainer,
     MainContainer,
-    MainTitle
+    MainTitle,
+    Subtitle,
+    Text
 } from '../../styles/page.styles';
 
 const client = new Client();
@@ -18,10 +20,12 @@ const client = new Client();
 const GiveawaysPage = () => {
     const [ loading, setLoading ] = useState(true);
     const [ giveaways, setGiveaways ] = useState([]);
+    const [ company, setCompany ] = useState({});
     const [ showAddGiveaway, setShowAddGiveaway ] = useState(false);
 
     useEffect(() => {
         getGiveaways();
+        getCompany();
     }, []);
 
     const getGiveaways = async () => {
@@ -31,19 +35,34 @@ const GiveawaysPage = () => {
         setLoading(false);
     }
 
+    const getCompany = async () => {
+        setLoading(true);
+        const res = await client.getCompanies();
+        setCompany(res.rows[0]);
+        setLoading(false);
+    }
+
     return (
         <MainContainer>
             <ContentContainer>
             {loading ?
                 <Spinner />
             :
-                showAddGiveaway ?
-                    <AddGiveaway setShowAddGiveaway={setShowAddGiveaway} />
+                (!company.name && !company.bio) ?
+                        <Subtitle>Company must have name and bio before giveaways can be created.</Subtitle>
                 :
-                    <>
-                        <Button onClick={() => setShowAddGiveaway(true)}>New Giveaway</Button>
-                        <GiveawaysTable giveaways={giveaways} />
-                    </>
+                    showAddGiveaway ?
+                        <AddGiveaway setShowAddGiveaway={setShowAddGiveaway} company={company} />
+                    :
+                        <>
+                            <MainTitle>Giveaways</MainTitle>
+                            <ContentContainer>
+                                <Button onClick={() => setShowAddGiveaway(true)}>New Giveaway</Button>
+                            </ContentContainer>
+                            <ContentContainer>
+                                <GiveawaysTable giveaways={giveaways} />
+                            </ContentContainer>
+                        </>
             }
             </ContentContainer>
         </MainContainer>

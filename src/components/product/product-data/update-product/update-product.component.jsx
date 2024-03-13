@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import AdminModal from '../../../reusable/admin-modal/admin-modal.component';
 import Button from '../../../reusable/button/button.component';
-import Toasted from '../../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../../contexts/toast.context';
 
 import { api } from '../../../../config';
 
@@ -38,9 +39,8 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
     const [ mother, setMother ] = useState(product.details.mother);
     const [ father, setFather ] = useState(product.details.father);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    
+    const { errorToast } = useContext(ToastContext);
 
     useEffect(() => {
         if(product.ProductImages.length !== 0) {
@@ -72,14 +72,6 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
         }
         getProductProfiles();
     }, []);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
 
     const handleProductProfile = (e) => {
         const checkboxId = parseInt(e);
@@ -186,13 +178,6 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
                     <Button onClick={() => updateProduct()}>Update</Button>
                 </ButtonRowContainer>
             </ButtonContainer>
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

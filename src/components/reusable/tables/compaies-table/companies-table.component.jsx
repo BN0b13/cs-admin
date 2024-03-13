@@ -25,9 +25,9 @@ const CategoriesTable = ({ companies }) => {
                 <CompanyTableBody>
                 {companies.map((company, index) => (
                         <CompanyTableRow key={index}>
-                            <CompanyTableData><a href={`${url}/companies/${company.id}`}>{company.name}</a></CompanyTableData>
+                            <CompanyTableData><a href={`${url}/companies/${company.id}`}>{company.name || 'Company Not Set Up'}</a></CompanyTableData>
                             <CompanyTableData>{company.bio}</CompanyTableData>
-                            <CompanyTableData>{company.Active}</CompanyTableData>
+                            <CompanyTableData>{company.active ? 'Yes' : 'No'}</CompanyTableData>
                         </CompanyTableRow>
                 ))}
                 </CompanyTableBody>

@@ -1,11 +1,11 @@
-
-
-import { formatDate } from '../../../tools/tools';
+import Tools from '../../../tools/tools.js';
 
 import {
     MessageIconContainer,
     MessageTableData
 } from './message.style';
+
+const tools = new Tools();
 
 const Message = ({ message }) => (
     <>
@@ -18,7 +18,7 @@ const Message = ({ message }) => (
         </MessageTableData>
         <MessageTableData>{ message.replied ? 'Yes' : 'No' }</MessageTableData>
         <MessageTableData>{ `${message.firstName} ${message.lastName}` }</MessageTableData>
-        <MessageTableData>{ formatDate(message.createdAt) }</MessageTableData>
+        <MessageTableData>{ tools.formatCreatedAtDate(message.createdAt) }</MessageTableData>
 
     </>
 );

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Button from "../../../reusable/button/button.component";
-import Toasted from "../../../reusable/toasted/toasted.component";
+
+import { ToastContext } from '../../../../contexts/toast.context';
 
 import Client from "../../../../tools/client";
 
@@ -19,17 +20,8 @@ const AddImage = ({ id, name, getProduct }) => {
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
     const [ caption, setCaption ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -80,13 +72,6 @@ const AddImage = ({ id, name, getProduct }) => {
                     </>
                 }
             </MainForm>
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

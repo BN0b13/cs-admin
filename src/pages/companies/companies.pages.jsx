@@ -23,7 +23,6 @@ const CompaniesPage = () => {
     const getCompanies = async () => {
         setLoading(true);
         const res = await client.getCompanies();
-        console.log('GET companies res: ', res);
 
         setCompanies(res.rows);
         setLoading(false);

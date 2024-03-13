@@ -30,7 +30,6 @@ const CompanyPage = () => {
     const getCompany = async () => {
         setLoading(true);
         const res = await client.getCompanyById(id);
-        console.log('GET company by id res: ', res);
 
         setCompany(res);
         setLoading(false);

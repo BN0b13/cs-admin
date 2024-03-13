@@ -12,7 +12,8 @@ const Toasted = ({ message, showToast, setShowToast, getToasted, error = false }
         // Styling
         style: {
             color: '#fff',
-            backgroundColor: error ? '#f44335' : '#4baf51'
+            backgroundColor: error ? '#f44335' : '#4baf51',
+            maxWidth: '300px'
         }
     };
 

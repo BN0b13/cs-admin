@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Spinner from '../../../reusable/spinner/spinner.component';
-import Toasted from '../../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../../contexts/toast.context';
 
 import Client from '../../../../tools/client';
 
@@ -43,9 +44,8 @@ const AddSeedProduct = ({category, productType}) => {
     const [ cents, setCents ] = useState('00');
     const [ dollars, setDollars ] = useState('0');
     const [ quantity, setQuantity ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    
+    const { errorToast } = useContext(ToastContext);
 
     useEffect(() => {
         const getProductProfiles = async () => {
@@ -66,14 +66,6 @@ const AddSeedProduct = ({category, productType}) => {
 
         getProductProfiles();
     }, []);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -238,13 +230,6 @@ const AddSeedProduct = ({category, productType}) => {
                     <AddProductButton onClick={() => addProduct()}>Add Product</AddProductButton>
                 </>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </AddProductContainer>
     )
 }

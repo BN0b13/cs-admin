@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 
 import {
+    AddCompanyLogoButton,
+    AddCompanyLogoLabel,
     ImageFileInput,
+    ImagePreviewContainer,
+    LogoInput,
+    LogoPreviewImage,
     MainContainer,
     MainForm,
+    MainText,
     MainTitle
 } from './add-company-logo.styles';
 
@@ -20,16 +27,13 @@ const AddCompanyLogo = ({ id, getCompany }) => {
     const [ image, setImage ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    
+    const { errorToast } = useContext(ToastContext);
 
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
+    const cancelImage = () => {
+        setImage('');
+        setImagePreview('');
+        setFileInput('');
     }
 
     const handleFileChange = (e) => {
@@ -57,9 +61,7 @@ const AddCompanyLogo = ({ id, getCompany }) => {
 
         await client.addCompanyLogo(formData);
 
-        setImage('');
-        setImagePreview('');
-        setFileInput('');
+        cancelImage();
 
         await getCompany();
         setLoading(false);
@@ -73,24 +75,25 @@ const AddCompanyLogo = ({ id, getCompany }) => {
                 <MainForm>
                     {imagePreview ?
                         <>
-                            <img src={imagePreview} width='200px' height='200px' />  
-                            <Button onClick={() => createLogo()}>Add Logo</Button>  
+                            <LogoPreviewImage src={imagePreview} width='200px' height='200px' />
+                            <MainContainer direction={'row'}>
+                                <AddCompanyLogoButton onClick={() => cancelImage()}>Cancel</AddCompanyLogoButton>
+                                <AddCompanyLogoButton onClick={() => createLogo()}>Save</AddCompanyLogoButton>  
+                            </MainContainer>
                         </>
                     :
                         <>
-                            <MainTitle>Add Company Logo</MainTitle>
-                            <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
+                            <ImagePreviewContainer>
+                                <MainText>No Company Logo</MainText>
+                            </ImagePreviewContainer>
+                            <AddCompanyLogoLabel>
+                                Add Logo
+                                <LogoInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
+                            </AddCompanyLogoLabel>
                         </>
                     }
                 </MainForm>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </MainContainer>
     )
 }

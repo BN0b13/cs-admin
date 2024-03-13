@@ -1,8 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
 
-// import { convertProductPrice } from '../../../../tools/cart';
-
 import {
     OrdersItemRow,
     OrdersItemData

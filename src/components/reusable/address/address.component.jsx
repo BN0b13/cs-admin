@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { states } from '../../../tools/states.js';
-import { zipCodeInputValidation } from '../../../tools/user.js';
+import Tools from '../../../tools/tools.js';
 
 import {
     AddressBottomContainer,
@@ -13,6 +12,8 @@ import {
     AddressZipCodeInput,
     AddressTopContainer
 } from './address.styles';
+
+const tools = new Tools();
 
 const Address = ({ address, updateAddress, customSelector = null }) => {
     const [ firstName, setFirstName ] = useState(address.firstName);
@@ -109,7 +110,7 @@ const Address = ({ address, updateAddress, customSelector = null }) => {
                     onChange={(e) => handleState(e.target.value)}
                 >
                     <AddressDropdownOption key={0} value={''} disabled> -- State -- </AddressDropdownOption>
-                    {states.map((state, index) => 
+                    {tools.states.map((state, index) => 
                             <AddressDropdownOption
                                 key={index + 1}
                                 id={state.abbreviation}
@@ -123,7 +124,7 @@ const Address = ({ address, updateAddress, customSelector = null }) => {
                     type='text'
                     name={`${selector}ZipCode`}
                     value={zipCode}
-                    onChange={(e) => zipCodeInputValidation(e.target.value, handleZipCode)}
+                    onChange={(e) => tools.zipCodeInputValidation(e.target.value, handleZipCode)}
                     placeholder={'Zip Code'}
                 />
             </AddressBottomContainer>

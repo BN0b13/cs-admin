@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 
@@ -29,17 +30,8 @@ const AddCategory = () => {
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ type, setType ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleFileChange = (e) => {
         setThumbnail(e.target.files[0]);
@@ -102,13 +94,6 @@ const AddCategory = () => {
                     <AddCategoryButton onClick={() => addCategory()}>Add Category</AddCategoryButton>
                 </NewCategoryContainer>
             }
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </AddCategoryContainer>
     )
 }

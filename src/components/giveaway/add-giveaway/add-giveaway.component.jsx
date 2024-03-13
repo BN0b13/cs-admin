@@ -1,14 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import dayjs from 'dayjs';
 import { IoBuild, IoCloseSharp } from "react-icons/io5";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
+import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
+import { UserContext } from '../../../contexts/user.context';
 
 import Client from '../../../tools/client';
+import GiveawayHelper from '../../../tools/giveaway';
 
 import {
     ColumnContainer,
@@ -18,6 +23,7 @@ import {
     RowContainer,
     Select,
     Subtext,
+    Subtitle,
     Textarea,
     Text,
     Title
@@ -32,18 +38,20 @@ import {
 } from '../giveaway.styles';
 
 const client = new Client();
+const giveawayHelper = new GiveawayHelper();
 
-const AddGiveaway = ({ setShowAddGiveaway }) => {
+const AddGiveaway = ({ setShowAddGiveaway, company }) => {
     const [ loading, setLoading ] = useState(false);
-    const [ company, setCompany ] = useState('');
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ disclaimer, setDisclaimer ] = useState('You must be 21+ and in the US to enter giveaway');
     const [ rules, setRules ] = useState('');
     const [ rule, setRule ] = useState('');
     const [ showEditRule, setShowEditRule ] = useState(false);
     const [ editRuleId, setEditRuleId ] = useState('');
     const [ prizes, setPrizes ] = useState('');
     const [ prize, setPrize ] = useState('');
+    const [ prizeType, setPrizeType ] = useState('manual');
     const [ showEditPrize, setShowEditPrize ] = useState(false);
     const [ editPrizeId, setEditPrizeId ] = useState('');
     const [ prizeWinnerLimit, setPrizeWinnerLimit ] = useState(1);
@@ -51,29 +59,14 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
     const [ startDate, setStartDate ] = useState('');
     const [ expirationDate, setExpirationDate ] = useState('');
     const [ entryLimit, setEntryLimit ] = useState('');
-    const [ winnerLimit, setWinnerLimit ] = useState(1);
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
-
-    useEffect(() => {
-        getCompanyData();
-    }, []);
+    const [ entryType, setEntryType ] = useState('manual');
+    const [ giveawayOptions, setGiveawayOptions ] = useState([]);
+    const [ giveawayData, setGiveawayData ] = useState('');
+    const [ showModal, setShowModal ] = useState(false);
+    const [ modalMessage, setModalMessage ] = useState('');
     
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
-
-    const getCompanyData = async () => {
-        setLoading(true);
-        const res = await client.getCompanies();
-        setCompany(res.rows[0]);
-        setLoading(false);
-    }
+    const { errorToast } = useContext(ToastContext);
+    const { currentUser } = useContext(UserContext);
 
     const nonNegativeIntegerInput = (e, setInput) => {
         if(e < 1 && e !== '') {
@@ -84,6 +77,7 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
 
     const submitRule = () => {
         if(rule === '') {
+            errorToast('Please enter a rule to add rule to giveaway.');
             return
         }
         const count = rules.length;
@@ -130,27 +124,31 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
 
     const submitPrize = () => {
         if(prize === '' || prizeWinnerLimit === '') {
+            errorToast('Please enter a prize to add prize to giveaway.');
             return
         }
+        
         const count = prizes.length;
         const newPrize = {
             id: count,
             prize,
-            prizeWinnerLimit
+            prizeType,
+            prizeWinnerLimit: parseInt(prizeWinnerLimit)
         };
 
         const data = [ ...prizes, newPrize ];
 
         setPrizes(data);
         setPrize('');
+        setPrizeType('manual');
         setPrizeWinnerLimit(1);
-        setWinnerLimit(winnerLimit + prizeWinnerLimit);
     }
 
     const editPrize = (id) => {
         const data = prizes.filter(prize => prize.id === id);
         setPrize(data[0].prize);
         setPrizeWinnerLimit(data[0].prizeWinnerLimit);
+        setPrizeType(data[0].prizeType);
         setShowEditPrize(true);
         setEditPrizeId(id);
     }
@@ -160,7 +158,8 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
         const editedPrize = {
             id,
             prize,
-            prizeWinnerLimit
+            prizeType,
+            prizeWinnerLimit: parseInt(prizeWinnerLimit)
         };
         const data = [...currentData, editedPrize];
         removePrize(id);
@@ -170,6 +169,7 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
 
     const cancelEditPrize = () => {
         setPrize('');
+        setPrizeType('manual');
         setPrizeWinnerLimit(1);
         setShowEditPrize(false);
         setEditPrizeId('');
@@ -178,6 +178,9 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
     const removePrize = (id) => {
         const data = prizes.filter(prize => prize.id !== id);
         setPrizes(data);
+        if(showEditPrize) {
+            cancelEditPrize();
+        }
     }
 
     const filterStartTime = (date) => {
@@ -237,9 +240,15 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
         }
 
         if(giveawayExpirationOption === 'entryLimit') {
+            let minEntryLimit = 0;
+
+            if(prizes) {
+                prizes.map(prize => minEntryLimit = minEntryLimit + prize.prizeWinnerLimit);
+            }
+
             return (
                 <GiveawayColumnContainer>
-                    <Input type='number' min='1' value={entryLimit} onChange={(e) => nonNegativeIntegerInput(e.target.value, setEntryLimit)} placeholder='User Limit' />
+                    <Input type='number' min={minEntryLimit} value={entryLimit} onChange={(e) => nonNegativeIntegerInput(e.target.value, setEntryLimit)} placeholder='Entry Limit' />
                 </GiveawayColumnContainer>
             )
         }
@@ -249,37 +258,18 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
         }
     }
 
-    const submitGiveaway = async () => {
-        if(name === '' ||
-            description === '' ||
-            prizes.length < 1 ||
-            winnerLimit < 1) {
-            errorToast('Please fill out all fields to create giveaway.');
-            return
-        }
-
-        if(!giveawayExpirationOption) {
-            errorToast('Please select a way to conclude giveaway.');
-            return
-        }
-
-        if(giveawayExpirationOption === 'scheduled' && (startDate === '' || expirationDate === '')) {
-            errorToast('Please finish selecting start or end date to create giveaway.');
-            return
-        }
-
-        if(giveawayExpirationOption === 'entryLimit' && entryLimit === '') {
-            errorToast('Please select entry limit to giveaway.');
-            return
-        }
-
+    const confirmGiveaway = async () => {
         const data = {
             companyId: company.id,
             name,
             description,
             prizes,
-            winnerLimit,
-            type: giveawayExpirationOption
+            type: giveawayExpirationOption,
+            entryType
+        }
+
+        if(disclaimer) {
+            data.disclaimer = disclaimer;
         }
 
         if(rules) {
@@ -296,11 +286,46 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
             data.expirationDate = unixExpirationDate;
         }
 
-        if(entryLimit) {
+        if(giveawayExpirationOption === 'entryLimit') {
             data.entryLimit = entryLimit;
         }
 
-        const res = await client.createGiveaway(data);
+        const validation = giveawayHelper.validateGiveaway(data);
+        
+        if(!validation.result) {
+            if(validation.reset && validation.reset.startDate) {
+                setStartDate('');
+            }
+            if(validation.reset && validation.reset.expirationDate) {
+                setExpirationDate('');
+            }
+            errorToast(validation.error);
+            return
+        }
+
+        setGiveawayData(data);
+
+        if(giveawayExpirationOption === 'scheduled') {
+            const formattedStartDate = dayjs(new Date(startDate)).format('MM/DD/YYYY hh:mm a').toString();
+            const formattedEndDate = dayjs(new Date(expirationDate)).format('MM/DD/YYYY hh:mm a').toString();
+
+            setModalMessage(`This will be a Scheduled Giveaway. It will automatically start on ${formattedStartDate} and end on ${formattedEndDate}. Once the giveaway has started it cannot be updated or deleted. Do you want to continue?`);
+        }
+        if(giveawayExpirationOption === 'entryLimit') {
+            setModalMessage('This will be an Entry Limit Giveaway. It will require you to manually start it and will conclude once the entry limit has been met. Once the giveaway has started it cannot be updated or deleted. Do you want to continue?');
+        }
+        if(giveawayExpirationOption === 'manual') {
+            setModalMessage('This will be a Manual Giveaway. It will require you to both start and end the giveaway. Once the giveaway has started it cannot be updated or deleted. Do you want to continue?');
+        }
+        setShowModal(true);
+    }
+
+    const submitGiveaway = async () => {
+        if(!giveawayData) {
+            errorToast('Something happened. Please try again.');
+            return
+        }
+        const res = await client.createGiveaway(giveawayData);
 
         if(res) {
             window.location = `/giveaways/${res.id}`;
@@ -312,21 +337,35 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
     
     return (
         <MainContainer>
+            <AdminModal 
+                show={showModal}
+                setShow={setShowModal}
+                title={'Create Giveaway'}
+                message={modalMessage} 
+                action={submitGiveaway} 
+                actionText={'Create'}
+            />
             <Title>Add Giveaway</Title>
+            <GiveawayText>Please input a name, description and at least one prize to create a giveaway.</GiveawayText>
             {loading ?
                 <Spinner />
             :
                 <GiveawayColumnContainer>
                     <Input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
                     <Textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
+                    <Textarea name='disclaimer' value={disclaimer} onChange={(e) => setDisclaimer(e.target.value)} customHeight={'160px'} placeholder='Disclaimer' />
                     <GiveawayColumnContainer>
                         {rules && rules.map((rule, index) => (
                             <RowContainer key={index}>
-                                <ColumnContainer>
-                                    <GiveawayText>{index + 1}. {rule.rule}</GiveawayText>
+                                <ColumnContainer margin={'5px'}>
+                                    <GiveawayText margin={'5px'}>{index + 1}. {rule.rule}</GiveawayText>
                                 </ColumnContainer>
-                                <IoBuild onClick={() => editRule(rule.id)} size={14} />
-                                <IoCloseSharp onClick={() => removeRule(rule.id)} size={14} />
+                                <ColumnContainer margin={'5px'}>
+                                    <IoBuild onClick={() => editRule(rule.id)} size={14} />
+                                </ColumnContainer>
+                                <ColumnContainer margin={'5px'}>
+                                    <IoCloseSharp onClick={() => removeRule(rule.id)} size={14} />
+                                </ColumnContainer>
                             </RowContainer>
                         ))}
                         <GiveawayTextarea name='rule' value={rule} onChange={(e) => setRule(e.target.value)} placeholder='Rule' />
@@ -344,14 +383,35 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
                     <GiveawayColumnContainer>
                         {prizes && prizes.map((prize, index) => (
                             <RowContainer key={index}>
-                                <ColumnContainer>
-                                    <GiveawayText>{index + 1}. {prize.prize} - {prize.prizeWinnerLimit} Winner{prize.prizeWinnerLimit > 1 && 's'}</GiveawayText>
+                                <ColumnContainer margin={'10px'}>
+                                    <GiveawayText margin={'10px'}>{index + 1}. {prize.prizeType === 'credit' ? `$${parseInt(prize.prize)/100} credit on account` : prize.prize} - {prize.prizeWinnerLimit} Winner{prize.prizeWinnerLimit > 1 && 's'}</GiveawayText>
                                 </ColumnContainer>
-                                <IoBuild onClick={() => editPrize(prize.id)} size={14} />
-                                <IoCloseSharp onClick={() => removePrize(prize.id)} size={14} />
+                                <ColumnContainer margin={'5px'}>
+                                    <IoBuild onClick={() => editPrize(prize.id)} size={14} />
+                                </ColumnContainer>
+                                <ColumnContainer margin={'5px'}>
+                                    <IoCloseSharp onClick={() => removePrize(prize.id)} size={14} />
+                                </ColumnContainer>
                             </RowContainer>
                         ))}
-                        <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
+                        {currentUser.roleId  < 4 ?
+                            <ColumnContainer margin={'10px 0'}>
+                                <ColumnContainer margin={'20px'}>
+                                    <Select value={prizeType} onChange={(e) => setPrizeType(e.target.value)}>
+                                        <Option value={'credit'}>Credit</Option>
+                                        <Option value={'manual'}>Manual</Option>
+                                    </Select>
+                                </ColumnContainer>
+                                {prizeType === 'credit' ?
+                                    <Input type='number' name='prize' value={prize} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrize)} min={1} placeholder='Prize' />
+                                :
+                                    <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
+                                }
+                            
+                            </ColumnContainer>
+                        :
+                            <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
+                        }
                         <Input type='number' min='1' name='prizeWinnerLimit' value={prizeWinnerLimit} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrizeWinnerLimit)} placeholder='Prize Winner Amount' />
                         {showEditPrize ?
                             <RowContainer>
@@ -365,7 +425,8 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
                         }
                     </GiveawayColumnContainer>
                     <GiveawayColumnContainer>
-                        <Text>Giveaway Expiration Options</Text>
+                        <Subtitle>Giveaway Expiration</Subtitle>
+                        <GiveawayText>Please select how you want to conclude the giveaway.</GiveawayText>
                         <GiveawayColumnContainer>
                             <Select value={giveawayExpirationOption} onChange={(e) => selectExpirationOption(e.target.value)}>
                                 <Option value='' disabled> -- Select An Option -- </Option>
@@ -376,20 +437,23 @@ const AddGiveaway = ({ setShowAddGiveaway }) => {
                         </GiveawayColumnContainer>
                         { giveawayExpirationOptions() }
                     </GiveawayColumnContainer>
+                    {currentUser.Role.id < 4 &&
+                        <GiveawayColumnContainer>
+                            <Subtitle>Giveaway Entry Options</Subtitle>
+                            <Select value={entryType} onChange={(e) => setEntryType(e.target.value)}>
+                                <Option value='' disabled> -- Select An Option -- </Option>
+                                <Option value='orders'>Orders</Option>
+                                <Option value='manual'>Manual</Option>
+                            </Select>
+                        </GiveawayColumnContainer>
+                    }
                     
                     <RowContainer>
                         <Button onClick={() => setShowAddGiveaway()}>Cancel</Button>
-                        <Button onClick={() => submitGiveaway()}>Add Giveaway</Button>
+                        <Button onClick={() => confirmGiveaway()}>Create</Button>
                     </RowContainer>
                 </GiveawayColumnContainer>
             }
-        <Toasted 
-            message={toastMessage}
-            showToast={showToast}
-            setShowToast={setShowToast}
-            getToasted={getToasted}
-            error={toastError}
-        />
         </MainContainer>
     )
 }

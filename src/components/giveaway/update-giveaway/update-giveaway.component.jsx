@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IoBuild, IoCloseSharp } from "react-icons/io5";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
+import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
-import Toasted from '../../reusable/toasted/toasted.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
+import { UserContext } from '../../../contexts/user.context';
 
 import Client from '../../../tools/client';
+import GiveawayHelper from '../../../tools/giveaway';
 
 import {
     ColumnContainer,
+    DeleteButton,
     Input,
     MainContainer,
     Option,
@@ -30,11 +35,13 @@ import {
 } from '../giveaway.styles';
 
 const client = new Client();
+const giveawayHelper = new GiveawayHelper();
 
 const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
     const [ loading, setLoading ] = useState(false);
     const [ name, setName ] = useState(giveaway.name);
     const [ description, setDescription ] = useState(giveaway.description);
+    const [ disclaimer, setDisclaimer ] = useState(giveaway.disclaimer ? giveaway.disclaimer : '');
     const [ rules, setRules ] = useState(giveaway.rules ? giveaway.rules : []);
     const [ rule, setRule ] = useState('');
     const [ showEditRule, setShowEditRule ] = useState(false);
@@ -48,17 +55,12 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
     const [ startDate, setStartDate ] = useState(giveaway.startDate ? new Date(parseInt(giveaway.startDate)) : '');
     const [ expirationDate, setExpirationDate ] = useState(giveaway.expirationDate ? new Date(parseInt(giveaway.expirationDate)) : '');
     const [ entryLimit, setEntryLimit ] = useState(giveaway.entryLimit ? giveaway.entryLimit : '');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
+    const [ entryType, setEntryType ] = useState(giveaway.entryType ? giveaway.entryType : '');
+    const [ options, setOptions ] = useState(giveaway.options ? giveaway.options : []);
+    const [ showModal, setShowModal ] = useState(false);
 
-    const getToasted = (toast) => toast();
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    const { errorToast } = useContext(ToastContext);
+    const { currentUser } = useContext(UserContext);
 
     const nonNegativeIntegerInput = (e, setInput) => {
         if(e < 1 && e !== '') {
@@ -69,6 +71,7 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
 
     const submitRule = () => {
         if(rule === '') {
+            errorToast('Please enter a rule to add rule to giveaway.');
             return
         }
         const count = rules.length;
@@ -115,6 +118,7 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
 
     const submitPrize = () => {
         if(prize === '' || prizeWinnerLimit === '') {
+            errorToast('Please enter a prize to add prize to giveaway.');
             return
         }
         const count = prizes.length;
@@ -233,29 +237,17 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
         }
     }
 
+    const deleteGiveaway = async () => {
+        const data = {
+            id: giveaway.id
+        };
+
+        await client.deleteGiveaway(data);
+        
+        return window.location = '/giveaways';
+    }
+
     const submitGiveawayUpdate = async () => {
-        if(name === '' ||
-            description === '' ||
-            prizes.length < 1) {
-            errorToast('Please fill out all fields to create giveaway.');
-            return
-        }
-
-        if(!giveawayExpirationOption) {
-            errorToast('Please select a way to conclude giveaway.');
-            return
-        }
-
-        if(giveawayExpirationOption === 'scheduled' && (startDate === '' || expirationDate === '')) {
-            errorToast('Please finish selecting start or end date to create giveaway.');
-            return
-        }
-
-        if(giveawayExpirationOption === 'entryLimit' && entryLimit === '') {
-            errorToast('Please select entry limit to giveaway.');
-            return
-        }
-
         const data = {
             id: giveaway.id,
             name,
@@ -282,12 +274,27 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
             data.entryLimit = entryLimit;
         }
 
+        const validation = giveawayHelper.validateGiveaway(data);
+        if(!validation.result) {
+            if(validation.reset && validation.reset.startDate) {
+                setStartDate('');
+            }
+            if(validation.reset && validation.reset.expirationDate) {
+                setExpirationDate('');
+            }
+            errorToast(validation.error);
+            return
+        }
+
+        setLoading(true);
+
         const res = await client.updateGiveaway(data);
 
         if(res) {
             await getGiveaway();
             setShowUpdate(false);
         } else {
+            setLoading(false);
             errorToast('There was an error updating giveaway. Please try again.');
             return
         }
@@ -295,13 +302,22 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
     
     return (
         <MainContainer>
+            <AdminModal 
+                show={showModal}
+                setShow={setShowModal}
+                title={'Delete Giveaway'}
+                message={`Are you sure you want to delete giveaway ${giveaway.name}?`}
+                action={() => deleteGiveaway()} 
+                actionText={'Confirm'}
+            />
             <Title>Update Giveaway</Title>
             {loading ?
                 <Spinner />
             :
                 <GiveawayColumnContainer>
                     <Input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
-                    <Textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
+                    <Textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} customHeight={'160px'} placeholder='Description' />
+                    <Textarea name='disclaimer' value={disclaimer} onChange={(e) => setDisclaimer(e.target.value)} placeholder='Disclaimer' />
                     <GiveawayColumnContainer>
                         {rules && rules.map((rule, index) => (
                             <RowContainer key={index}>
@@ -359,20 +375,23 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
                         </GiveawayColumnContainer>
                         { giveawayExpirationOptions() }
                     </GiveawayColumnContainer>
-                    
+                    {currentUser.Role.id < 4 &&
+                        <GiveawayColumnContainer>
+                            <Text>Giveaway Entry Options</Text>
+                            <Select value={entryType} onChange={(e) => setEntryType(e.target.value)}>
+                                <Option value='' disabled> -- Select An Option -- </Option>
+                                <Option value='orders'>Orders</Option>
+                                <Option value='manual'>Manual</Option>
+                            </Select>
+                        </GiveawayColumnContainer>
+                    }
                     <RowContainer>
                         <Button onClick={() => setShowUpdate()}>Cancel</Button>
                         <Button onClick={() => submitGiveawayUpdate()}>Update</Button>
                     </RowContainer>
+                    <DeleteButton onClick={() => setShowModal(true)}>DELETE</DeleteButton>
                 </GiveawayColumnContainer>
             }
-        <Toasted 
-            message={toastMessage}
-            showToast={showToast}
-            setShowToast={setShowToast}
-            getToasted={getToasted}
-            error={toastError}
-        />
         </MainContainer>
     )
 }

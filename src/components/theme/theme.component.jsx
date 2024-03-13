@@ -7,7 +7,6 @@ const client = new Client();
 const Theme = () => {
 
     const createTheme = async () => {
-        console.log('Create Theme Hit');
         const data = {
             name: "default",
             description: "default site theme",

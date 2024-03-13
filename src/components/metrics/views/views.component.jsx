@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import LineChart from '../../reusable/chart/chart.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 
-import Client from '../../../tools/client';
-import { sortByDateAscending } from '../../../tools/tools';
+import Client from '../../../tools/client.js';
+import Tools from '../../../tools/tools.js';
 
 import {
   ChartContainer,
@@ -20,6 +20,7 @@ import {
 } from './views.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const Views = () => {
   const [ views, setViews ] = useState(null);
@@ -28,7 +29,7 @@ const Views = () => {
   useEffect(() => {
     const fetchViews = async () => {
       const res = await client.getViews();
-      const sortedViews = sortByDateAscending(res.rows);
+      const sortedViews = tools.sortByDateAscending(res.rows);
       setViews(sortedViews);
       let totalCount = 0;
       res.rows.map(row => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Giveaway from '../../components/giveaway/giveaway.component';
+import GiveawayEntries from '../../components/giveaway/giveaway-entries/giveaway-entries.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import UpdateGiveaway from '../../components/giveaway/update-giveaway/update-giveaway.component';
 
@@ -22,6 +23,7 @@ const GiveawayPage = () => {
     const [ loading, setLoading ] = useState(true);
     const [ giveaway, setGiveaway ] = useState('');
     const [ showUpdate, setShowUpdate ] = useState(false);
+    const [ showEntries, setShowEntries ] = useState(false);
 
     useEffect(() => {
         getGiveaway();
@@ -40,18 +42,23 @@ const GiveawayPage = () => {
     return (
         <MainContainer>
             <BackLink onClick={() => window.location = '/giveaways'}>Back to Giveaways</BackLink>
-            <ContentContainer>
-            {loading ?
-                <Spinner />
-            :
-                !giveaway ?
-                    <Text>Giveaway does not exist</Text>
+            <ContentContainer width='100%'>
+                <ContentContainer maxWidth='750px'>
+                {loading ?
+                    <Spinner />
                 :
-                    showUpdate ?
-                        <UpdateGiveaway giveaway={giveaway} getGiveaway={getGiveaway} setShowUpdate={setShowUpdate} />
+                    !giveaway ?
+                        <Text>Giveaway does not exist</Text>
                     :
-                        <Giveaway giveaway={giveaway} getGiveaway={getGiveaway} setShowUpdate={setShowUpdate} />
-            }
+                        showUpdate ?
+                            <UpdateGiveaway giveaway={giveaway} getGiveaway={getGiveaway} setShowUpdate={setShowUpdate} />
+                        :
+                            showEntries ?
+                                <GiveawayEntries giveaway={giveaway} getGiveaway={getGiveaway} setShowEntries={setShowEntries} />
+                            :
+                                <Giveaway giveaway={giveaway} getGiveaway={getGiveaway} setShowUpdate={setShowUpdate} setShowEntries={setShowEntries} />
+                }
+                </ContentContainer>
             </ContentContainer>
         </MainContainer>
     )

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '../../reusable/button/button.component';
-import Toasted from '../../reusable/toasted/toasted.component.jsx';
 
-import Client from '../../../tools/client';
-import { passwordValidation } from '../../../tools/user.js';
+import { ToastContext } from '../../../contexts/toast.context.jsx';
+
+import Client from '../../../tools/client.js';
+import Tools from '../../../tools/tools.js';
 
 import {
     UpdateInputsContainer,
@@ -16,28 +17,14 @@ import {
 } from './update-password.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const UpdatePassword = ({ setShowUpdatePassword }) => {
     const [ currentPassword, setCurrentPassword ] = useState('');
     const [ newPassword, setNewPassword ] = useState('');
     const [ confirmNewPassword, setConfirmNewPassword ] = useState('');
-    const [ toastMessage, setToastMessage ] = useState('');
-    const [ toastError, setToastError ] = useState(false);
-    const [ showToast, setShowToast ] = useState(false);
 
-    const getToasted = (toast) => toast();
-
-    const successToast = (message) => {
-        setToastMessage(message);
-        setToastError(false);
-        setShowToast(true);
-    }
-
-    const errorToast = (message) => {
-        setToastMessage(message);
-        setToastError(true);
-        setShowToast(true);
-    }
+    const { errorToast, successToast } = useContext(ToastContext);
 
     const checkFields = () => {
         if(currentPassword.length === 0 ||
@@ -46,7 +33,7 @@ const UpdatePassword = ({ setShowUpdatePassword }) => {
                 errorToast('Please complete all fields to update password');
             return false;
         }
-        if(!passwordValidation(newPassword)) {
+        if(!tools.passwordValidation(newPassword)) {
             errorToast('Password needs to be 8 characters in length or more with at least one number and one special character');
             return false;
         }
@@ -82,13 +69,6 @@ const UpdatePassword = ({ setShowUpdatePassword }) => {
                 <Button onClick={() => handlePasswordUpdate()}>Update Password</Button>
                 <UpdatePasswordText onClick={() => setShowUpdatePassword(false)}>Cancel</UpdatePasswordText>
             </UpdatePasswordContainer>
-            <Toasted 
-                message={toastMessage}
-                showToast={showToast}
-                setShowToast={setShowToast}
-                getToasted={getToasted}
-                error={toastError}
-            />
         </>
     )
 }

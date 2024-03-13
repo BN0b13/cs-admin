@@ -38,10 +38,15 @@
   }
   
   /* General sidebar styles */
-  .bm-menu {
+  /* No scroll menu */
+  /* .bm-menu {
     background: #373a47;
     font-size: 1.15em;
     overflow: hidden !important;
+  } */
+  .bm-menu {
+    background: #373a47;
+    font-size: 1.15em;
   }
   
   /* Morph shape necessary with bubble or elastic */

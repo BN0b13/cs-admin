@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import Button from '../../components/reusable/button/button.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
-import Client from "../../tools/client";
-import { formatDate } from "../../tools/tools";
+import Client from '../../tools/client.js';
+import Tools from '../../tools/tools.js';
 
 import {
     BackText,
@@ -21,6 +21,7 @@ import {
 } from './message.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const MessagePage = () => {
     const { id } = useParams();
@@ -100,7 +101,7 @@ const MessagePage = () => {
                                     <ContactInfoText>Email: { message.email }</ContactInfoText>
                                 </ContactInfoContainer>
                                 <ContactInfoContainer>
-                                    <ContactInfoText>Date: { formatDate(message.createdAt) }</ContactInfoText>
+                                    <ContactInfoText>Date: { tools.formatCreatedAtDate(message.createdAt) }</ContactInfoText>
                                     <ContactInfoText>Status: { message.status }</ContactInfoText>
                                     <ContactInfoText>Replied: { message.replied ? 'Yes' : 'No' }</ContactInfoText>
                                 </ContactInfoContainer>
