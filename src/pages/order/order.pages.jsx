@@ -21,7 +21,7 @@ const OrderPage = () => {
     const getOrder = async () => {
         setLoading(true);
         const res = await client.getOrderByRefId(refId);
-        let orderProducts = res.rows[0].products;
+        let orderProducts = res.products;
         
         for(let product in orderProducts) {
             const res = await client.getProductById(orderProducts[product].productId);
@@ -30,7 +30,7 @@ const OrderPage = () => {
 
 
         setProducts(orderProducts);
-        setOrder(res.rows[0]);
+        setOrder(res);
         setLoading(false);
     }
 

@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import Client from '../../../tools/client';
 
-import { HeaderNav } from './header.styles';
+import { UserContext } from '../../../contexts/user.context';
+
+import { 
+    HeaderNav,
+    InfoLinks
+} from './header.styles';
 
 const client = new Client();
 
@@ -11,10 +16,14 @@ const Header = () => {
     const [ newAccounts, setNewAccounts ] = useState(0);
     const [ newOrders, setNewOrders ] = useState(0);
 
+    const { currentUser } = useContext(UserContext);
+
     useEffect(() => {
-        getAccounts();
-        getOrders();
-    }, []);
+        if(currentUser?.roleId < 4) {
+            getAccounts();
+            getOrders();
+        }
+    }, [ currentUser ]);
 
     const getAccounts = async () => {
         const res = await client.getCustomers();
@@ -31,12 +40,14 @@ const Header = () => {
 
     return(
         <HeaderNav>
-            {newAccounts !== 0 &&
-                <h4 onClick={() => window.location.href = '/accounts'}>{newAccounts} New Account(s)</h4>
-            }
-            {newOrders !== 0 &&
-                <h4 onClick={() => window.location.href = '/orders'}>{newOrders} New Order(s)</h4>
-            }
+            <div>
+                {newAccounts !== 0 &&
+                    <InfoLinks onClick={() => window.location.href = '/accounts'}>{newAccounts} New Account(s)</InfoLinks>
+                }
+                {newOrders !== 0 &&
+                    <InfoLinks onClick={() => window.location.href = '/orders'}>{newOrders} New Order(s)</InfoLinks>
+                }
+            </div>
         </HeaderNav>
     )
 };

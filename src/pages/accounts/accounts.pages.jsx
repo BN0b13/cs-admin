@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import AddAccount from '../../components/accounts/add-account/add-account.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import UsersTable from '../../components/reusable/tables/users-table/users-table.component';
 
@@ -15,8 +16,11 @@ const client = new Client();
 
 const Accounts = () => {
     const [ loading, setLoading ] = useState(true);
-    const [ customerAccounts, setCustomerAccounts ] = useState(null);
+    const [ accounts, setAccounts ] = useState(null);
     const [ employeeAccounts, setEmployeeAccounts ] = useState(null);
+    const [ customerAccounts, setCustomerAccounts ] = useState(null);
+    const [ contributorAccounts, setContributorAccounts ] = useState(null);
+    const [ driverAccounts, setDriverAccounts ] = useState(null);
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
@@ -24,15 +28,20 @@ const Accounts = () => {
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
 
     useEffect(() => {
-        getCustomerAccounts();
+        getAccounts();
     }, []);
 
-    const getCustomerAccounts = async () => {
-        const customers = await client.getCustomers();
-        const employees = await client.getEmployees();
-
-        setCustomerAccounts(customers.rows);
-        setEmployeeAccounts(employees.rows);
+    const getAccounts = async () => {
+        const accountsRes = await client.getAccounts();
+        setAccounts(accountsRes.rows);
+        const employees = accountsRes.rows.filter(account => account.roleId === 3);
+        setEmployeeAccounts(employees);
+        const customers = accountsRes.rows.filter(account => account.roleId === 4);
+        setCustomerAccounts(customers);
+        const contributors = accountsRes.rows.filter(account => account.roleId === 5);
+        setContributorAccounts(contributors);
+        const drivers = accountsRes.rows.filter(account => account.roleId === 6);
+        setDriverAccounts(drivers);
         setLoading(false);
     }
 
@@ -62,15 +71,15 @@ const Accounts = () => {
         if(currentTab === 2) {
             return (
                 <>
-                    <AccountsTitle>Employees</AccountsTitle>
-                    <UsersTable users={employeeAccounts} />
+                    <AccountsTitle>Contributors</AccountsTitle>
+                    <UsersTable users={contributorAccounts} />
                 </>
             )
         }
 
         if(currentTab === 3) {
             return (
-                <AccountsTitle>Add Account</AccountsTitle>
+                <AddAccount getAccounts={getAccounts} />
             )
         }
 
@@ -92,7 +101,7 @@ const Accounts = () => {
         <div>
             <TabContainer>
                 <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Customers</TabSelector>
-                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Employees</TabSelector>
+                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Contributors</TabSelector>
                 <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Add Account</TabSelector>
             </TabContainer>
             { showCurrentTab() }

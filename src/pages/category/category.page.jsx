@@ -7,16 +7,14 @@ import ProductsTable from '../../components/reusable/tables/products-table/produ
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import UpdateCategory from '../../components/category/update-category/update-category.component';
 
-import { api } from '../../config';
-
 import Client from '../../tools/client';
 import { url } from '../../config';
 
 const client = new Client();
 
 const CategoryPage = () => {
-    const [ loading, setLoading ] = useState(true);
     const { id } = useParams();
+    const [ loading, setLoading ] = useState(true);
     const [ category, setCategory ] = useState('');
     const [ products, setProducts ] = useState('');
 

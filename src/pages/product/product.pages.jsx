@@ -10,10 +10,11 @@ import ClientHelper from '../../tools/client-helper';
 import { url } from '../../config';
 
 import {
+    BackLink,
+    ContentContainer,
     MainContainer,
-    MainTitle,
-    ProductsLink
-} from './product.styles';
+    MainTitle
+} from '../../styles/page.styles';
 
 const clientHelper = new ClientHelper();
 
@@ -36,8 +37,6 @@ const ProductPage = () => {
 
         setLoading(false);
 
-        console.log('Product Page - GET product by id res: ', res);
-
         return res.data;
     }
 
@@ -51,20 +50,20 @@ const ProductPage = () => {
 
     return (
         <MainContainer>
-            <ProductsLink onClick={() => window.location.href = `${url}/Products`}>
+            <BackLink onClick={() => window.location.href = `${url}/Products`}>
                 Back To Products
-            </ProductsLink>
+            </BackLink>
             {loading ?
                 <Spinner />
             :
                 product.length === 0 ?
                     <MainTitle>No Product to Display</MainTitle>
                 :
-                    <>
+                    <ContentContainer>
                         <ProductImages product={product} getProduct={getProduct} />
                         <ProductData product={product} getProduct={getProduct} />
                         <ProductInventory inventories={product.Inventories} />
-                    </>
+                    </ContentContainer>
             }
         </MainContainer>
     )

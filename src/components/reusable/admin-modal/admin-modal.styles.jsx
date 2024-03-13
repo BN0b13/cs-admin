@@ -53,6 +53,8 @@ export const ModalDiv = styled.div`
     background: #fff;
     padding: 20px;
     text-align: center;
+    max-width: 300px;
+    border-radius: 3px;
 `;
 
 export const ModalTitle = styled.h1`
@@ -75,4 +77,8 @@ export const Modal = styled.div`
     height: 100vh;
     width: 100vw;
     background: rgba(0,0,0,0.5);
+`;
+
+export const ModalInput = styled.input`
+    margin: 20px 0;
 `;

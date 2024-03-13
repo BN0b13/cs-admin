@@ -1,4 +1,5 @@
 export const tokenName = 'cosmicstrains-admin-token';
+export const themeTokenName = 'cs-admin-theme-token';
 
 // Prod
 export const api = 'https://api.cosmicstrains.com';
@@ -20,4 +21,4 @@ export const productTypes = [
     {
         type: 'clothes'
     },
-]
+];

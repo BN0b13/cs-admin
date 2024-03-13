@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Button from "../../../reusable/button/button.component";
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
+
+import { ToastContext } from '../../../../contexts/toast.context';
 
 import Client from "../../../../tools/client";
 
@@ -21,10 +22,8 @@ const ImportWelcomeImage = ({ refreshImages }) => {
     const [ caption, setCaption ] = useState('');
     const [ link, setLink ] = useState('');
     const [ position, setPosition ] = useState('');
-
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -38,9 +37,7 @@ const ImportWelcomeImage = ({ refreshImages }) => {
 
     const createWelcomeImage = async () => {
         if(image === '') {
-            setMsgContent('Please select an image.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please select an image.');
             return
         }
 
@@ -80,9 +77,6 @@ const ImportWelcomeImage = ({ refreshImages }) => {
                 <ImageFileInput type='text' value={link} onChange={(e) => setLink(e.target.value)} placeholder='Link' />
                 <ImageFileInput type='number' value={position} onChange={(e) => setPosition(e.target.value)}  placeholder='Position' />
             </MainForm>
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
 
             <Button onClick={() => createWelcomeImage()}>Add</Button>
         </MainContainer>

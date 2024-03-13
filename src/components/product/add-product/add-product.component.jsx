@@ -72,7 +72,7 @@ const AddProduct = () => {
                             <AddProductSubtitle>Select Product Type</AddProductSubtitle>
                                 <AddProductCategoryLabel htmlFor='product-type'>Product Type: </AddProductCategoryLabel>
                                 <AddProductCategorySelector name='product-type' onChange={(e) => selectProductType(e.target.value)} defaultValue={''}>
-                                    <AddProductCategoryOption key={0}  disabled value={''}> -- select an option -- </AddProductCategoryOption>
+                                    <AddProductCategoryOption key={0} value={''} disabled> -- select an option -- </AddProductCategoryOption>
                                     {productTypes.map((item, index) => (
                                             <AddProductCategoryOption key={index + 1} value={item.type}>{item.type}</AddProductCategoryOption>
                                     ))}
@@ -85,7 +85,7 @@ const AddProduct = () => {
                                             <AddProductSubtitle>Select Product's Category</AddProductSubtitle>
                                             <AddProductCategoryLabel htmlFor='categories'>Category: </AddProductCategoryLabel>
                                             <AddProductCategorySelector name='categories' onChange={(e) => setCategory(e.target.value)} defaultValue={0}>
-                                                <AddProductCategoryOption key={0} disabled value={0}> -- select an option -- </AddProductCategoryOption>
+                                                <AddProductCategoryOption key={0} value={0} disabled> -- select an option -- </AddProductCategoryOption>
                                                 {categories.map((item, index) => (
                                                         <AddProductCategoryOption key={index + 1} value={item.id}>{item.name}</AddProductCategoryOption>
                                                 ))}
