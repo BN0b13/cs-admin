@@ -18,7 +18,6 @@ import {
 const client = new Client();
 
 const CategoryImages = ({ category }) => {
-    console.log('Category: ', category);
     const [ image, setImage ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
@@ -44,8 +43,6 @@ const CategoryImages = ({ category }) => {
         formData.append('id', category.id);
 
         const res = await client.addCategoryImage(formData);
-
-        console.log('Add Category image res: ', res);
 
         setImage('');
         setImagePreview('');

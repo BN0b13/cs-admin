@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
-import Snackbar from '../../reusable/snackbar/snackbar.component';
 import Spinner from '../../reusable/spinner/spinner.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 import { api, url } from '../../../config';
@@ -26,10 +27,9 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
     const [ status, setStatus ] = useState(category.status);
 
     const [ loading, setLoading ] = useState(false);
-    const [ showMsg, setShowMsg] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    
+    const { errorToast, successToast } = useContext(ToastContext);
 
 
     const confirmDelete = () => {
@@ -41,9 +41,7 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
         
         if(res.status === 403) {
             setShowDeleteModal(false);
-            setMsgContent(res.message);
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast(res.message);
             return
         }
         
@@ -53,15 +51,9 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
     const updateCategory = async () => {
         setLoading(true);
 
-
-        console.log('Name: ', name);
-        console.log(name.length);
-
         if(name.length === 0 ||
         description.length === 0) {
-            setMsgContent('Please fill out all fields to update category.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields to update category.');
             setLoading(false);
             return
         }
@@ -76,9 +68,7 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
 
         await client.updateCategory(data);
 
-        setMsgContent('Category Updated');
-        setMsgType('success');
-        setShowMsg(true);
+        successToast('Category Updated');
         getCategory();
         setLoading(false);
     }
@@ -116,9 +106,6 @@ const UpdateCategory = ({ category, setShowEdit, getCategory }) => {
                         <Button onClick={() => updateCategory()}>Update</Button>
                     </ButtonContainer>
                     <h2>Products in Category</h2>
-                    {showMsg &&
-                        <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-                    }
                 </>
             }
         </MainContainer>

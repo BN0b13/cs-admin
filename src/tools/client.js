@@ -51,6 +51,64 @@ export default class Client {
         return res;
     }
 
+    async getAccountByPasswordToken(passwordToken) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/account/activate/${passwordToken}`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async getAccount() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/account`, requestOptions);
+        const res = await account.json();
+
+        return res;
+    }
+
+    async getAccounts() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const account = await fetch(`${api}/admin/users`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async createAccount(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const account = await fetch(`${api}/admin/accounts`, requestOptions);
+        const res = await account.json();
+        return res;
+    }
+
+    async activateAdminCreatedAccount(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data);
+        const categories = await fetch(`${api}/account/activate`, requestOptions);
+        const res = await categories.json();
+        return res;
+    }
+
+    async updateAccount(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const account = await fetch(`${api}/user`, requestOptions);
+        const res = await account.json();
+
+        return res;
+    }
+
+    async updateAccountPassword(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const updateAccountPassword = await fetch(`${api}/user/update-password`, requestOptions);
+        const res = await updateAccountPassword.json();
+        return res;
+    }
+
+    async deleteAccount() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, '', true);
+        const deleteAccountRes = await fetch(`${api}/user/delete-account`, requestOptions);
+        const res = await deleteAccountRes.json();
+        return res;
+    }
+
     // Categories
 
     async getCategories() {
@@ -109,7 +167,58 @@ export default class Client {
         return res;
     }
 
+    // Company
+
+    async getCompanies() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const companies = await fetch(`${api}/admin/companies`, requestOptions);
+        const res = await companies.json();
+        return res;
+    }
+
+    async getCompanyById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const company = await fetch(`${api}/admin/companies/${id}`, requestOptions);
+        const res = await company.json();
+        return res;
+    }
+
+    async addCompanyLogo(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true, true);
+        const companyLogo = await fetch(`${api}/admin/companies/logo`, requestOptions);
+        const res = await companyLogo.json();
+        return res;
+    }
+
+    async updateCompany(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const companies = await fetch(`${api}/admin/companies`, requestOptions);
+        const res = await companies.json();
+        return res;
+    }
+
+    async deleteCompany(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const company = await fetch(`${api}/admin/companies`, requestOptions);
+        const res = await company.json();
+        return res;
+    }
+
+    async deleteCompanyLogo(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const company = await fetch(`${api}/admin/companies/logo`, requestOptions);
+        const res = await company.json();
+        return res;
+    }
+
     // Configuration
+
+    async configuration() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get);
+        const configuration = await fetch(`${api}/configuration`, requestOptions);
+        const res = await configuration.json();
+        return res;
+    } 
 
     async getWelcomeImages() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
@@ -173,6 +282,41 @@ export default class Client {
         return res;
     }
 
+    async getGiveaways() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
+    async getGiveawayById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const customers = await fetch(`${api}/admin/giveaways/${id}`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
+    async createGiveaway(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const categories = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await categories.json();
+        return res;
+    }
+
+    async updateGiveaway(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
+        const giveaway = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await giveaway.json();
+        return res;
+    }
+
+    async deleteGiveaway(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
+        const giveaway = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await giveaway.json();
+        return res;
+    }
+
     // Inventory
 
     async getInventory() {
@@ -200,6 +344,15 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
         const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
         const res = await inventory.json();
+        return res;
+    }
+
+    // Login
+
+    async login(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const login = await fetch(`${api}/admin/login`, requestOptions);
+        const res = await login.json();
         return res;
     }
 
@@ -353,6 +506,15 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.delete, data, true);
         const deleteProductImage = await fetch(`${api}/admin/products/product-image`, requestOptions);
         const res = await deleteProductImage.json();
+        return res;
+    }
+
+    // Roles
+
+    async getRoles() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const roles = await fetch(`${api}/admin/roles`, requestOptions);
+        const res = await roles.json();
         return res;
     }
 

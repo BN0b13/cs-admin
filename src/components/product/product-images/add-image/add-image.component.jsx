@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Button from "../../../reusable/button/button.component";
-import Snackbar from '../../../reusable/snackbar/snackbar.component';
+
+import { ToastContext } from '../../../../contexts/toast.context';
 
 import Client from "../../../../tools/client";
 
@@ -19,10 +20,8 @@ const AddImage = ({ id, name, getProduct }) => {
     const [ imagePreview, setImagePreview ] = useState('');
     const [ fileInput, setFileInput ] = useState('');
     const [ caption, setCaption ] = useState('');
-
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -36,9 +35,7 @@ const AddImage = ({ id, name, getProduct }) => {
 
     const addProductImage = async () => {
         if(image === '') {
-            setMsgContent('Please select an image.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please select an image.');
             return
         }
 
@@ -75,9 +72,6 @@ const AddImage = ({ id, name, getProduct }) => {
                     </>
                 }
             </MainForm>
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
         </MainContainer>
     )
 }

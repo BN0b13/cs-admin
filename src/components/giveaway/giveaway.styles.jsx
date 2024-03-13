@@ -1,41 +1,59 @@
 import styled from "styled-components";
 
-export const MainContainer = styled.div`
+import { setMobileView } from '../../tools/mobileView';
+
+export const GiveawayRowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
+`;
+
+export const GiveawayColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-contents: center;
+    justify-content: center;
     align-items: center;
-    
+    max-width: 320px;
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
 `;
 
-export const GiveawayInput = styled.div`
-    padding: 5px;
-    margin: 5px;
+export const GiveawayText = styled.h5`
+    margin: ${props => props.margin ? props.margin : '0 0 10px 0'};
 `;
 
-export const GiveawayTable = styled.table`
-    border: 1px solid;
-    border-collapse: collapse;
+export const GiveawayTextarea = styled.textarea`
+    width: 300px;
+    height: 150px;
+    margin: 10px 0;
 `;
 
-export const GiveawayTableHeader = styled.thead`
-    
-`;
+export const GiveawayButton = styled.button`
+    margin-bottom: 40px;
+    min-width: ${setMobileView() ? '135px' : '165px'};
+    width: auto;
+    height: 40px;
+    letter-spacing: 0.5px;
+    line-height: 40px;
+    padding: 0 15px 0 15px;
+    font-size: ${setMobileView() ? '10px' : '12px'};
+    background-color: #000;
+    color: white;
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed';
+    font-weight: bolder;
+    border: 1px solid white;
+    border-radius: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
 
-export const GiveawayTableHead = styled.th`
-    padding: 8px;
-    border: 1px solid;
-`;
-
-export const GiveawayTableBody = styled.tbody`
-    
-`;
-
-export const GiveawayTableRow = styled.tr`
-    border: 1px solid;
-`;
-
-export const GiveawayTableData = styled.td`
-    padding: 8px;
-    border: 1px solid;
+    &:hover {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    }
 `;

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
-import Snackbar from '../../reusable/snackbar/snackbar.component';
 import Spinner from '../../reusable/spinner/spinner.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 
@@ -29,9 +30,8 @@ const AddCategory = () => {
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ type, setType ] = useState('');
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    
+    const { errorToast } = useContext(ToastContext);
 
     const handleFileChange = (e) => {
         setThumbnail(e.target.files[0]);
@@ -47,9 +47,7 @@ const AddCategory = () => {
         if(name === '' || 
         description === '' || 
         type === '') {
-            setMsgContent('Please fill out all fields.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields.');
             return;
         }
         setLoading(true);
@@ -69,9 +67,7 @@ const AddCategory = () => {
             return window.location.href = `${url}/categories/${res.id}`;
         }
 
-        setMsgContent('There was an error creating category. Please try again.');
-        setMsgType('error');
-        setShowMsg(true);
+        errorToast('There was an error creating category. Please try again.');
         setLoading(false);
     }
 
@@ -82,7 +78,7 @@ const AddCategory = () => {
                 <Spinner />
             :
                 <NewCategoryContainer>
-                    {imagePreview && <img src={imagePreview} width='300' height='300' />}
+                    {imagePreview && <img src={imagePreview} width='300' height='300' alt='Category Preview' />}
                     <AddCategoryLabel>Thumbnail:
                         <AddCategoryInput type='file' accept='image/*' name='thumbnail' onChange={e => handleFileChange(e)} />
                     </AddCategoryLabel>
@@ -95,9 +91,6 @@ const AddCategory = () => {
                                 <AddCategoryOption key={index + 1} value={item.type}>{item.type}</AddCategoryOption>
                         ))}
                     </AddCategorySelector>
-                    {showMsg &&
-                        <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-                    }
                     <AddCategoryButton onClick={() => addCategory()}>Add Category</AddCategoryButton>
                 </NewCategoryContainer>
             }

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import Snackbar from '../reusable/snackbar/snackbar.component';
+import { ToastContext } from '../../contexts/toast.context';
 
 import Client from '../../tools/client';
 
@@ -30,10 +30,8 @@ const ProductProfile = () => {
     const [ description, setDescription ] = useState('');
     const [ icon, setIcon ] = useState('');
     const [ imagePreview, setImagePreview ] = useState('');
-
-    const [ showMsg, setShowMsg ] = useState(false);
-    const [ msgContent, setMsgContent ] = useState('');
-    const [ msgType, setMsgType ] = useState('error');
+    
+    const { errorToast, successToast } = useContext(ToastContext);
 
     useEffect(() => {
         getProductProfiles();
@@ -47,9 +45,7 @@ const ProductProfile = () => {
 
     const addProductProfile = async () => {
         if(name === '' || description === '' || icon === '') {
-            setMsgContent('Please fill out all fields and select an icon.');
-            setMsgType('error');
-            setShowMsg(true);
+            errorToast('Please fill out all fields and select an icon.');
             return;
         }
 
@@ -61,9 +57,7 @@ const ProductProfile = () => {
 
         await client.createProductProfile(formData);
 
-        setMsgContent('Product Profile created successfully.');
-        setMsgType('success');
-        setShowMsg(true);
+        successToast('Product Profile created successfully.');
         setName('');
         setDescription('');
         setImagePreview('');
@@ -91,10 +85,6 @@ const ProductProfile = () => {
             </AddProductProfileLabel>
             <AddProductProfileInput type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
             <AddProductProfileTextarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
-
-            {showMsg &&
-                <Snackbar msg={msgContent} type={msgType} show={setShowMsg} />
-            }
             <AddProductProfileButton onClick={() => addProductProfile()}>Add Product Profile</AddProductProfileButton>
             <MainTitle>Current Product Profiles</MainTitle>
             {productProfiles.length === 0 ? 

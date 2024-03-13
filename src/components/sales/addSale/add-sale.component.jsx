@@ -27,8 +27,6 @@ const AddSale = () => {
     const [ expirationType, setExpirationType ] = useState('');
 
     const createSale = async () => {
-        console.log('Create Sale hit', name);
-        console.log('Type: ', type);
         if(name === '' || type === '') { 
             console.log('REJECTED!');
             return
@@ -60,8 +58,6 @@ const AddSale = () => {
             setExpirationDate('');
             setExpirationType('');
         }
-
-        console.log('CREATE sale res: ', res);
     }
 
     return (

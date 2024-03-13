@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import AccountDetails from '../../components/accounts/account-details/account-details.component';
 import Contents from '../../components/configuration/welcome/contents/contents.component';
 import CurrentWelcomeImages from '../../components/configuration/welcome/current/current.component';
 import ImportWelcomeImage from '../../components/configuration/welcome/import/import.component';
@@ -23,6 +24,7 @@ const ConfigurationPage = () => {
     const [ tabOneActive, setTabOneActive ] = useState(true);
     const [ tabTwoActive, setTabTwoActive ] = useState(false);
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
+    const [ tabFourActive, setTabFourActive ] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -41,6 +43,7 @@ const ConfigurationPage = () => {
         setTabOneActive(true);
         setTabTwoActive(false);
         setTabThreeActive(false);
+        setTabFourActive(false);
     }
 
     const activateTabTwo = () => {
@@ -48,6 +51,7 @@ const ConfigurationPage = () => {
         setTabOneActive(false);
         setTabTwoActive(true);
         setTabThreeActive(false);
+        setTabFourActive(false);
     }
 
     const activateTabThree = () => {
@@ -55,6 +59,15 @@ const ConfigurationPage = () => {
         setTabOneActive(false);
         setTabTwoActive(false);
         setTabThreeActive(true);
+        setTabFourActive(false);
+    }
+
+    const activateTabFour = () => {
+        setCurrentTab(4);
+        setTabOneActive(false);
+        setTabTwoActive(false);
+        setTabThreeActive(false);
+        setTabFourActive(true);
     }
 
     const showCurrentTab = () => {
@@ -67,6 +80,12 @@ const ConfigurationPage = () => {
         if(currentTab === 3) {
             return (
                 <Theme />
+            )
+        }
+
+        if(currentTab === 4) {
+            return (
+                <AccountDetails />
             )
         }
 
@@ -89,9 +108,10 @@ const ConfigurationPage = () => {
     return (
         <MainContainer>
             <TabContainer>
-                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Welcome Page Configuration</TabSelector>
-                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>About Page Configuration</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Theme Configuration</TabSelector>
+                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Welcome Page</TabSelector>
+                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>About Page</TabSelector>
+                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Theme</TabSelector>
+                <TabSelector active={tabFourActive} onClick={() => activateTabFour()}>Store Account</TabSelector>
             </TabContainer>
             <ContentContainer>
                 { showCurrentTab() }

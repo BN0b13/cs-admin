@@ -1,17 +1,20 @@
 import React from 'react';
 
-import LoginForm from '../../components/login-form/login-form.component';
+import Login from '../../components/login/login.component';
 
 import {
-  LoginPageContainer
-} from './login.styles';
+  ContentContainer,
+  MainContainer
+} from '../../styles/page.styles';
 
 const LoginPage = () => {
 
   return (
-    <LoginPageContainer>
-      <LoginForm />
-    </LoginPageContainer>
+    <MainContainer>
+      <ContentContainer>
+        <Login />
+      </ContentContainer>
+    </MainContainer>
   )
 }
   
