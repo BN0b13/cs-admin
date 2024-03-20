@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import Views from '../../components/metrics/views/views.component';
+import CustomerMetrics from '../../components/metrics/customer-metrics/customer-metrics.component';
+import OrderMetrics from '../../components/metrics/order-metrics/order-metrics.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
+import ViewMetrics from '../../components/metrics/view-metrics/view-metrics.component';
 
 import Client from '../../tools/client';
 
@@ -20,14 +22,6 @@ const MetricsPage = () => {
     const [ tabOneActive, setTabOneActive ] = useState(true);
     const [ tabTwoActive, setTabTwoActive ] = useState(false);
     const [ tabThreeActive, setTabThreeActive ] = useState(false);
-
-    // Possible metrics:
-    // User sign ups - by date: monthly, weekly, daily etc
-    // Amount of orders
-    // Amount of orders by repeat customers
-    // Amount of products sold
-    // Amount of users deleting their accounts
-    // News letter accepts and cancels
 
     useEffect(() => {
         getProducts();
@@ -65,13 +59,13 @@ const MetricsPage = () => {
 
         if(currentTab === 2) {
             return (
-                <h2>tab 2</h2>
+                <CustomerMetrics />
             )
         }
 
         if(currentTab === 3) {
             return (
-                <h2>tab 3</h2>
+                <OrderMetrics />
             )
         }
 
@@ -80,7 +74,7 @@ const MetricsPage = () => {
                 {loading ?
                     <Spinner />
                 :
-                <Views />
+                <ViewMetrics />
                 }
             </>
         )

@@ -36,15 +36,15 @@ ChartJS.register(
   
   
   const LineChart = (params) => {
-    const labels = params.views.map(view => new Date(view.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"}));
+    const labels = params.data.map(item => new Date(item.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"}));
 
     
     const data = {
       labels,
       datasets: [
         {
-          label: 'Views',
-          data: params.views.map(view => view.count),
+          label: params.title || '',
+          data: params.data.map(item => item.count),
           borderColor: 'rgb(0, 0, 0)',
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },

@@ -264,6 +264,13 @@ export default class Client {
         return res;
     }
 
+    async getCustomersByDateRange(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const customers = await fetch(`${api}/admin/customers/date`, requestOptions);
+        const res = await customers.json();
+        return res;
+    }
+
     // Employees
 
     async getEmployees() {
@@ -398,6 +405,13 @@ export default class Client {
     async getOrderByRefId(refId) {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const orders = await fetch(`${api}/admin/orders/search/ref-id/${refId}`, requestOptions);
+        const res = await orders.json();
+        return res;
+    }
+
+    async getOrdersByDateRange(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const orders = await fetch(`${api}/admin/orders/date`, requestOptions);
         const res = await orders.json();
         return res;
     }
