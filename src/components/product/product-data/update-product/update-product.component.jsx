@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import AdminModal from '../../../reusable/admin-modal/admin-modal.component';
 import Button from '../../../reusable/button/button.component';
+import UpdateInventory from '../../../inventory/update-inventory/update-inventory.component';
 
 import { ToastContext } from '../../../../contexts/toast.context';
 
@@ -178,6 +179,7 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
                     <Button onClick={() => updateProduct()}>Update</Button>
                 </ButtonRowContainer>
             </ButtonContainer>
+            <UpdateInventory inventories={product.Inventories} getProduct={getProduct} />
         </MainContainer>
     )
 }

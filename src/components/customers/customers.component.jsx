@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react';
 import Spinner from '../reusable/spinner/spinner.component';
 
 import Client from '../../tools/client';
+import Tools from '../../tools/tools';
+
+import {
+  MainContainer
+} from '../../styles/component.styles';
 
 import {
     CustomersContainer,
@@ -17,27 +22,28 @@ import {
 } from './customers.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const Customers = () => {
    const [ customers, setCustomers ] = useState(null);
 
    useEffect(() => {
-    const getCustomers = async () => {
-      const res = await client.getCustomers();
-      setCustomers(res.rows);
-    }
 
     getCustomers();
    }, []);
 
-   if(!customers) {
-    return (
-      <Spinner />
-    );
-   }
+   const getCustomers = async () => {
+    const res = await client.getCustomers();
+    const sortedCustomers = tools.sortByDateAscending(res.rows);
+    setCustomers(sortedCustomers);
+  }
 
     return (
-      <CustomersContainer>
+      <MainContainer>
+        {loading ?
+          <Spinner />
+        :
+        <CustomersContainer>
         <CustomersTitle>Customers</CustomersTitle>
         {customers.length === 0 ? 
           <CustomersSubTitle>No Customers to display.</CustomersSubTitle>
@@ -78,6 +84,8 @@ const Customers = () => {
           </CustomersTable>
         }
       </CustomersContainer>
+        }
+      </MainContainer>
     );
 }
 
