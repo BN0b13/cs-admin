@@ -5,6 +5,7 @@ import Spinner from '../../components/reusable/spinner/spinner.component';
 import UsersTable from '../../components/reusable/tables/users-table/users-table.component';
 
 import Client from '../../tools/client';
+import Tools from '../../tools/tools';
 
 import {
     AccountsTitle,
@@ -13,6 +14,7 @@ import {
 } from './accounts.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const Accounts = () => {
     const [ loading, setLoading ] = useState(true);
@@ -37,9 +39,11 @@ const Accounts = () => {
         const employees = accountsRes.rows.filter(account => account.roleId === 3);
         setEmployeeAccounts(employees);
         const customers = accountsRes.rows.filter(account => account.roleId === 4);
-        setCustomerAccounts(customers);
+        const sortedCustomers = tools.sortByDateAscending(customers);
+        setCustomerAccounts(sortedCustomers);
         const contributors = accountsRes.rows.filter(account => account.roleId === 5);
-        setContributorAccounts(contributors);
+        const sortedContributors = tools.sortByDateAscending(contributors);
+        setContributorAccounts(sortedContributors);
         const drivers = accountsRes.rows.filter(account => account.roleId === 6);
         setDriverAccounts(drivers);
         setLoading(false);

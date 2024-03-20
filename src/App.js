@@ -13,7 +13,6 @@ import ContributorAccountPage from './pages/role-based/contributor/contributor-a
 import ContributorCompanyPage from './pages/role-based/contributor/contributor-company/contributor-company.pages';
 import GiveawayPage from './pages/giveaway/giveaway.page';
 import GiveawaysPage from './pages/giveaways/giveaways.pages';
-import InventoryPage from './pages/inventory/inventory.pages';
 import LoginPage from './pages/login/login.pages';
 import MessagePage from './pages/message/message.pages';
 import MessagesPage from './pages/messages/messages.pages';
@@ -117,7 +116,6 @@ function App() {
         <Route path="/configuration" element={<ConfigurationPage />} />
         <Route path="/giveaways" element={<GiveawaysPage />} />
         <Route path="/giveaways/:id" element={<GiveawayPage />} />
-        <Route path="/inventory" element={<InventoryPage />} />
         <Route path='/messages' element={<MessagesPage />} />
         <Route path='/messages/:id' element={<MessagePage />} />
         <Route path="/orders" element={<Orders />} />
