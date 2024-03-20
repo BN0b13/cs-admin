@@ -70,13 +70,7 @@ const MetricsPage = () => {
         }
 
         return (
-            <>
-                {loading ?
-                    <Spinner />
-                :
-                <ViewMetrics />
-                }
-            </>
+            <ViewMetrics />
         )
     }
 
@@ -85,9 +79,13 @@ const MetricsPage = () => {
             <TabContainer>
                 <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Views</TabSelector>
                 <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Customers</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Sales</TabSelector>
+                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Orders</TabSelector>
             </TabContainer>
-            { showCurrentTab() }
+            {loading ?
+                <Spinner />
+            :
+                showCurrentTab()
+            }
         </div>
     )
 }
