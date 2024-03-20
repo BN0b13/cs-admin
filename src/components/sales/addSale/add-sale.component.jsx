@@ -1,21 +1,24 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import Select from 'react-select';
 
 import Button from '../../reusable/button/button.component';
+
+import { ToastContext } from '../../../contexts/toast.context';
 
 import Client from '../../../tools/client';
 
 import {
+    ContentContainer,
+    Input,
     MainContainer,
-    SaleContainer,
-    SaleInput,
-    SaleOption,
-    SaleSelect,
-    SaleTextarea
-} from './add-sale.styles';
+    RowContainer,
+    Textarea,
+    Title
+} from '../../../styles/component.styles';
 
 const client = new Client();
 
-const AddSale = () => {
+const AddSale = ({ setShowAddSale }) => {
     const [ categoryId, setCategoryId ] = useState('');
     const [ productId, setProductId ] = useState('');
     const [ inventoryId, setInventoryId ] = useState('');
@@ -26,16 +29,23 @@ const AddSale = () => {
     const [ expirationDate, setExpirationDate ] = useState('');
     const [ expirationType, setExpirationType ] = useState('');
 
+    const { errorToast } = useContext(ToastContext);
+
+    const options = [
+        { value: '', label: '-- Select an Option --', isDisabled: true },
+        { value: 'bogo', label: 'BOGO' }
+    ];
+
     const createSale = async () => {
         if(name === '' || type === '') { 
-            console.log('REJECTED!');
+            errorToast('Please fill in all fields to create sale.');
             return
         }
 
         const data = {
             name,
             type
-        }
+        };
 
         if (categoryId !== '') { data.categoryId = categoryId };
         if (productId !== '') { data.productId = productId };
@@ -62,18 +72,23 @@ const AddSale = () => {
 
     return (
         <MainContainer>
-            <p>Add Sale</p>
-            <SaleContainer>
-                <SaleInput value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
-                <SaleTextarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
-                <SaleSelect value={type} onChange={(e) => setType(e.target.value)} placeholder='Type' defaultValue={''} >
-                    <SaleOption key={0}  disabled value={''}> -- select an option -- </SaleOption>
-                    <SaleOption value={'bogo'}>BOGO</SaleOption>
-                </SaleSelect>
+            <Title>Add Sale</Title>
+            <ContentContainer>
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
+                <RowContainer margin={'20px 0'}>
+                    <Select
+                        defaultValue={type}
+                        onChange={setType}
+                        options={options}
+                    />
+                </RowContainer>
 
-
-                <Button onClick={() => createSale()}>Add Sale</Button>
-            </SaleContainer>
+                <RowContainer>
+                    <Button onClick={() => setShowAddSale(false)}>Cancel</Button>
+                    <Button onClick={() => createSale()}>Add Sale</Button>
+                </RowContainer>
+            </ContentContainer>
         </ MainContainer>
     )
 }

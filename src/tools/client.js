@@ -563,4 +563,11 @@ export default class Client {
         const res = await account.json();
         return res;
     }
+
+    async getViewsByDateRange(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const views = await fetch(`${api}/admin/visits/date`, requestOptions);
+        const res = await views.json();
+        return res;
+    }
 }
