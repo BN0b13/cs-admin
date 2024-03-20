@@ -6,6 +6,7 @@ import Spinner from '../../components/reusable/spinner/spinner.component';
 import ProductsTable from '../../components/reusable/tables/products-table/products-table.component';
 
 import Client from '../../tools/client';
+import Tools from '../../tools/tools';
 
 import {
     TabContainer,
@@ -13,6 +14,7 @@ import {
 } from './products.styles';
 
 const client = new Client();
+const tools = new Tools();
 
 const ProductsPage = () => {
     const [ products, setProducts ] = useState(null);
@@ -28,8 +30,9 @@ const ProductsPage = () => {
 
     const getProducts = async () => {
         const res = await client.getProducts();
+        const sortedProducts = tools.sortByDateAscending(res.rows);
 
-        setProducts(res.rows);
+        setProducts(sortedProducts);
     }
 
     const activateTabOne = () => {
