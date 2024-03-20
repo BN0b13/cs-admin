@@ -277,29 +277,29 @@ export default class Client {
 
     async getGiveawaySignUp(amount = 1) {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const customers = await fetch(`${api}/admin/giveaway/signup/today/${amount}`, requestOptions);
-        const res = await customers.json();
+        const giveaway = await fetch(`${api}/admin/giveaway/signup/today/${amount}`, requestOptions);
+        const res = await giveaway.json();
         return res;
     }
 
     async getGiveaways() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const customers = await fetch(`${api}/admin/giveaways`, requestOptions);
-        const res = await customers.json();
+        const giveaways = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await giveaways.json();
         return res;
     }
 
     async getGiveawayById(id) {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const customers = await fetch(`${api}/admin/giveaways/${id}`, requestOptions);
-        const res = await customers.json();
+        const giveaway = await fetch(`${api}/admin/giveaways/${id}`, requestOptions);
+        const res = await giveaway.json();
         return res;
     }
 
     async createGiveaway(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
-        const categories = await fetch(`${api}/admin/giveaways`, requestOptions);
-        const res = await categories.json();
+        const giveaway = await fetch(`${api}/admin/giveaways`, requestOptions);
+        const res = await giveaway.json();
         return res;
     }
 
@@ -329,6 +329,13 @@ export default class Client {
     async getInventoryById(id) {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const inventory = await fetch(`${api}/admin/inventory/id`, requestOptions);
+        const res = await inventory.json();
+        return res;
+    }
+
+    async createInventory(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const inventory = await fetch(`${api}/admin/inventory`, requestOptions);
         const res = await inventory.json();
         return res;
     }

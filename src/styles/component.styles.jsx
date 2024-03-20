@@ -141,11 +141,13 @@ export const TableBody = styled.tbody`
 
 export const TableRow = styled.tr`
     border: 1px solid;
+    cursor: ${props => props.cursor || ''};
 `;
 
 export const TableData = styled.td`
     padding: ${setMobileView() ? '3px' : '8px'};
     border: 1px solid;
+    cursor: ${props => props.cursor || ''};
 `;
 
 export const TableDataLink = styled.td`

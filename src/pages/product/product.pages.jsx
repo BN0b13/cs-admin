@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import ProductData from '../../components/product/product-data/product-data.component';
 import ProductImages from '../../components/product/product-images/product-images.component';
-import ProductInventory from '../../components/product/product-inventory/product-inventory.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import ClientHelper from '../../tools/client-helper';
@@ -40,14 +39,6 @@ const ProductPage = () => {
         return res.data;
     }
 
-    // display
-
-    // product images - main image, gallery and add/delete image
-
-    // product data - update and delete product
-
-    // product inventory - current inventory, add, update and delete inventory.
-
     return (
         <MainContainer>
             <BackLink onClick={() => window.location.href = `${url}/Products`}>
@@ -62,7 +53,6 @@ const ProductPage = () => {
                     <ContentContainer>
                         <ProductImages product={product} getProduct={getProduct} />
                         <ProductData product={product} getProduct={getProduct} />
-                        <ProductInventory inventories={product.Inventories} />
                     </ContentContainer>
             }
         </MainContainer>

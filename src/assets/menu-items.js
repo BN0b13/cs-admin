@@ -10,7 +10,6 @@ import {
   VscFile,
   VscFolder,
   VscPieChart,
-  VscChecklist,
   VscSettingsGear
 } from 'react-icons/vsc';
 
@@ -49,11 +48,6 @@ export const menuItemsAdmin = [
     title: 'Products',
     path: '/products',
     icon: (<VscFile />)
-  },
-  {
-    title: 'Inventory',
-    path: '/inventory',
-    icon: (<VscChecklist />)
   },
   {
     title: 'Sales',
