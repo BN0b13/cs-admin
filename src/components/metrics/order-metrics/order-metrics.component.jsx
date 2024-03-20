@@ -50,10 +50,8 @@ const OrderMetrics = () => {
     const res = await client.getOrders();
     const sortedData = tools.sortByDateAscending(res.rows);
     setData(sortedData);
-    let total = 0;
-    res.rows.map(row => total = total + row.count);
-    setTotalCount(total);
-    setCurrentCount(total);
+    setTotalCount(res.count);
+    setCurrentCount(res.count);
     setLoading(false);
   }
 
@@ -93,9 +91,8 @@ const OrderMetrics = () => {
     };
 
     const res = await client.getOrdersByDateRange(data);
-    let total = 0;
-    res.rows.map(row => total = total + row.count);
-    setCurrentCount(total);
+    console.log('Get orders by date range: ', res);
+    setCurrentCount(res.count);
     const sortedData = tools.sortByDateAscending(res.rows);
     setData(sortedData);
     setLoading(false);
