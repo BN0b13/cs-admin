@@ -44,7 +44,7 @@ ChartJS.register(
       datasets: [
         {
           label: params.title || '',
-          data: params.data.map(item => item.count),
+          data: params.data.map(item => params.title === 'Views' ? item.count : item),
           borderColor: 'rgb(0, 0, 0)',
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },

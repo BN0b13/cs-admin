@@ -91,7 +91,6 @@ const CustomerMetrics = () => {
     };
 
     const res = await client.getCustomersByDateRange(data);
-    console.log('GET customers by date range res: ', res);
     setCurrentCount(res.count);
     const sortedData = tools.sortByDateAscending(res.rows);
     setData(sortedData);

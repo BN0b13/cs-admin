@@ -73,6 +73,13 @@ export default class Client {
         return res;
     }
 
+    async searchAccounts(params) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const search = await fetch(`${api}/admin/users/search${params}`, requestOptions);
+        const res = await search.json();
+        return res;
+    }
+
     async createAccount(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
         const account = await fetch(`${api}/admin/accounts`, requestOptions);

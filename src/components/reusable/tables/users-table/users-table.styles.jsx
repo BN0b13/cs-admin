@@ -28,6 +28,7 @@ export const UserTableBody = styled.tbody`
 
 export const UserTableRow = styled.tr`
     border: 1px solid;
+    cursor: ${params => params.pointer ? 'pointer' : ''};
 `;
 
 export const UserTableData = styled.td`
