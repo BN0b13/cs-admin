@@ -91,7 +91,6 @@ const OrderMetrics = () => {
     };
 
     const res = await client.getOrdersByDateRange(data);
-    console.log('Get orders by date range: ', res);
     setCurrentCount(res.count);
     const sortedData = tools.sortByDateAscending(res.rows);
     setData(sortedData);

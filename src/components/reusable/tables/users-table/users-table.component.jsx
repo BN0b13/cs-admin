@@ -16,8 +16,8 @@ const UsersTable = ({ users }) => (
                 <UserTableHeader>
                     <UserTableRow>
                         <UserTableHead>Email</UserTableHead>
+                        <UserTableHead>Username</UserTableHead>
                         <UserTableHead>Name</UserTableHead>
-                        <UserTableHead>Phone</UserTableHead>
                         <UserTableHead>Join Date</UserTableHead>
                     </UserTableRow>
                 </UserTableHeader>
@@ -26,10 +26,10 @@ const UsersTable = ({ users }) => (
                     const formattedDate = new Date(user.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
                     
                     return (
-                        <UserTableRow key={index}>
-                            <UserTableData><a href={`${url}/accounts/${user.id}`}>{user.email}</a></UserTableData>
+                        <UserTableRow key={index} onClick={() => window.location = `${url}/accounts/${user.id}`} pointer={true}>
+                            <UserTableData>{user.email}</UserTableData>
+                            <UserTableData>{user.username}</UserTableData>
                             <UserTableData>{user.firstName} {user.lastName}</UserTableData>
-                            <UserTableData>{user.phone}</UserTableData>
                             <UserTableData>{formattedDate}</UserTableData>
                         </UserTableRow>
                 )})}

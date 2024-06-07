@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import AddAccount from '../../components/accounts/add-account/add-account.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
+import UserSearchBar from '../../components/reusable/search-bar/users/users-search-bar.component';
 import UsersTable from '../../components/reusable/tables/users-table/users-table.component';
 
 import Client from '../../tools/client';
@@ -9,6 +10,7 @@ import Tools from '../../tools/tools';
 
 import {
     AccountsTitle,
+    SearchBarContainer,
     TabContainer,
     TabSelector
 } from './accounts.styles';
@@ -36,16 +38,27 @@ const Accounts = () => {
     const getAccounts = async () => {
         const accountsRes = await client.getAccounts();
         setAccounts(accountsRes.rows);
-        const employees = accountsRes.rows.filter(account => account.roleId === 3);
+        sortAccounts(accountsRes.rows);
+        setLoading(false);
+    }
+
+    const sortAccounts = (accounts) => {
+        const employees = accounts.filter(account => account.roleId === 3);
         setEmployeeAccounts(employees);
-        const customers = accountsRes.rows.filter(account => account.roleId === 4);
+        const customers = accounts.filter(account => account.roleId === 4);
         const sortedCustomers = tools.sortByDateAscending(customers);
         setCustomerAccounts(sortedCustomers);
-        const contributors = accountsRes.rows.filter(account => account.roleId === 5);
+        const contributors = accounts.filter(account => account.roleId === 5);
         const sortedContributors = tools.sortByDateAscending(contributors);
         setContributorAccounts(sortedContributors);
-        const drivers = accountsRes.rows.filter(account => account.roleId === 6);
+        const drivers = accounts.filter(account => account.roleId === 6);
         setDriverAccounts(drivers);
+    }
+
+    const setSearchResults = (searchResults) => {
+        setLoading(true);
+        setAccounts(searchResults);
+        sortAccounts(searchResults);
         setLoading(false);
     }
 
@@ -94,6 +107,9 @@ const Accounts = () => {
                 :
                     <>
                         <AccountsTitle>Customers</AccountsTitle>
+                        <SearchBarContainer>
+                            <UserSearchBar setSearchResults={setSearchResults} />
+                        </SearchBarContainer>
                         <UsersTable users={customerAccounts} />
                     </>
                 }

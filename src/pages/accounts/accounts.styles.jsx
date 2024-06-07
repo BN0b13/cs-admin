@@ -9,6 +9,14 @@ export const TabContainer = styled.div`
     background-color: #f1f1f1;
 `;
 
+export const SearchBarContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+`;
+
 export const TabSelector = styled.button`
     background-color: ${props => props.active ? '#ccc' : 'inherit'};
     float: left;
