@@ -464,10 +464,12 @@ export default class Tools {
     }
 
     return data.sort(function(a,b){
+      const first = a[sortBy] ? a[sortBy] : '';
+      const second = b[sortBy] ? b[sortBy] : '';
       return sortDirection === 'descending' ? 
-        b[sortBy].localeCompare(a[sortBy])
+        second.localeCompare(first)
       : 
-        a[sortBy].localeCompare(b[sortBy]);
+        first.localeCompare(second);
     });
   }
 }
