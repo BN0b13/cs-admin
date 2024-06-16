@@ -17,19 +17,21 @@ export const MainContainer = styled.div`
 `;
 
 export const ColumnContainer = styled.div`
-display: flex;
-flex-direction: ${props => props.flexDirection ? props.flexDirection : 'column'};
-justify-content: ${props => props.justifyContent ? props.justifyContent : 'center'};
-align-items: ${props => props.alignItems ? props.alignItems : 'center'};
-margin-left: ${props => props.marginLeft ? props.marginLeft : ''};
-margin: ${props => props.margin ? props.margin : ''};
-padding: ${props => props.padding ? props.padding : ''};
-cursor: ${props => props.cursor ? props.cursor : ''};
-height: ${props => props.height ? props.height : ''};
-width: ${props => props.width ? props.width : ''};
-max-width: ${props => props.maxWidth ? props.maxWidth : ''};
-border: ${props => props.border ? props.border : ''};
-border-bottom: ${props => props.borderBottom ? props.borderBottom : ''};
+    display: flex;
+    flex-direction: ${props => props.flexDirection ? props.flexDirection : 'column'};
+    justify-content: ${props => props.justifyContent ? props.justifyContent : 'center'};
+    align-items: ${props => props.alignItems ? props.alignItems : 'center'};
+    margin-left: ${props => props.marginLeft ? props.marginLeft : ''};
+    margin: ${props => props.margin ? props.margin : ''};
+    padding: ${props => props.padding ? props.padding : ''};
+    cursor: ${props => props.cursor ? props.cursor : ''};
+    height: ${props => props.height ? props.height : ''};
+    min-height: ${props => props.minHeight ? props.minHeight : ''};
+    width: ${props => props.width ? props.width : ''};
+    min-width: ${props => props.minWidth ? props.minWidth : ''};
+    max-width: ${props => props.maxWidth ? props.maxWidth : ''};
+    border: ${props => props.border ? props.border : ''};
+    border-bottom: ${props => props.borderBottom ? props.borderBottom : ''};
 `;
 
 export const RowContainer = styled.div`
@@ -42,7 +44,9 @@ export const RowContainer = styled.div`
     padding: ${props => props.padding ? props.padding : ''};
     cursor: ${props => props.cursor ? props.cursor : ''};
     height: ${props => props.height ? props.height : ''};
+    min-height: ${props => props.minHeight ? props.minHeight : ''};
     width: ${props => props.width ? props.width : ''};
+    min-width: ${props => props.minWidth ? props.minWidth : ''};
     max-width: ${props => props.maxWidth ? props.maxWidth : ''};
     border: ${props => props.border ? props.border : ''};
     border-bottom: ${props => props.borderBottom ? props.borderBottom : ''};
@@ -91,6 +95,10 @@ export const InputSubtext = styled.h6`
     padding: ${props => props.padding ? props.padding : ''};
 `;
 
+export const Label = styled.label`
+
+`;
+
 export const Input = styled.input`
     width: ${props => props.width ? props.width : '300px'};
     margin-bottom: ${props => props.marginBottom ? props.marginBottom : '10px'};
@@ -133,6 +141,7 @@ export const TableHeader = styled.thead`
 export const TableHead = styled.th`
     padding: ${setMobileView() ? '3px' : '8px'};
     border: 1px solid;
+    cursor: ${props => props.cursor || ''};
 `;
 
 export const TableBody = styled.tbody`
@@ -148,12 +157,6 @@ export const TableData = styled.td`
     padding: ${setMobileView() ? '3px' : '8px'};
     border: 1px solid;
     cursor: ${props => props.cursor || ''};
-`;
-
-export const TableDataLink = styled.td`
-    padding: ${setMobileView() ? '3px' : '8px'};
-    border: 1px solid;
-    cursor: pointer;
 `;
 
 export const Logo = styled.img`

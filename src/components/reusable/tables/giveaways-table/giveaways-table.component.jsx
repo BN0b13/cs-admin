@@ -7,7 +7,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-    TableDataLink,
+    TableData,
     Text
 } from '../../../../styles/component.styles';
 
@@ -31,11 +31,11 @@ const GiveawaysTable = ({giveaways}) => {
                     {giveaways.map((giveaway, index) => {
                         const formattedDate = new Date(giveaway.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
                         return (
-                            <TableRow key={index} onClick={() => window.location = `${url}/giveaways/${giveaway.id}`}>
-                                <TableDataLink>{ giveaway.name }</TableDataLink>
-                                <TableDataLink>{ giveaway.type }</TableDataLink>
-                                <TableDataLink>{ giveaway.status }</TableDataLink>
-                                <TableDataLink>{ formattedDate }</TableDataLink>
+                            <TableRow key={index} onClick={() => window.location = `${url}/giveaways/${giveaway.id}`} cursor={'pointer'}>
+                                <TableData>{ giveaway.name }</TableData>
+                                <TableData>{ giveaway.type }</TableData>
+                                <TableData>{ giveaway.status }</TableData>
+                                <TableData>{ formattedDate }</TableData>
                             </TableRow>
                     )})}
                     </TableBody>

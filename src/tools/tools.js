@@ -452,4 +452,22 @@ export default class Tools {
         return new Date(b.createdAt) - new Date(a.createdAt);
     });
   }
+
+  sort = (data, sortDirection = 'descending',  sortBy = 'createdAt') => {
+    if(sortBy === 'createdAt') {
+      return data.sort(function(a,b){
+        return sortDirection === 'descending' ? 
+          new Date(b[sortBy]) - new Date(a[sortBy]) 
+        : 
+          new Date(a[sortBy]) - new Date(b[sortBy]);
+      });
+    }
+
+    return data.sort(function(a,b){
+      return sortDirection === 'descending' ? 
+        b[sortBy].localeCompare(a[sortBy])
+      : 
+        a[sortBy].localeCompare(b[sortBy]);
+    });
+  }
 }
