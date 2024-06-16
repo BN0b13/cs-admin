@@ -21,7 +21,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-    TableDataLink,
+    TableData,
     Text
 } from '../../../../styles/component.styles';
 
@@ -92,11 +92,11 @@ const GiveawayEntriesTable = ({ giveaway, entries }) => {
                         {entries.map((entry, index) => {
                             const formattedDate = dayjs(new Date(parseInt(entry.enteredAt))).format('MM/DD/YYYY hh:mm a').toString();
                             return (
-                                <TableRow key={index} onClick={() => copyEmailToClipboard(entry.email)}>
-                                    <TableDataLink>{index + 1}. </TableDataLink>
-                                    <TableDataLink>{ entry.email }</TableDataLink>
-                                    <TableDataLink>{ entry.username }</TableDataLink>
-                                    <TableDataLink>{ formattedDate }</TableDataLink>
+                                <TableRow key={index} onClick={() => copyEmailToClipboard(entry.email)} cursor={'pointer'}>
+                                    <TableData>{index + 1}. </TableData>
+                                    <TableData>{ entry.email }</TableData>
+                                    <TableData>{ entry.username }</TableData>
+                                    <TableData>{ formattedDate }</TableData>
                                 </TableRow>
                         )})}
                         </TableBody>

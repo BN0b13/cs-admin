@@ -60,7 +60,7 @@ export default class Client {
 
     async getAccount() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const account = await fetch(`${api}/admin/account`, requestOptions);
+        const account = await fetch(`${api}/admin/user/account`, requestOptions);
         const res = await account.json();
 
         return res;
@@ -82,7 +82,7 @@ export default class Client {
 
     async createAccount(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
-        const account = await fetch(`${api}/admin/accounts`, requestOptions);
+        const account = await fetch(`${api}/admin/user/accounts`, requestOptions);
         const res = await account.json();
         return res;
     }
@@ -143,6 +143,13 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
         const categories = await fetch(`${api}/categories/type/${type}`, requestOptions);
         const res = await categories.json();
+        return res;
+    }
+
+    async searchCategories(params) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const search = await fetch(`${api}/admin/categories/search${params}`, requestOptions);
+        const res = await search.json();
         return res;
     }
 
@@ -492,6 +499,13 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
         const productProfiles = await fetch(`${api}/products/profiles/all`, requestOptions);
         const res = await productProfiles.json();
+        return res;
+    }
+
+    async searchProducts(params) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const search = await fetch(`${api}/admin/products/search${params}`, requestOptions);
+        const res = await search.json();
         return res;
     }
 

@@ -1,38 +1,43 @@
 import { url } from '../../../../config';
 
 import {
-    MainContainer,
-    CompanyTable,
-    CompanyTableBody,
-    CompanyTableHead,
-    CompanyTableHeader,
-    CompanyTableRow,
-    CompanyTableData,
-} from "./companies-table.styles";
+    ColumnContainer,
+    Subtitle,
+    Table,
+    TableBody,
+    TableData,
+    TableHead,
+    TableHeader,
+    TableRow
+} from '../../../../styles/component.styles';
 
 const CategoriesTable = ({ companies }) => {
 
     return (
-        <MainContainer>
-            <CompanyTable>
-                <CompanyTableHeader>
-                    <CompanyTableRow>
-                        <CompanyTableHead>Name</CompanyTableHead>
-                        <CompanyTableHead>Bio</CompanyTableHead>
-                        <CompanyTableHead>Active</CompanyTableHead>
-                    </CompanyTableRow>
-                </CompanyTableHeader>
-                <CompanyTableBody>
-                {companies.map((company, index) => (
-                        <CompanyTableRow key={index}>
-                            <CompanyTableData><a href={`${url}/companies/${company.id}`}>{company.name || 'Company Not Set Up'}</a></CompanyTableData>
-                            <CompanyTableData>{company.bio}</CompanyTableData>
-                            <CompanyTableData>{company.active ? 'Yes' : 'No'}</CompanyTableData>
-                        </CompanyTableRow>
-                ))}
-                </CompanyTableBody>
-            </CompanyTable>
-        </MainContainer>
+        <ColumnContainer>
+            {companies.length === 0 ? 
+             <Subtitle>No Companies to display</Subtitle>
+            :
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Bio</TableHead>
+                            <TableHead>Active</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                    {companies.map((company, index) => (
+                            <TableRow key={index} onClick={() => window.location = `${url}/companies/${company.id}`} cursor={'pointer'}>
+                                <TableData>{company.name || 'Company Not Set Up'}</TableData>
+                                <TableData>{company.bio}</TableData>
+                                <TableData>{company.active ? 'Yes' : 'No'}</TableData>
+                            </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            }
+        </ColumnContainer>
     )
 }
 

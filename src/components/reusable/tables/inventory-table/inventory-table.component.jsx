@@ -1,5 +1,5 @@
 import { 
-    MainContainer,
+  ColumnContainer,
     Table,
     TableBody,
     TableHead,
@@ -11,7 +11,7 @@ import {
 const InventoryTable = ({ inventories, handleInventoryUpdateDisplay = () => {} }) => {
 
     return (
-        <MainContainer>
+        <ColumnContainer>
             <Table>
             <TableHeader>
               <TableRow>
@@ -64,7 +64,7 @@ const InventoryTable = ({ inventories, handleInventoryUpdateDisplay = () => {} }
               })}
             </TableBody>
           </Table>
-        </MainContainer>
+        </ColumnContainer>
     )
 }
 

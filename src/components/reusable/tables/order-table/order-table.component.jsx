@@ -1,44 +1,41 @@
-import { useState } from 'react';
-
-import Spinner from '../../spinner/spinner.component';
-
 import { url } from '../../../../config';
 
 import {
-    MainContainer,
-    OrderMainTable,
-    OrderTableBody,
-    OrderTableHead,
-    OrderTableHeader,
-    OrderTableRow,
-    OrderTableData
-} from './order-table.styles';
+    ColumnContainer,
+    Subtitle,
+    Table,
+    TableBody,
+    TableData,
+    TableHead,
+    TableHeader,
+    TableRow
+} from '../../../../styles/component.styles';
 
 const OrderTable = ({ orders }) => {
 
     return (
-        <MainContainer>
+        <ColumnContainer>
             {orders.length === 0 ?
-                <h2>No Orders To Display</h2>
+                <Subtitle>No Orders To Display</Subtitle>
             :
-                <OrderMainTable>
-                    <OrderTableHeader>
-                        <OrderTableRow>
-                            <OrderTableHead>Status</OrderTableHead>
-                            <OrderTableHead>Date</OrderTableHead>
-                        </OrderTableRow>
-                    </OrderTableHeader>
-                    <OrderTableBody>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Date</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
                     {orders.map((order, index) => (
-                            <OrderTableRow key={index}>
-                                <OrderTableData><a href={`${url}/orders/${order.refId}`}>{order.status}</a></OrderTableData>
-                                <OrderTableData>{order.creationDate}</OrderTableData>
-                            </OrderTableRow>
+                            <TableRow key={index} onClick={() => window.location = `${url}/orders/${order.refId}`} cursor={'pointer'}>
+                                <TableData>{order.status}</TableData>
+                                <TableData>{order.creationDate}</TableData>
+                            </TableRow>
                     ))}
-                    </OrderTableBody>
-                </OrderMainTable>
+                    </TableBody>
+                </Table>
             }
-        </MainContainer>
+        </ColumnContainer>
     )
 }
 

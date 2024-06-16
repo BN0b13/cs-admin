@@ -5,6 +5,7 @@ export const SearchBarContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin: 20px;
 `;
 
 export const SearchInput = styled.input`
@@ -12,5 +13,5 @@ export const SearchInput = styled.input`
 `;
 
 export const SearchButton = styled.button`
-    margin: 0px 10px;
+    margin-left: 10px;
 `;
