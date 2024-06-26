@@ -7,7 +7,6 @@ import { api } from "../../../config";
 import Client from "../../../tools/client";
 
 import {
-    CategoryImage,
     ImagesContainer,
     ImageFileInput,
     ImagePlaceholder,
@@ -42,7 +41,7 @@ const CategoryImages = ({ category }) => {
         formData.append('files', image);
         formData.append('id', category.id);
 
-        const res = await client.addCategoryImage(formData);
+        await client.addCategoryImage(formData);
 
         setImage('');
         setImagePreview('');
@@ -65,7 +64,7 @@ const CategoryImages = ({ category }) => {
                 }
             </ImagesContainer>
             {imagePreview ? 
-                    <img src={imagePreview} width='200px' height='200px' />    
+                    <img src={imagePreview} width='200px' height='200px' alt='preview' />    
                 :
                 <>
                     <ImagePlaceholder />

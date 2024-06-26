@@ -190,7 +190,7 @@ const AddSeedProduct = ({category, productType}) => {
                 <Spinner />
             :
                 <>
-                    {imagePreview && <img src={imagePreview} width='100' height='100' />}
+                    {imagePreview && <img src={imagePreview} width='100' height='100' alt='preview' />}
                     <AddProductLabel>Product Image:
                         <AddProductInput type='file' accept='image/*' name='files' onChange={e => handleFileChange(e)} />
                     </AddProductLabel>

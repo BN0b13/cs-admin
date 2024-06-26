@@ -25,7 +25,6 @@ const tools = new Tools();
 
 const ViewMetrics = () => {
   const [ loading, setLoading ] = useState(true);
-  const [ title, setTitle ] = useState('Views');
   const [ data, setData ] = useState(null);
   const [ totalCount, setTotalCount ] = useState(null);
   const [ currentCount, setCurrentCount ] = useState(null);
@@ -43,6 +42,8 @@ const ViewMetrics = () => {
 
   useEffect(() => {
     changeDateRange();
+
+    // eslint-disable-next-line
   }, [ dateRangeType, dateRangePosition ]);
 
   const getAllData = async () => {
@@ -132,7 +133,7 @@ const ViewMetrics = () => {
           <Spinner />
         :
           <ContentContainer>
-            <Title>{ title }</Title>
+            <Title>Views</Title>
             <RowContainer>
               <FaAngleLeft onClick={() => goBack()} />
               <Select
@@ -159,7 +160,7 @@ const ViewMetrics = () => {
               </>
             }
             <RowContainer>
-              <LineChart title={title} data={data} />
+              <LineChart title={'Views'} data={data} />
             </RowContainer>
           </ContentContainer>
         }

@@ -1,70 +1,74 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Orders from '../../components/orders/orders.component';
+import OrdersTable from '../../components/reusable/tables/orders-table/orders-table.component';
+import SearchBar from '../../components/reusable/search-bar/search-bar.component';
+import Spinner from '../../components/reusable/spinner/spinner.component';
+
+import Client from '../../tools/client';
 
 import {
-    TabContainer,
-    TabSelector
-} from './orders.styles';
+    MainContainer,
+    MainTitle
+} from '../../styles/page.styles';
+
+const client = new Client();
 
 const OrdersPage = () => {
-    const [ currentTab, setCurrentTab ] = useState(1);
-    const [ tabOneActive, setTabOneActive ] = useState(true);
-    const [ tabTwoActive, setTabTwoActive ] = useState(false);
-    const [ tabThreeActive, setTabThreeActive ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
+    const [ loadData, setLoadData ] = useState(true);
+    const [ orders, setOrders ] = useState([]);
 
-    const activateTabOne = () => {
-        setCurrentTab(1);
-        setTabOneActive(true);
-        setTabTwoActive(false);
-        setTabThreeActive(false);
-    }
+    const [ page, setPage ] = useState(0);
+    const [ size, setSize ] = useState(100);
+    const [ search, setSearch ] = useState('');
+    const [ sortKey, setSortKey ] = useState('');
+    const [ sortDirection, setSortDirection ] = useState('');
 
-    const activateTabTwo = () => {
-        setCurrentTab(2);
-        setTabOneActive(false);
-        setTabTwoActive(true);
-        setTabThreeActive(false);
-    }
+    useEffect(() => {
+        getOrders();
+    }, []);
 
-    const activateTabThree = () => {
-        setCurrentTab(3);
-        setTabOneActive(false);
-        setTabTwoActive(false);
-        setTabThreeActive(true);
-    }
-
-    const showCurrentTab = () => {
-        if(currentTab === 2) {
-            return (
-                <div>
-                    <h2>New</h2>
-                </div>
-            )
+    useEffect(() => {
+        if(loadData) {
+            getOrders();
+            setLoadData(false);
         }
+    }, [ loadData ]);
 
-        if(currentTab === 3) {
-            return (
-                <div>
-                    <h2>Shipping</h2>
-                </div>
-            )
-        }
-
-        return (
-            <Orders />
-        )
+    const getOrders = async () => {
+        setLoading(true);
+        let query = `?page=${page}&size=${size}`;
+        search && (query = query + `&search=${search}`);
+        sortDirection && (query = query + `&sortDirection=${sortDirection}`);
+        sortKey && (query = query + `&sortKey=${sortKey}`);
+        const res = await client.getOrders(query);
+        setOrders(res.rows);
+        setLoading(false);
     }
 
     return (
-        <div>
-            <TabContainer>
-                <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Orders</TabSelector>
-                <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>New</TabSelector>
-                <TabSelector active={tabThreeActive} onClick={() => activateTabThree()}>Shipping</TabSelector>
-            </TabContainer>
-            { showCurrentTab() }
-        </div>
+        <MainContainer>
+            {loading ?
+                <Spinner />
+            :
+                <>
+                    <MainTitle>Orders</MainTitle>
+                    <SearchBar 
+                        search={search}
+                        setSearch={setSearch}
+                        submitSearch={setLoadData}
+                    />
+                    <OrdersTable 
+                        orders={orders}
+                        sortKey={sortKey}
+                        setSortKey={setSortKey}
+                        sortDirection={sortDirection}
+                        setSortDirection={setSortDirection}
+                        reloadTable={setLoadData}
+                    />
+                </>
+            }
+        </MainContainer>
     )
 }
 

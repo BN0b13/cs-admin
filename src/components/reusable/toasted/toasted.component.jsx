@@ -24,6 +24,8 @@ const Toasted = ({ message, showToast, setShowToast, getToasted, error = false }
             getToasted(notify);
             setShowToast(false);
         }
+
+        // eslint-disable-next-line
     }, [showToast]);
 
     

@@ -61,6 +61,8 @@ const AccountDetails = () => {
         if(currentUser) {
             initializeForm();
         }
+
+        // eslint-disable-next-line
     }, [ currentUser ]);
 
     const initializeForm = () => {

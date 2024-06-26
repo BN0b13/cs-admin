@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import OrderTable from '../../components/reusable/tables/order-table/order-table.component';
+import OrdersTable from '../../components/reusable/tables/orders-table/orders-table.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import { ToastContext } from '../../contexts/toast.context';
@@ -41,6 +41,8 @@ const AccountPage = () => {
         }
 
         getAccount();
+
+        // eslint-disable-next-line
     }, []);
 
     const copyActivationLinkToClipBoard = () => {
@@ -82,7 +84,7 @@ const AccountPage = () => {
                         <h4>{ account.shippingAddress.state }</h4>
                         <h4>{ account.shippingAddress.zipCode }</h4>
                         <h4>Credit ${ account.credit/100 }</h4>
-                        <OrderTable orders={account.Orders} />
+                        <OrdersTable orders={account.Orders} />
                     </>
                 }
             </ContentContainer>

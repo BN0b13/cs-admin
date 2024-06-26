@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 
-import Button from '../../reusable/button/button.component';
 import Spinner from '../../reusable/spinner/spinner.component';
 
 import { ToastContext } from '../../../contexts/toast.context';
@@ -10,14 +9,12 @@ import Client from '../../../tools/client';
 import {
     AddCompanyLogoButton,
     AddCompanyLogoLabel,
-    ImageFileInput,
     ImagePreviewContainer,
     LogoInput,
     LogoPreviewImage,
     MainContainer,
     MainForm,
-    MainText,
-    MainTitle
+    MainText
 } from './add-company-logo.styles';
 
 const client = new Client();

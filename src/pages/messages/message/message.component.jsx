@@ -1,7 +1,6 @@
 import Tools from '../../../tools/tools.js';
 
 import {
-    MessageIconContainer,
     MessageTableData
 } from './message.style';
 

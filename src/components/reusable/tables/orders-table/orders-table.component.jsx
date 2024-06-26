@@ -16,8 +16,8 @@ import {
     TableRow
 } from '../../../../styles/component.styles';
 
-const CategoriesTable = ({ 
-    categories = [],
+const OrdersTable = ({ 
+    orders = [],
     sortKey = '',
     setSortKey = () => {},
     sortDirection = '',
@@ -51,19 +51,19 @@ const CategoriesTable = ({
 
     return (
         <ColumnContainer>
-            {categories.length === 0 ?
-             <Subtitle>No Categories to Display</Subtitle>
+            {orders.length === 0 ?
+                <Subtitle>No Orders To Display</Subtitle>
             :
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead cursor={'pointer'} onClick={() => sortColumn('name')}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('status')}>
                                 <ColumnContainer flexDirection={'row'}>
-                                    Name
-                                        {sortKey === 'name' && sortDirection === 'ASC' ?
+                                    Status
+                                        {sortKey === 'status' && sortDirection === 'ASC' ?
                                                 <FaAngleUp />
                                             :
-                                                sortKey === 'name' && sortDirection === 'DESC' ?
+                                                sortKey === 'status' && sortDirection === 'DESC' ?
                                                     <FaAngleDown />
                                                 :
                                                     <ColumnContainer 
@@ -74,30 +74,13 @@ const CategoriesTable = ({
                                         }
                                 </ColumnContainer>
                             </TableHead>
-                            <TableHead cursor={'pointer'} onClick={() => sortColumn('description')}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('createdAt')}>
                                 <ColumnContainer flexDirection={'row'}>
-                                    Description
-                                        {sortKey === 'description' && sortDirection === 'ASC' ?
+                                    Date
+                                        {sortKey === 'createdAt' && sortDirection === 'ASC' ?
                                                 <FaAngleUp />
                                             :
-                                                sortKey === 'description' && sortDirection === 'DESC' ?
-                                                    <FaAngleDown />
-                                                :
-                                                    <ColumnContainer 
-                                                        minHeight={'1em'} 
-                                                        minWidth={'1em'}
-                                                    >
-                                                    </ColumnContainer>
-                                        }
-                                </ColumnContainer>
-                            </TableHead>
-                            <TableHead cursor={'pointer'} onClick={() => sortColumn('type')}>
-                                <ColumnContainer flexDirection={'row'}>
-                                    Type
-                                        {sortKey === 'type' && sortDirection === 'ASC' ?
-                                                <FaAngleUp />
-                                            :
-                                                sortKey === 'type' && sortDirection === 'DESC' ?
+                                                sortKey === 'createdAt' && sortDirection === 'DESC' ?
                                                     <FaAngleDown />
                                                 :
                                                     <ColumnContainer 
@@ -111,13 +94,15 @@ const CategoriesTable = ({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {categories.map((category, index) => (
-                            <TableRow key={index} onClick={() => window.location = `${url}/categories/${category.id}`} cursor={'pointer'}>
-                                <TableData>{category.name}</TableData>
-                                <TableData>{category.description}</TableData>
-                                <TableData>{category.type}</TableData>
+                    {orders.map((order, index) => {
+                        const formattedDate = new Date(order.createdAt).toLocaleDateString('en-us', { day:"numeric", year:"numeric", month:"numeric"});
+                        
+                        return (
+                            <TableRow key={index} onClick={() => window.location = `${url}/orders/${order.refId}`} cursor={'pointer'}>
+                                <TableData>{order.status}</TableData>
+                                <TableData>{formattedDate}</TableData>
                             </TableRow>
-                    ))}
+                    )})}
                     </TableBody>
                 </Table>
             }
@@ -125,4 +110,4 @@ const CategoriesTable = ({
     )
 }
 
-export default CategoriesTable;
+export default OrdersTable;

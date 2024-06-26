@@ -16,7 +16,40 @@ import {
     TableRow
 } from '../../../../styles/component.styles';
 
-const UsersTable = ({ users, setSort = () => {}, currentSort = {} }) => (
+const UsersTable = ({ 
+    users = [],
+    sortKey = '',
+    setSortKey = () => {},
+    sortDirection = '',
+    setSortDirection = () => {},
+    reloadTable = async () => {}}) => {
+
+    const sortColumn = async (key) => {
+        if(key === sortKey) {
+            if(sortDirection === 'ASC') {
+                setSortDirection('DESC');
+                
+                return await reloadTable(true);
+            }
+
+            if(sortDirection === 'DESC') {
+                setSortDirection('');
+                
+                return await reloadTable(true);
+            }
+            
+            setSortDirection('ASC');
+
+            return await reloadTable(true);
+        } else {
+            setSortKey(key);
+            setSortDirection('ASC');
+
+            return await reloadTable(true);
+        }
+    }
+    
+    return (
         <ColumnContainer>
             {users.length === 0 ? 
                 <Subtitle>No Users to display.</Subtitle>
@@ -24,64 +57,73 @@ const UsersTable = ({ users, setSort = () => {}, currentSort = {} }) => (
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead onClick={() => setSort('email')} cursor={'pointer'}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('email')}>
                                 <ColumnContainer flexDirection={'row'}>
                                     Email
-                                    <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                                        {currentSort.column === 'email' ? 
-                                            currentSort.direction === 'descending' ? 
-                                                <FaAngleUp /> 
-                                            : 
-                                                <FaAngleDown /> 
-                                            : 
-                                                ''
+                                        {sortKey === 'email' && sortDirection === 'ASC' ?
+                                                <FaAngleUp />
+                                            :
+                                                sortKey === 'email' && sortDirection === 'DESC' ?
+                                                    <FaAngleDown />
+                                                :
+                                                    <ColumnContainer 
+                                                        minHeight={'1em'} 
+                                                        minWidth={'1em'}
+                                                    >
+                                                    </ColumnContainer>
                                         }
-                                    </ColumnContainer>
                                 </ColumnContainer>
                             </TableHead>
-                            <TableHead onClick={() => setSort('username')} cursor={'pointer'}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('username')}>
                                 <ColumnContainer flexDirection={'row'}>
                                     Username
-                                    <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                                        {currentSort.column === 'username' ? 
-                                            currentSort.direction === 'descending' ? 
-                                                <FaAngleUp /> 
-                                            : 
-                                                <FaAngleDown /> 
-                                            : 
-                                                ''
-                                        }
-                                    </ColumnContainer>
+                                    {sortKey === 'username' && sortDirection === 'ASC' ?
+                                            <FaAngleUp />
+                                        :
+                                            sortKey === 'username' && sortDirection === 'DESC' ?
+                                                <FaAngleDown />
+                                            :
+                                                <ColumnContainer 
+                                                    minHeight={'1em'} 
+                                                    minWidth={'1em'}
+                                                >
+                                                </ColumnContainer>
+                                    }
                                 </ColumnContainer>
                             </TableHead>
-                            <TableHead onClick={() => setSort('firstName')} cursor={'pointer'}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('firstName')}>
                                 <ColumnContainer flexDirection={'row'}>
                                     Name
-                                    <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                                        {currentSort.column === 'firstName' ? 
-                                            currentSort.direction === 'descending' ? 
-                                                <FaAngleUp /> 
-                                            : 
-                                                <FaAngleDown /> 
-                                            : 
-                                                ''
-                                        }
-                                    </ColumnContainer>
+                                    {sortKey === 'firstName' && sortDirection === 'ASC' ?
+                                            <FaAngleUp />
+                                        :
+                                            sortKey === 'firstName' && sortDirection === 'DESC' ?
+                                                <FaAngleDown />
+                                            :
+                                                <ColumnContainer 
+                                                    minHeight={'1em'} 
+                                                    minWidth={'1em'}
+                                                >
+                                                </ColumnContainer>
+                                    }
                                 </ColumnContainer>
                             </TableHead>
-                            <TableHead onClick={() => setSort('createdAt')} cursor={'pointer'}>
+                            <TableHead cursor={'pointer'} onClick={() => sortColumn('createdAt')}>
                                 <ColumnContainer flexDirection={'row'}>
                                     Join Date
-                                    <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                                        {currentSort.column === 'createdAt' ? 
-                                            currentSort.direction === 'descending' ? 
-                                                <FaAngleUp /> 
-                                            : 
-                                                <FaAngleDown /> 
-                                            : 
-                                                ''
-                                        }
-                                    </ColumnContainer>
+                                    {sortKey === 'createdAt' && sortDirection === 'ASC' ?
+                                            <FaAngleUp />
+                                        :
+                                            sortKey === 'createdAt' && sortDirection === 'DESC' ?
+                                                <FaAngleDown />
+                                            :
+                                            
+                                                <ColumnContainer 
+                                                    minHeight={'1em'} 
+                                                    minWidth={'1em'}
+                                                >
+                                                </ColumnContainer>
+                                    }
                                 </ColumnContainer>
                             </TableHead>
                         </TableRow>
@@ -102,6 +144,6 @@ const UsersTable = ({ users, setSort = () => {}, currentSort = {} }) => (
                 </Table>
             }
         </ColumnContainer>
-);
+)};
 
 export default UsersTable;

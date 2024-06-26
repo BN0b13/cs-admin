@@ -16,6 +16,8 @@ const OrderPage = () => {
 
     useEffect(() => {
         getOrder();
+
+        // eslint-disable-next-line
     }, []);
 
     const getOrder = async () => {

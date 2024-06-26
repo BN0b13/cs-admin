@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import AddAccount from '../../components/accounts/add-account/add-account.component';
-import Filter from '../../components/reusable/filter/filter.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 import SearchBar from '../../components/reusable/search-bar/search-bar.component';
 import UsersTable from '../../components/reusable/tables/users-table/users-table.component';
 
 import Client from '../../tools/client';
-import Tools from '../../tools/tools';
 
 import {
     TabContainer,
@@ -15,89 +13,56 @@ import {
 } from './accounts.styles';
 
 import {
+    MainContainer,
     MainTitle
 } from '../../styles/page.styles';
 
 const client = new Client();
-const tools = new Tools();
 
 const Accounts = () => {
     const [ loading, setLoading ] = useState(true);
+    const [ loadData, setLoadData ] = useState(true);
     const [ roles, setRoles ] = useState([]);
     const [ accounts, setAccounts ] = useState(null);
-    const [ currentAccounts, setCurrentAccounts ] = useState(null);
-    const [ currentSort, setCurrentSort ] = useState({
-        direction: 'descending',
-        column: 'createdAt'
-    });
+
+    const [ page, setPage ] = useState(0);
+    const [ size, setSize ] = useState(100);
+    const [ search, setSearch ] = useState('');
+    const [ sortKey, setSortKey ] = useState('');
+    const [ sortDirection, setSortDirection ] = useState('');
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
     const [ tabTwoActive, setTabTwoActive ] = useState(false);
 
     useEffect(() => {
-        getAccounts();
         getRoles();
+
+        // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if(loadData) {
+            getAccounts();
+            setLoadData(false);
+        }
+
+    }, [ loadData ]);
 
     const getAccounts = async () => {
         setLoading(true);
-        const res = await client.getAccounts();
+        let query = `?page=${page}&size=${size}`;
+        search && (query = query + `&search=${search}`);
+        sortDirection && (query = query + `&sortDirection=${sortDirection}`);
+        sortKey && (query = query + `&sortKey=${sortKey}`);
+        const res = await client.getUsers(query);
         setAccounts(res.rows);
-        sort(res.rows);
         setLoading(false);
     }
 
     const getRoles = async () => {
         const res = await client.getRoles();
         setRoles(res.rows);
-    }
-
-    const sort = (data) => {
-        setLoading(true);
-        const sorted = tools.sortByDateDescending(data);
-        setCurrentSort({
-            direction: 'descending',
-            column: 'createdAt'
-        });
-        setCurrentAccounts(sorted);
-        setLoading(false);
-    }
-
-    const changeSort = (sortColumn) => {
-        setLoading(true);
-        const sortDirection = sortColumn === currentSort.column ?
-            currentSort.direction === 'ascending' ?
-                'descending'
-            :
-                'ascending'
-            :
-                'descending';
-                
-        const sortedAccounts = tools.sort(currentAccounts, sortDirection, sortColumn);
-        setCurrentAccounts(sortedAccounts);
-        setCurrentSort({
-            direction: sortDirection,
-            column: sortColumn
-        });
-
-        setLoading(false);
-    }
-
-    const filterAccounts = async (filter) => {
-        if(filter === '') {
-            sort(accounts);
-            return
-        }
-
-        const currentRole = roles.filter(role => role.role === filter);
-        const filteredAccounts = accounts.filter(account => account.roleId === currentRole[0].id);
-        sort(filteredAccounts);
-    }
-
-    const setSearchResults = async (params) => {
-        const res = await client.searchAccounts(params);
-        sort(res.rows);
     }
 
     const activateTabOne = () => {
@@ -127,9 +92,19 @@ const Accounts = () => {
                 :
                     <>
                         <MainTitle>Accounts</MainTitle>
-                        <SearchBar setSearchResults={setSearchResults} clearSearchResults={getAccounts} />
-                        <Filter filterOptions={roles} filterName={'Account Types'} setFilter={filterAccounts} />
-                        <UsersTable users={currentAccounts} setSort={changeSort} currentSort={currentSort} />
+                        <SearchBar 
+                            search={search}
+                            setSearch={setSearch}
+                            submitSearch={setLoadData}
+                        />
+                        <UsersTable 
+                            users={accounts}
+                            sortKey={sortKey}
+                            setSortKey={setSortKey}
+                            sortDirection={sortDirection}
+                            setSortDirection={setSortDirection}
+                            reloadTable={setLoadData}
+                        />
                     </>
                 }
             </>
@@ -137,13 +112,13 @@ const Accounts = () => {
     }
 
     return (
-        <div>
+        <MainContainer>
             <TabContainer>
                 <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Accounts</TabSelector>
                 <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Add Account</TabSelector>
             </TabContainer>
             { showCurrentTab() }
-        </div>
+        </MainContainer>
     )
 }
 

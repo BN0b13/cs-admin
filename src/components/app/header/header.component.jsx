@@ -28,7 +28,7 @@ const Header = () => {
     const getAccounts = async () => {
         const res = await client.getCustomers();
         const today = dayjs().format('MM/DD/YY');
-        const signUpsToday = res.rows.filter(customer =>  dayjs(customer.createdAt).format('MM/DD/YY') == today);
+        const signUpsToday = res.rows.filter(customer =>  dayjs(customer.createdAt).format('MM/DD/YY') === today);
         setNewAccounts(signUpsToday.length);
     }
 

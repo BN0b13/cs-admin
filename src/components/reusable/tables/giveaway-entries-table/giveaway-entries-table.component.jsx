@@ -36,6 +36,8 @@ const GiveawayEntriesTable = ({ giveaway, entries }) => {
 
     useEffect(() => {
         setUpCsvData();
+
+        // eslint-disable-next-line
     }, []);
     
     
@@ -47,9 +49,9 @@ const GiveawayEntriesTable = ({ giveaway, entries }) => {
     const setUpCsvData = () => {
         const data = [['', 'Email', 'Username', 'Date Entered']];
 
-        entries.map((entry, index) => {
+        entries.map((entry, index) =>
             data.push([`${index + 1}. `,`${entry.email}`,`${entry.username}`,`${dayjs(new Date(parseInt(entry.enteredAt))).format('MM/DD/YYYY hh:mm a').toString()}`])
-        });
+        );
 
         setCsvData(data);
     }

@@ -18,7 +18,7 @@ const AdminModal = ({ show = false, setShow, title = 'Warning', image = null, in
         <ModalDiv>
           <ModalTitle>{ title }</ModalTitle>
           { image &&
-            <img src={image}  width='200px' height='200px' />
+            <img src={image}  width='200px' height='200px' alt='modal' />
           }
           <ModalText>{ message }</ModalText>
           {input !== null &&

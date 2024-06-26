@@ -25,7 +25,6 @@ const tools = new Tools();
 
 const OrderMetrics = () => {
   const [ loading, setLoading ] = useState(true);
-  const [ title, setTitle ] = useState('Orders');
   const [ data, setData ] = useState(null);
   const [ totalCount, setTotalCount ] = useState(null);
   const [ currentCount, setCurrentCount ] = useState(null);
@@ -43,6 +42,8 @@ const OrderMetrics = () => {
 
   useEffect(() => {
     changeDateRange();
+
+    // eslint-disable-next-line
   }, [ dateRangeType, dateRangePosition ]);
 
   const getAllData = async () => {
@@ -128,7 +129,7 @@ const OrderMetrics = () => {
           <Spinner />
         :
           <ContentContainer>
-            <Title>{ title }</Title>
+            <Title>Orders</Title>
             <RowContainer>
               <FaAngleLeft onClick={() => goBack()} />
               <Select
@@ -155,7 +156,7 @@ const OrderMetrics = () => {
               </>
             }
             <RowContainer>
-              <LineChart title={title} data={data} />
+              <LineChart title={'Orders'} data={data} />
             </RowContainer>
           </ContentContainer>
         }

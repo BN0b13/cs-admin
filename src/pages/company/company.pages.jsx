@@ -10,7 +10,6 @@ import Client from '../../tools/client';
 
 import {
     BackLink,
-    ContentContainer,
     MainContainer,
     Text
 } from '../../styles/page.styles';
@@ -25,6 +24,8 @@ const CompanyPage = () => {
 
     useEffect(() => {
         getCompany();
+
+        // eslint-disable-next-line
     }, []);
 
     const getCompany = async () => {

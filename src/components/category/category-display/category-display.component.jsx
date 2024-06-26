@@ -1,8 +1,6 @@
 
 import Button from '../../reusable/button/button.component';
 
-import { api, url } from '../../../config';
-
 import {
     MainContainer
 } from './category-display.styles';

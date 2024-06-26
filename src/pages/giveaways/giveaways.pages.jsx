@@ -11,8 +11,7 @@ import {
     ContentContainer,
     MainContainer,
     MainTitle,
-    Subtitle,
-    Text
+    Subtitle
 } from '../../styles/page.styles';
 
 const client = new Client();

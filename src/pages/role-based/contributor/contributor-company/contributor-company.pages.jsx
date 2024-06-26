@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import Button from '../../../../components/reusable/button/button.component';
 import Company from '../../../../components/company/company.component';
 import Spinner from '../../../../components/reusable/spinner/spinner.component';
 import UpdateCompany from '../../../../components/company/update-company/update-company.component';
@@ -10,7 +9,6 @@ import Client from '../../../../tools/client';
 import {
     ContentContainer,
     MainContainer,
-    MainTitle,
     Text
 } from '../../../../styles/page.styles';
 

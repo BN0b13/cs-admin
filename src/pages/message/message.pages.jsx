@@ -40,6 +40,8 @@ const MessagePage = () => {
         }
 
         setMessageToReadStatus();
+
+        // eslint-disable-next-line
     }, []);
 
     const getMessage = async () => {

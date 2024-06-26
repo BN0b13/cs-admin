@@ -56,7 +56,6 @@ const UpdateGiveaway = ({ giveaway, getGiveaway, setShowUpdate }) => {
     const [ expirationDate, setExpirationDate ] = useState(giveaway.expirationDate ? new Date(parseInt(giveaway.expirationDate)) : '');
     const [ entryLimit, setEntryLimit ] = useState(giveaway.entryLimit ? giveaway.entryLimit : '');
     const [ entryType, setEntryType ] = useState(giveaway.entryType ? giveaway.entryType : '');
-    const [ options, setOptions ] = useState(giveaway.options ? giveaway.options : []);
     const [ showModal, setShowModal ] = useState(false);
 
     const { errorToast } = useContext(ToastContext);

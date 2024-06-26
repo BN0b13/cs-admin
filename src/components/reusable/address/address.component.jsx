@@ -16,6 +16,8 @@ import {
 const tools = new Tools();
 
 const Address = ({ address, updateAddress, customSelector = null }) => {
+    const selector = customSelector ? customSelector : 'address';
+    
     const [ firstName, setFirstName ] = useState(address.firstName);
     const [ lastName, setLastName ] = useState(address.lastName);
     const [ addressOne, setAddressOne ] = useState(address.addressOne);
@@ -23,7 +25,6 @@ const Address = ({ address, updateAddress, customSelector = null }) => {
     const [ city, setCity ] = useState(address.city);
     const [ state, setState ] = useState(address.state || '');
     const [ zipCode, setZipCode ] = useState(address.zipCode);
-    const [ selector, setSelector ] = useState(customSelector ? customSelector : 'address');
 
     const handleFirstName = (data) => {
         setFirstName(data);

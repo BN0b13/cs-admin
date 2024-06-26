@@ -70,7 +70,7 @@ const ImportWelcomeImage = ({ refreshImages }) => {
         <MainContainer>
             <MainTitle>Add New Welcome Image</MainTitle>
             <MainForm>
-                {imagePreview && <img src={imagePreview} width='200' height='200' />}
+                {imagePreview && <img src={imagePreview} width='200' height='200' alt='preview' />}
                 <ImageFileInput type="file" accept='image/*' name="files" value={fileInput} onChange={e => handleFileChange(e)} />
                 
                 <ImageFileInput type='text' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption' />

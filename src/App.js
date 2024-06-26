@@ -13,6 +13,7 @@ import ContributorAccountPage from './pages/role-based/contributor/contributor-a
 import ContributorCompanyPage from './pages/role-based/contributor/contributor-company/contributor-company.pages';
 import GiveawayPage from './pages/giveaway/giveaway.page';
 import GiveawaysPage from './pages/giveaways/giveaways.pages';
+import GrowRoomPage from './pages/grow-room/grow-room.pages';
 import LoginPage from './pages/login/login.pages';
 import MessagePage from './pages/message/message.pages';
 import MessagesPage from './pages/messages/messages.pages';
@@ -88,7 +89,7 @@ function App() {
         setAppTheme(theme, colors);
         setLoading(false);
       } else {
-        if(savedTheme.id != getAppConfiguration.rows[0].Theme.id || 
+        if(savedTheme.id !== getAppConfiguration.rows[0].Theme.id || 
           savedTheme.updatedAt !== getAppConfiguration.rows[0].Theme.updatedAt) {
           setLoading(true);
           const theme = getAppConfiguration.rows[0].Theme;
@@ -99,8 +100,10 @@ function App() {
       }
     }
 
-    setAppContext();
+    setAppContext(theme);
     setLoading(false);
+
+    // eslint-disable-next-line
   }, []);
 
   const adminRoutes = () => {
@@ -116,6 +119,7 @@ function App() {
         <Route path="/configuration" element={<ConfigurationPage />} />
         <Route path="/giveaways" element={<GiveawaysPage />} />
         <Route path="/giveaways/:id" element={<GiveawayPage />} />
+        <Route path="/grow-room" element={<GrowRoomPage />} />
         <Route path='/messages' element={<MessagesPage />} />
         <Route path='/messages/:id' element={<MessagePage />} />
         <Route path="/orders" element={<Orders />} />
@@ -165,9 +169,9 @@ function App() {
     return (
       
       <Routes>
-              <Route index element={<LoginPage />} />
-              <Route path="/accounts/activate/:passwordToken" element={<ActivateAccountPage />} />
-          </Routes>
+        <Route index element={<LoginPage />} />
+        <Route path="/accounts/activate/:passwordToken" element={<ActivateAccountPage />} />
+      </Routes>
     );
   }
 

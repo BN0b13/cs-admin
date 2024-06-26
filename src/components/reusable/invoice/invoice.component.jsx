@@ -28,7 +28,6 @@ import {
     InvoiceTableRow,
     InvoiceTableHeading,
     InvoiceText,
-    InvoiceTitle,
     InvoiceTotalContainer,
     InvoiceTotalItemContainer,
     InvoiceSubtitle,
@@ -68,6 +67,8 @@ const Invoice = ({ order, products, getOrder }) => {
         setSubtotal(subtotalCount);
 
         getUser();
+
+        // eslint-disable-next-line
     }, []);
 
     const confirmSendPaymentLink = () => {

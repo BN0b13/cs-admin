@@ -10,7 +10,6 @@ import Client from '../../../tools/client';
 import {
     AddAccountTitle,
     AddAccountInput,
-    AddAccountLabel,
     AddAccountOption,
     AddAccountSelect,
     MainContainer
@@ -22,7 +21,6 @@ const AddAccount = ({ getAccounts }) => {
     const [ email, setEmail ] = useState('');
     const [ roles, setRoles ] = useState([]);
     const [ role, setRole ] = useState('');
-    const [ passwordToken, setPasswordToken ] = useState('');
 
     const { errorToast, successToast } = useContext(ToastContext);
 

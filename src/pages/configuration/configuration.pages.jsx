@@ -19,7 +19,7 @@ import {
 const client = new Client();
 
 const ConfigurationPage = () => {
-    const [ images, setImages ] = useState(null);
+    const [ images, setImages ] = useState([]);
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
     const [ tabTwoActive, setTabTwoActive ] = useState(false);

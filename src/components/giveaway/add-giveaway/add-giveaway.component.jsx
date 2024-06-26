@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import AdminModal from '../../reusable/admin-modal/admin-modal.component';
 import Button from '../../reusable/button/button.component';
-import Spinner from '../../reusable/spinner/spinner.component';
 
 import { ToastContext } from '../../../contexts/toast.context';
 import { UserContext } from '../../../contexts/user.context';
@@ -22,17 +21,14 @@ import {
     Option,
     RowContainer,
     Select,
-    Subtext,
     Subtitle,
     Textarea,
-    Text,
     Title
 } from '../../../styles/component.styles';
 
 import {
     GiveawayButton,
     GiveawayColumnContainer,
-    GiveawayRowContainer,
     GiveawayText,
     GiveawayTextarea
 } from '../giveaway.styles';
@@ -41,7 +37,6 @@ const client = new Client();
 const giveawayHelper = new GiveawayHelper();
 
 const AddGiveaway = ({ setShowAddGiveaway, company }) => {
-    const [ loading, setLoading ] = useState(false);
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ disclaimer, setDisclaimer ] = useState('You must be 21+ and in the US to enter giveaway');
@@ -60,7 +55,7 @@ const AddGiveaway = ({ setShowAddGiveaway, company }) => {
     const [ expirationDate, setExpirationDate ] = useState('');
     const [ entryLimit, setEntryLimit ] = useState('');
     const [ entryType, setEntryType ] = useState('manual');
-    const [ giveawayOptions, setGiveawayOptions ] = useState([]);
+    // const [ giveawayOptions, setGiveawayOptions ] = useState([]);
     const [ giveawayData, setGiveawayData ] = useState('');
     const [ showModal, setShowModal ] = useState(false);
     const [ modalMessage, setModalMessage ] = useState('');
@@ -347,113 +342,109 @@ const AddGiveaway = ({ setShowAddGiveaway, company }) => {
             />
             <Title>Add Giveaway</Title>
             <GiveawayText>Please input a name, description and at least one prize to create a giveaway.</GiveawayText>
-            {loading ?
-                <Spinner />
-            :
+            <GiveawayColumnContainer>
+                <Input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
+                <Textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
+                <Textarea name='disclaimer' value={disclaimer} onChange={(e) => setDisclaimer(e.target.value)} customHeight={'160px'} placeholder='Disclaimer' />
                 <GiveawayColumnContainer>
-                    <Input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
-                    <Textarea name='description' value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
-                    <Textarea name='disclaimer' value={disclaimer} onChange={(e) => setDisclaimer(e.target.value)} customHeight={'160px'} placeholder='Disclaimer' />
-                    <GiveawayColumnContainer>
-                        {rules && rules.map((rule, index) => (
-                            <RowContainer key={index}>
-                                <ColumnContainer margin={'5px'}>
-                                    <GiveawayText margin={'5px'}>{index + 1}. {rule.rule}</GiveawayText>
-                                </ColumnContainer>
-                                <ColumnContainer margin={'5px'}>
-                                    <IoBuild onClick={() => editRule(rule.id)} size={14} />
-                                </ColumnContainer>
-                                <ColumnContainer margin={'5px'}>
-                                    <IoCloseSharp onClick={() => removeRule(rule.id)} size={14} />
-                                </ColumnContainer>
-                            </RowContainer>
-                        ))}
-                        <GiveawayTextarea name='rule' value={rule} onChange={(e) => setRule(e.target.value)} placeholder='Rule' />
-                        {showEditRule ?
-                            <RowContainer>
-                                <GiveawayButton onClick={() => cancelEditRule()}>Cancel</GiveawayButton>
-                                <GiveawayButton onClick={() => submitEditRule(editRuleId)}>Save</GiveawayButton>
-                            </RowContainer>
-                        :
-                            <GiveawayColumnContainer>
-                                <GiveawayButton onClick={() => submitRule()}>Add Rule</GiveawayButton>
-                            </GiveawayColumnContainer>
-                        }
-                    </GiveawayColumnContainer>
-                    <GiveawayColumnContainer>
-                        {prizes && prizes.map((prize, index) => (
-                            <RowContainer key={index}>
-                                <ColumnContainer margin={'10px'}>
-                                    <GiveawayText margin={'10px'}>{index + 1}. {prize.prizeType === 'credit' ? `$${parseInt(prize.prize)/100} credit on account` : prize.prize} - {prize.prizeWinnerLimit} Winner{prize.prizeWinnerLimit > 1 && 's'}</GiveawayText>
-                                </ColumnContainer>
-                                <ColumnContainer margin={'5px'}>
-                                    <IoBuild onClick={() => editPrize(prize.id)} size={14} />
-                                </ColumnContainer>
-                                <ColumnContainer margin={'5px'}>
-                                    <IoCloseSharp onClick={() => removePrize(prize.id)} size={14} />
-                                </ColumnContainer>
-                            </RowContainer>
-                        ))}
-                        {currentUser.roleId  < 4 ?
-                            <ColumnContainer margin={'10px 0'}>
-                                <ColumnContainer margin={'20px'}>
-                                    <Select value={prizeType} onChange={(e) => setPrizeType(e.target.value)}>
-                                        <Option value={'credit'}>Credit</Option>
-                                        <Option value={'manual'}>Manual</Option>
-                                    </Select>
-                                </ColumnContainer>
-                                {prizeType === 'credit' ?
-                                    <Input type='number' name='prize' value={prize} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrize)} min={1} placeholder='Prize' />
-                                :
-                                    <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
-                                }
-                            
+                    {rules && rules.map((rule, index) => (
+                        <RowContainer key={index}>
+                            <ColumnContainer margin={'5px'}>
+                                <GiveawayText margin={'5px'}>{index + 1}. {rule.rule}</GiveawayText>
                             </ColumnContainer>
-                        :
-                            <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
-                        }
-                        <Input type='number' min='1' name='prizeWinnerLimit' value={prizeWinnerLimit} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrizeWinnerLimit)} placeholder='Prize Winner Amount' />
-                        {showEditPrize ?
-                            <RowContainer>
-                                <GiveawayButton onClick={() => cancelEditPrize()}>Cancel</GiveawayButton>
-                                <GiveawayButton onClick={() => submitEditPrize(editPrizeId)}>Save</GiveawayButton>
-                            </RowContainer>
-                        :
-                            <GiveawayColumnContainer>
-                                <GiveawayButton onClick={() => submitPrize()}>Add Prize</GiveawayButton>
-                            </GiveawayColumnContainer>
-                        }
-                    </GiveawayColumnContainer>
-                    <GiveawayColumnContainer>
-                        <Subtitle>Giveaway Expiration</Subtitle>
-                        <GiveawayText>Please select how you want to conclude the giveaway.</GiveawayText>
+                            <ColumnContainer margin={'5px'}>
+                                <IoBuild onClick={() => editRule(rule.id)} size={14} />
+                            </ColumnContainer>
+                            <ColumnContainer margin={'5px'}>
+                                <IoCloseSharp onClick={() => removeRule(rule.id)} size={14} />
+                            </ColumnContainer>
+                        </RowContainer>
+                    ))}
+                    <GiveawayTextarea name='rule' value={rule} onChange={(e) => setRule(e.target.value)} placeholder='Rule' />
+                    {showEditRule ?
+                        <RowContainer>
+                            <GiveawayButton onClick={() => cancelEditRule()}>Cancel</GiveawayButton>
+                            <GiveawayButton onClick={() => submitEditRule(editRuleId)}>Save</GiveawayButton>
+                        </RowContainer>
+                    :
                         <GiveawayColumnContainer>
-                            <Select value={giveawayExpirationOption} onChange={(e) => selectExpirationOption(e.target.value)}>
-                                <Option value='' disabled> -- Select An Option -- </Option>
-                                <Option value='scheduled'>Scheduled</Option>
-                                <Option value='entryLimit'>Entry Limit</Option>
-                                <Option value='manual'>Manual</Option>
-                            </Select>
-                        </GiveawayColumnContainer>
-                        { giveawayExpirationOptions() }
-                    </GiveawayColumnContainer>
-                    {currentUser.Role.id < 4 &&
-                        <GiveawayColumnContainer>
-                            <Subtitle>Giveaway Entry Options</Subtitle>
-                            <Select value={entryType} onChange={(e) => setEntryType(e.target.value)}>
-                                <Option value='' disabled> -- Select An Option -- </Option>
-                                <Option value='orders'>Orders</Option>
-                                <Option value='manual'>Manual</Option>
-                            </Select>
+                            <GiveawayButton onClick={() => submitRule()}>Add Rule</GiveawayButton>
                         </GiveawayColumnContainer>
                     }
-                    
-                    <RowContainer>
-                        <Button onClick={() => setShowAddGiveaway()}>Cancel</Button>
-                        <Button onClick={() => confirmGiveaway()}>Create</Button>
-                    </RowContainer>
                 </GiveawayColumnContainer>
-            }
+                <GiveawayColumnContainer>
+                    {prizes && prizes.map((prize, index) => (
+                        <RowContainer key={index}>
+                            <ColumnContainer margin={'10px'}>
+                                <GiveawayText margin={'10px'}>{index + 1}. {prize.prizeType === 'credit' ? `$${parseInt(prize.prize)/100} credit on account` : prize.prize} - {prize.prizeWinnerLimit} Winner{prize.prizeWinnerLimit > 1 && 's'}</GiveawayText>
+                            </ColumnContainer>
+                            <ColumnContainer margin={'5px'}>
+                                <IoBuild onClick={() => editPrize(prize.id)} size={14} />
+                            </ColumnContainer>
+                            <ColumnContainer margin={'5px'}>
+                                <IoCloseSharp onClick={() => removePrize(prize.id)} size={14} />
+                            </ColumnContainer>
+                        </RowContainer>
+                    ))}
+                    {currentUser.roleId  < 4 ?
+                        <ColumnContainer margin={'10px 0'}>
+                            <ColumnContainer margin={'20px'}>
+                                <Select value={prizeType} onChange={(e) => setPrizeType(e.target.value)}>
+                                    <Option value={'credit'}>Credit</Option>
+                                    <Option value={'manual'}>Manual</Option>
+                                </Select>
+                            </ColumnContainer>
+                            {prizeType === 'credit' ?
+                                <Input type='number' name='prize' value={prize} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrize)} min={1} placeholder='Prize' />
+                            :
+                                <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
+                            }
+                        
+                        </ColumnContainer>
+                    :
+                        <Input type='text' name='prize' value={prize} onChange={(e) => setPrize(e.target.value)} placeholder='Prize' />
+                    }
+                    <Input type='number' min='1' name='prizeWinnerLimit' value={prizeWinnerLimit} onChange={(e) => nonNegativeIntegerInput(e.target.value, setPrizeWinnerLimit)} placeholder='Prize Winner Amount' />
+                    {showEditPrize ?
+                        <RowContainer>
+                            <GiveawayButton onClick={() => cancelEditPrize()}>Cancel</GiveawayButton>
+                            <GiveawayButton onClick={() => submitEditPrize(editPrizeId)}>Save</GiveawayButton>
+                        </RowContainer>
+                    :
+                        <GiveawayColumnContainer>
+                            <GiveawayButton onClick={() => submitPrize()}>Add Prize</GiveawayButton>
+                        </GiveawayColumnContainer>
+                    }
+                </GiveawayColumnContainer>
+                <GiveawayColumnContainer>
+                    <Subtitle>Giveaway Expiration</Subtitle>
+                    <GiveawayText>Please select how you want to conclude the giveaway.</GiveawayText>
+                    <GiveawayColumnContainer>
+                        <Select value={giveawayExpirationOption} onChange={(e) => selectExpirationOption(e.target.value)}>
+                            <Option value='' disabled> -- Select An Option -- </Option>
+                            <Option value='scheduled'>Scheduled</Option>
+                            <Option value='entryLimit'>Entry Limit</Option>
+                            <Option value='manual'>Manual</Option>
+                        </Select>
+                    </GiveawayColumnContainer>
+                    { giveawayExpirationOptions() }
+                </GiveawayColumnContainer>
+                {currentUser.Role.id < 4 &&
+                    <GiveawayColumnContainer>
+                        <Subtitle>Giveaway Entry Options</Subtitle>
+                        <Select value={entryType} onChange={(e) => setEntryType(e.target.value)}>
+                            <Option value='' disabled> -- Select An Option -- </Option>
+                            <Option value='orders'>Orders</Option>
+                            <Option value='manual'>Manual</Option>
+                        </Select>
+                    </GiveawayColumnContainer>
+                }
+                
+                <RowContainer>
+                    <Button onClick={() => setShowAddGiveaway()}>Cancel</Button>
+                    <Button onClick={() => confirmGiveaway()}>Create</Button>
+                </RowContainer>
+            </GiveawayColumnContainer>
         </MainContainer>
     )
 }

@@ -32,7 +32,6 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
     const [ productProfiles, setProductProfiles ] = useState([]);
     const [ profileArr, setProfileArr ] = useState([]);
 
-    const [ categoryId, setCategoryId ] = useState(product.categoryId);
     const [ type, setType ] = useState(product.type);
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
@@ -72,6 +71,8 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
             setProductProfiles(res.rows);
         }
         getProductProfiles();
+
+        // eslint-disable-next-line
     }, []);
 
     const handleProductProfile = (e) => {
@@ -88,7 +89,7 @@ const UpdateProduct = ({ product, getProduct, setShowUpdate }) => {
         const productProfileArr = profileArr.map(profile => profile.id);
         const params = {
             id: product.id,
-            categoryId,
+            categoryId: product.categoryId,
             type,
             name,
             description,
