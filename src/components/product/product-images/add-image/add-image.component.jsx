@@ -62,7 +62,7 @@ const AddImage = ({ id, name, getProduct }) => {
             <MainForm>
                 {imagePreview ?
                     <>
-                        <img src={imagePreview} width='200px' height='200px' />  
+                        <img src={imagePreview} width='200px' height='200px' alt='preview' />  
                         <Button onClick={() => addProductImage()}>Add Image</Button>  
                     </>
                 :

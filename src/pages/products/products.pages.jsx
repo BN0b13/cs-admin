@@ -23,12 +23,14 @@ const tools = new Tools();
 
 const ProductsPage = () => {
     const [ loading, setLoading ] = useState(true);
+    const [ loadData, setLoadData ] = useState(true);
     const [ products, setProducts ] = useState([]);
-    const [ currentProducts, setCurrentProducts ] = useState([]);
-    const [ currentSort, setCurrentSort ] = useState({
-        direction: 'descending',
-        column: 'createdAt'
-    });
+
+    const [ page, setPage ] = useState(0);
+    const [ size, setSize ] = useState(100);
+    const [ search, setSearch ] = useState('');
+    const [ sortKey, setSortKey ] = useState('');
+    const [ sortDirection, setSortDirection ] = useState('');
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
@@ -39,46 +41,22 @@ const ProductsPage = () => {
         getProducts();
     }, []);
 
+    useEffect(() => {
+        if(loadData) {
+            getProducts();
+            setLoadData(false);
+        }
+    }, [ loadData ]);
+
     const getProducts = async () => {
-        const res = await client.getProducts();
+        setLoading(true);
+        let query = `?page=${page}&size=${size}`;
+        search && (query = query + `&search=${search}`);
+        sortDirection && (query = query + `&sortDirection=${sortDirection}`);
+        sortKey && (query = query + `&sortKey=${sortKey}`);
+        const res = await client.getProducts(query);
         setProducts(res.rows);
-        sort(res.rows);
-    }
-
-    const sort = (data) => {
-        setLoading(true);
-        const sorted = tools.sortByDateDescending(data);
-        setCurrentSort({
-            direction: 'descending',
-            column: 'createdAt'
-        });
-        setCurrentProducts(sorted);
         setLoading(false);
-    }
-
-    const changeSort = (sortColumn) => {
-        setLoading(true);
-        const sortDirection = sortColumn === currentSort.column ?
-            currentSort.direction === 'ascending' ?
-                'descending'
-            :
-                'ascending'
-            :
-                'descending';
-                
-        const sortedAccounts = tools.sort(currentProducts, sortDirection, sortColumn);
-        setCurrentProducts(sortedAccounts);
-        setCurrentSort({
-            direction: sortDirection,
-            column: sortColumn
-        });
-
-        setLoading(false);
-    }
-
-    const setSearchResults = async (params) => {
-        const res = await client.searchProducts(params);
-        sort(res.rows);
     }
 
     const activateTabOne = () => {
@@ -123,8 +101,19 @@ const ProductsPage = () => {
                 :
                     <>
                         <MainTitle>Products</MainTitle>
-                        <SearchBar setSearchResults={setSearchResults} clearSearchResults={getProducts} />
-                        <ProductsTable products={currentProducts} setSort={changeSort} currentSort={currentSort} />
+                        <SearchBar 
+                            search={search}
+                            setSearch={setSearch}
+                            submitSearch={setLoadData}
+                        />
+                        <ProductsTable 
+                            products={products}
+                            sortKey={sortKey}
+                            setSortKey={setSortKey}
+                            sortDirection={sortDirection}
+                            setSortDirection={setSortDirection}
+                            reloadTable={setLoadData}
+                        />
                     </>
                 }
             </>

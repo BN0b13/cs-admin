@@ -1,5 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { 
+    FaEye,
+    FaEyeSlash
+} from "react-icons/fa";
 
 import AdminModal from '../../components/reusable/admin-modal/admin-modal.component';
 import Button from '../../components/reusable/button/button.component';
@@ -144,8 +148,22 @@ const ActivateAccountPage = () => {
 
                 <ActivateAccountInput type='text' name='username' value={username} onChange={(e) => tools.usernameInputValidation(e.target.value, setUsername)} placeholder='Username' />
                 <InputSubtext margin={'10px 0'}>In order to create a welcoming environment for all, usernames that are hateful, homophobic, racist, sexist, derogatory, harassing, or otherwise uncivil are grounds for account termination.</InputSubtext>
-                <ActivateAccountInput type={passwordTextVisible ? 'text' : 'password'} name='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
-                <ActivateAccountInput type={confirmPasswordTextVisible ? 'text' : 'password'} name='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder='Confirm Password' />
+                <AddressBottomContainer>
+                    <ActivateAccountInput type={passwordTextVisible ? 'text' : 'password'} name='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' />
+                    {passwordTextVisible ?
+                        <FaEyeSlash onClick={() => setPasswordTextVisible(false)} />
+                    :
+                        <FaEye onClick={() => setPasswordTextVisible(true)} />
+                    }
+                </AddressBottomContainer>
+                <AddressBottomContainer>
+                    <ActivateAccountInput type={confirmPasswordTextVisible ? 'text' : 'password'} name='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder='Confirm Password' />
+                    {passwordTextVisible ?
+                        <FaEyeSlash onClick={() => setConfirmPasswordTextVisible(false)} />
+                    :
+                        <FaEye onClick={() => setConfirmPasswordTextVisible(true)} />
+                    }
+                </AddressBottomContainer>
                 <ActivateAccountInput type='text' name='firstName' value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' />
                 <ActivateAccountInput type='text' name='lastName'  value={lastName}onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
                 <ActivateAccountInput type='text' name='phone'  value={phone} onChange={(e) => tools.phoneInputValidation(e.target.value, setPhone)} placeholder='Phone' />

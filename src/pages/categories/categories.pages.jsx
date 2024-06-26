@@ -23,32 +23,39 @@ const tools = new Tools();
 
 const CategoriesPage = () => {
     const [ loading, setLoading ] = useState(true);
+    const [ loadData, setLoadData ] = useState(true);
     const [ categories, setCategories ] = useState([]);
+
+    const [ page, setPage ] = useState(0);
+    const [ size, setSize ] = useState(100);
+    const [ search, setSearch ] = useState('');
+    const [ sortKey, setSortKey ] = useState('');
+    const [ sortDirection, setSortDirection ] = useState('');
 
     const [ currentTab, setCurrentTab ] = useState(1);
     const [ tabOneActive, setTabOneActive ] = useState(true);
     const [ tabTwoActive, setTabTwoActive ] = useState(false);
 
-  useEffect(() => {
-    getCategories();
-  }, []);
+    useEffect(() => {
+        getCategories();
+    }, []);
+
+    useEffect(() => {
+        if(loadData) {
+            getCategories();
+            setLoadData(false);
+        }
+    }, [ loadData ]);
 
     const getCategories = async () => {
-        const res = await client.getCategories();
-        sortCategories(res.rows);
-    }
-
-    const sortCategories = (categories) => {
         setLoading(true);
-        const sortedCategories = tools.sortByDateAscending(categories);
-        setCategories(sortedCategories);
+        let query = `?page=${page}&size=${size}`;
+        search && (query = query + `&search=${search}`);
+        sortDirection && (query = query + `&sortDirection=${sortDirection}`);
+        sortKey && (query = query + `&sortKey=${sortKey}`);
+        const res = await client.getCategories(query);
+        setCategories(res.rows);
         setLoading(false);
-    }
-
-    const setSearchResults = async (params) => {
-        const res = await client.searchCategories(params);
-        sortCategories(res.rows);
-        
     }
 
     const activateTabOne = () => {
@@ -77,10 +84,21 @@ const CategoriesPage = () => {
                 :
                     <>
                         <MainTitle>Categories</MainTitle>
-                        <SearchBar setSearchResults={setSearchResults} clearSearchResults={getCategories} />
-                        <CategoriesTable categories={categories} />
+                        <SearchBar 
+                            search={search}
+                            setSearch={setSearch}
+                            submitSearch={setLoadData}
+                        />
+                        <CategoriesTable 
+                            categories={categories}
+                            sortKey={sortKey}
+                            setSortKey={setSortKey}
+                            sortDirection={sortDirection}
+                            setSortDirection={setSortDirection}
+                            reloadTable={setLoadData}
+                        />
                     </>
-                }
+            }
             </>
         )
     }

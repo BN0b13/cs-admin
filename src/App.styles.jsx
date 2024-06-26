@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-import {
-    headerHeight
-} from './styles/theme';
-
 export const MainContainer = styled.div`
     
 `;

@@ -18,7 +18,6 @@ const SalesPage = () => {
     const [ loading, setLoading ] = useState(true);
     const [ showAddSale, setShowAddSale ] = useState(false);
     const [ sales, setSales ] = useState('');
-    const [ sale, setSale ] = useState('');
 
     useEffect(() => {
         getSales();
@@ -30,7 +29,6 @@ const SalesPage = () => {
 
         if(res.count > 0) {
             setSales(res.rows);
-            setSale(res.rows[0]);
         }
 
         setLoading(false);

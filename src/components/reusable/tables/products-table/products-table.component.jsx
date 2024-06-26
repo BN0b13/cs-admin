@@ -16,7 +16,38 @@ import {
   TableRow
 } from '../../../../styles/component.styles';
 
-const ProductsTable = ({ products, setSort = () => {}, currentSort = {}  }) => {
+const ProductsTable = ({
+  products = [],
+  sortKey = '',
+  setSortKey = () => {},
+  sortDirection = '',
+  setSortDirection = () => {},
+  reloadTable = async () => {}}) => {
+
+  const sortColumn = async (key) => {
+    if(key === sortKey) {
+        if(sortDirection === 'ASC') {
+            setSortDirection('DESC');
+            
+            return await reloadTable(true);
+        }
+
+        if(sortDirection === 'DESC') {
+            setSortDirection('');
+            
+            return await reloadTable(true);
+        }
+        
+        setSortDirection('ASC');
+
+        return await reloadTable(true);
+    } else {
+        setSortKey(key);
+        setSortDirection('ASC');
+
+        return await reloadTable(true);
+    }
+  }
 
     return (
       <ColumnContainer>
@@ -26,52 +57,65 @@ const ProductsTable = ({ products, setSort = () => {}, currentSort = {}  }) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead onClick={() => setSort('name')} cursor={'pointer'}>
+                <TableHead cursor={'pointer'} onClick={() => sortColumn('name')}>
                   <ColumnContainer flexDirection={'row'}>
                       Name
-                      <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                        {currentSort.column === 'name' ? 
-                            currentSort.direction === 'descending' ? 
-                              <FaAngleUp /> 
-                            : 
-                              <FaAngleDown /> 
-                            : 
-                              ''
+                        {sortKey === 'name' && sortDirection === 'ASC' ?
+                                <FaAngleUp />
+                            :
+                                sortKey === 'name' && sortDirection === 'DESC' ?
+                                    <FaAngleDown />
+                                :
+                                    <ColumnContainer 
+                                        minHeight={'1em'} 
+                                        minWidth={'1em'}
+                                    >
+                                    </ColumnContainer>
                         }
-                      </ColumnContainer>
                   </ColumnContainer>
                 </TableHead>
                 <TableHead>
-                  Category
-                </TableHead>
-                <TableHead onClick={() => setSort('description')} cursor={'pointer'}>
                   <ColumnContainer flexDirection={'row'}>
-                      Description
-                      <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                        {currentSort.column === 'description' ? 
-                            currentSort.direction === 'descending' ? 
-                              <FaAngleUp /> 
-                            : 
-                              <FaAngleDown /> 
-                            : 
-                              ''
-                        }
-                      </ColumnContainer>
+                      Category
+                        <ColumnContainer 
+                            minHeight={'1em'} 
+                            minWidth={'1em'}
+                        >
+                        </ColumnContainer>
                   </ColumnContainer>
                 </TableHead>
-                <TableHead onClick={() => setSort('createdAt')} cursor={'pointer'}>
+                <TableHead cursor={'pointer'} onClick={() => sortColumn('description')}>
                   <ColumnContainer flexDirection={'row'}>
-                      Date Added
-                      <ColumnContainer minHeight={'1em'} minWidth={'1em'}>
-                        {currentSort.column === 'createdAt' ? 
-                            currentSort.direction === 'descending' ? 
-                              <FaAngleUp /> 
-                            : 
-                              <FaAngleDown /> 
-                            : 
-                              ''
+                      Description
+                        {sortKey === 'description' && sortDirection === 'ASC' ?
+                                <FaAngleUp />
+                            :
+                                sortKey === 'description' && sortDirection === 'DESC' ?
+                                    <FaAngleDown />
+                                :
+                                    <ColumnContainer 
+                                        minHeight={'1em'} 
+                                        minWidth={'1em'}
+                                    >
+                                    </ColumnContainer>
                         }
-                      </ColumnContainer>
+                  </ColumnContainer>
+                </TableHead>
+                <TableHead cursor={'pointer'} onClick={() => sortColumn('createdAt')}>
+                  <ColumnContainer flexDirection={'row'}>
+                      Date
+                        {sortKey === 'createdAt' && sortDirection === 'ASC' ?
+                                <FaAngleUp />
+                            :
+                                sortKey === 'createdAt' && sortDirection === 'DESC' ?
+                                    <FaAngleDown />
+                                :
+                                    <ColumnContainer 
+                                        minHeight={'1em'} 
+                                        minWidth={'1em'}
+                                    >
+                                    </ColumnContainer>
+                        }
                   </ColumnContainer>
                 </TableHead>
               </TableRow>

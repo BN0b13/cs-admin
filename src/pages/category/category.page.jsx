@@ -22,6 +22,8 @@ const CategoryPage = () => {
 
     useEffect(() => {
         getCategory();
+
+        // eslint-disable-next-line
     }, []);
 
     const getCategory = async () => {

@@ -118,16 +118,9 @@ export default class Client {
 
     // Categories
 
-    async getCategories() {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get);
-        const categories = await fetch(`${api}/categories`, requestOptions);
-        const res = await categories.json();
-        return res;
-    }
-
-    async getCategoriesWithoutAssociations() {
+    async getCategories(query = '') {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const categories = await fetch(`${api}/admin/categories`, requestOptions);
+        const categories = await fetch(`${api}/admin/categories${query}`, requestOptions);
         const res = await categories.json();
         return res;
     }
@@ -143,13 +136,6 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
         const categories = await fetch(`${api}/categories/type/${type}`, requestOptions);
         const res = await categories.json();
-        return res;
-    }
-
-    async searchCategories(params) {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const search = await fetch(`${api}/admin/categories/search${params}`, requestOptions);
-        const res = await search.json();
         return res;
     }
 
@@ -183,9 +169,9 @@ export default class Client {
 
     // Company
 
-    async getCompanies() {
+    async getCompanies(query = '') {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const companies = await fetch(`${api}/admin/companies`, requestOptions);
+        const companies = await fetch(`${api}/admin/companies${query}`, requestOptions);
         const res = await companies.json();
         return res;
     }
@@ -338,6 +324,22 @@ export default class Client {
         return res;
     }
 
+    // GR Server
+
+    async getGRServerHealth() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const health = await fetch(`${api}/admin/gr-server`, requestOptions);
+        const res = await health.json();
+        return res;
+    }
+
+    async activateGRPumps(time = 10000) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const health = await fetch(`${api}/admin/gr-server/pumps?time=${time}`, requestOptions);
+        const res = await health.json();
+        return res;
+    }
+
     // Inventory
 
     async getInventory() {
@@ -409,9 +411,9 @@ export default class Client {
 
     // Orders
 
-    async getOrders() {
+    async getOrders(query = '') {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const orders = await fetch(`${api}/admin/orders`, requestOptions);
+        const orders = await fetch(`${api}/admin/orders${query}`, requestOptions);
         const res = await orders.json();
         return res;
     }
@@ -453,9 +455,9 @@ export default class Client {
 
     // Products
 
-    async getProducts() {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get);
-        const products = await fetch(`${api}/products`, requestOptions);
+    async getProducts(query = '') {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const products = await fetch(`${api}/admin/products${query}`, requestOptions);
         const res = await products.json();
         return res;
     }
@@ -499,13 +501,6 @@ export default class Client {
         const requestOptions = this.fetchOptions(this.fetchMethods.get);
         const productProfiles = await fetch(`${api}/products/profiles/all`, requestOptions);
         const res = await productProfiles.json();
-        return res;
-    }
-
-    async searchProducts(params) {
-        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const search = await fetch(`${api}/admin/products/search${params}`, requestOptions);
-        const res = await search.json();
         return res;
     }
 
@@ -590,12 +585,21 @@ export default class Client {
         return res;
     }
 
+    // Users
+
+    async getUsers(query = '') {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const users = await fetch(`${api}/admin/users${query}`, requestOptions);
+        const res = await users.json();
+        return res;
+    }
+
     // Views
 
     async getViews() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const account = await fetch(`${api}/admin/visits`, requestOptions);
-        const res = await account.json();
+        const views = await fetch(`${api}/admin/visits`, requestOptions);
+        const res = await views.json();
         return res;
     }
 

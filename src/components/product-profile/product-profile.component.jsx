@@ -79,7 +79,7 @@ const ProductProfile = () => {
     return (
         <MainContainer>
             <MainTitle>Product Profiles</MainTitle>
-            {imagePreview && <img src={imagePreview} width='50' height='50' />}
+            {imagePreview && <img src={imagePreview} width='50' height='50' alt='preview' />}
             <AddProductProfileLabel>Display Icon:
                 <AddProductProfileInput type='file' accept='image/png'  name='files' onChange={e => handleFileChange(e)} />
             </AddProductProfileLabel>
@@ -104,7 +104,7 @@ const ProductProfile = () => {
                                 <AddProductProfileData>{ item.name }</AddProductProfileData>
                                 <AddProductProfileData>{ item.description }</AddProductProfileData>
                                 <AddProductProfileData>
-                                    <img src={api + item.path} width='40' height='40' />
+                                    <img src={api + item.path} width='40' height='40' alt='product profile' />
                                 </AddProductProfileData>
                             </AddProductProfileRow>
                         ))}

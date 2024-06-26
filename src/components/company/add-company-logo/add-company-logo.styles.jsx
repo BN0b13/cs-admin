@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { setMobileView } from '../../../tools/mobileView.js';
-
 export const MainContainer = styled.div`
     display: flex;
     flex-direction: ${props => props.direction ? props.direction : 'column'};

@@ -2,6 +2,7 @@ import {
   FaGift,
   FaMoneyBillAlt,
   FaRegBuilding,
+  FaServer,
   FaStoreAlt
 } from 'react-icons/fa';
 
@@ -58,6 +59,11 @@ export const menuItemsAdmin = [
     title: 'Giveaways',
     path: '/giveaways',
     icon: (<FaGift />)
+  },
+  {
+    title: 'Grow Room',
+    path: '/grow-room',
+    icon: (<FaServer />)
   },
   {
     title: 'Configuration',

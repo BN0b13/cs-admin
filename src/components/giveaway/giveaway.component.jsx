@@ -49,7 +49,7 @@ const Giveaway = ({ giveaway, getGiveaway, setShowUpdate, setShowEntries }) => {
             data.status = 'completed';
         }
 
-        const res = await client.updateGiveaway(data);
+        await client.updateGiveaway(data);
 
         await getGiveaway();
         setLoading(false);
@@ -99,7 +99,7 @@ const Giveaway = ({ giveaway, getGiveaway, setShowUpdate, setShowEntries }) => {
                         <RowContainer key={index} width={'300px'} flexDirection={'column'}>
                             <Subtitle textAlign={'left'}>{ index + 1 }. { prize.prizeType === 'credit' ? `$${parseInt(prize.prize)/100} credit on account` : prize.prize } - { prize.prizeWinnerLimit } Winner{ prize.prizeWinnerLimit > 1 ? 's' : ''}</Subtitle>
                             {giveaway.status === 'completed' &&
-                                giveaway.winners.map((winner, index) => {
+                                giveaway.winners.forEach((winner, index) => {
                                     if(winner.prize.id === prize.id) {
                                         return(
                                             <RowContainer key={index} justifyContent='flex-start' margin='0 0 0 30px' cursor='pointer'>

@@ -53,6 +53,8 @@ const UpdateCompany = ({ company, getCompany, setShowUpdate }) => {
             setTwitter(company?.socials[0]?.twitter?.url);
             setDisplayTwitter(company?.socials[0]?.twitter?.display );
         }
+
+        // eslint-disable-next-line
     }, []);
 
     const switchSocialButton = (name, input, setInput) => {

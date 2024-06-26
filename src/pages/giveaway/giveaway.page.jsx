@@ -12,7 +12,6 @@ import {
     BackLink,
     ContentContainer,
     MainContainer,
-    MainTitle,
     Text
 } from '../../styles/page.styles';
 
@@ -27,6 +26,8 @@ const GiveawayPage = () => {
 
     useEffect(() => {
         getGiveaway();
+
+        // eslint-disable-next-line
     }, []);
 
     const getGiveaway = async () => {

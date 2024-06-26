@@ -1,41 +1,30 @@
-import { useState } from 'react';
-
 import {
     SearchBarContainer,
     SearchButton,
     SearchInput
 } from './search-bar.styles';
 
-const SearchBar = ({ setSearchResults, clearSearchResults }) => {
-    const [ searchTerm, setSearchTerm ] = useState('');
-    const [ page, setPage ] = useState(0);
-    const [ size, setSize ] = useState(10);
+const SearchBar = ({
+    search, 
+    setSearch, 
+    submitSearch
+}) => {
     
     const handleKeyDown = async (e) => {
         if(e.key === 'Enter') {
-            await submit();
+            await submitSearch(true);
         }
     }
 
-    const submit = async () => {
-        if(searchTerm === '') {
-            return
-        }
-
-        const params = `?search=${searchTerm}&page=${page}&size=${size}`
-
-        setSearchResults(params);
-    }
-
-    const clear = () => {
-        setSearchTerm('');
-        clearSearchResults();
+    const clear = async () => {
+        setSearch('');
+        submitSearch(true);
     }
 
     return (
         <SearchBarContainer onKeyDown={(e) => handleKeyDown(e)}>
-            <SearchInput type='text' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            <SearchButton onClick={() => submit()}>Search</SearchButton>
+            <SearchInput type='text' value={search} onChange={(e) => setSearch(e.target.value)} />
+            <SearchButton onClick={() => submitSearch(true)}>Search</SearchButton>
             <SearchButton onClick={() => clear()}>Clear</SearchButton>
         </SearchBarContainer>
     )
