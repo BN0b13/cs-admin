@@ -333,10 +333,31 @@ export default class Client {
         return res;
     }
 
-    async activateGRPumps(time = 10000) {
+    async outletStatus() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
-        const health = await fetch(`${api}/admin/gr-server/pumps?time=${time}`, requestOptions);
-        const res = await health.json();
+        const outletStatus = await fetch(`${api}/admin/gr-server/outlet-status`, requestOptions);
+        const res = await outletStatus.json();
+        return res;
+    }
+
+    async cyclePowerOnOff(time = 10000) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const cyclePowerOnOff = await fetch(`${api}/admin/gr-server/cycle-outlet/on-off?time=${time}`, requestOptions);
+        const res = await cyclePowerOnOff.json();
+        return res;
+    }
+
+    async getGRServerLogs(query) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const logs = await fetch(`${api}/admin/gr-server/logs${query}`, requestOptions);
+        const res = await logs.json();
+        return res;
+    }
+
+    async deleteGRServerLogById(id) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.delete, '', true);
+        const log = await fetch(`${api}/admin/gr-server/logs/${id}`, requestOptions);
+        const res = await log.json();
         return res;
     }
 
