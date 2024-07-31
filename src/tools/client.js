@@ -96,7 +96,7 @@ export default class Client {
 
     async updateAccount(data) {
         const requestOptions = this.fetchOptions(this.fetchMethods.patch, data, true);
-        const account = await fetch(`${api}/user`, requestOptions);
+        const account = await fetch(`${api}/admin/users`, requestOptions);
         const res = await account.json();
 
         return res;
@@ -329,6 +329,11 @@ export default class Client {
     async getGRServerHealth() {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const health = await fetch(`${api}/admin/gr-server`, requestOptions);
+        
+        if(health?.status === 500) {
+            return { status: 500 }
+        }
+        
         const res = await health.json();
         return res;
     }
