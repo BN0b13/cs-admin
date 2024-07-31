@@ -108,6 +108,22 @@ const UpdateInventory = ({ inventories, getProduct }) => {
         setLoading(false);
     }
 
+    // TODO add inventory delete option - backend verifies it is NOT last inventory of product before delete, if so - do not delete
+    // const confirmDelete = () => {
+    //     setShowDeleteModal(true);
+    // }
+
+    // const deleteProduct = async () => {
+    //     const res = await client.deleteProduct({ id: product.id });
+    //     if(res.status) {
+    //         setShowDeleteModal(false);
+    //         errorToast(res.message);
+    //         return
+    //     }
+        
+    //     window.location.href = '/products';
+    // }
+
     return (
         <MainContainer>
             {loading ?

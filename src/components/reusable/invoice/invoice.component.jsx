@@ -20,7 +20,6 @@ import {
     InvoiceContainer,
     InvoiceAddressesContainer,
     InvoiceAddressContainer,
-    InvoiceDetailsContainer,
     InvoiceHeaderContainer,
     InvoiceTable,
     InvoiceTableBody,
@@ -31,12 +30,16 @@ import {
     InvoiceTotalContainer,
     InvoiceTotalItemContainer,
     InvoiceSubtitle,
-    MainContent,
     PrintContainer,
     TrackingContainer,
     TrackingSubtitle,
     TrackingText
 } from './invoice.styles';
+
+import {
+    ColumnContainer,
+    MainContainer,
+} from '../../../styles/component.styles.jsx';
 
 const client = new Client();
 const tools = new Tools();
@@ -52,7 +55,6 @@ const Invoice = ({ order, products, getOrder }) => {
     const [ message, setMessage ] = useState('');
     const [ action, setAction ] = useState('');
     const [ showOrderModal, setShowOrderModal ] = useState(false);
-
 
     useEffect(() => {
         const getUser = async () => {
@@ -175,7 +177,7 @@ const Invoice = ({ order, products, getOrder }) => {
     }
 
     return (
-        <MainContent>
+        <MainContainer>
             <AdminModal 
                 show={showOrderModal}
                 setShow={setShowOrderModal}
@@ -203,7 +205,7 @@ const Invoice = ({ order, products, getOrder }) => {
                     <InvoiceContainer ref={componentRef}>
                         <InvoiceHeaderContainer>
                                     
-                            <InvoiceDetailsContainer>
+                            <ColumnContainer>
                                 <InvoiceAddressContainer>
                                     <InvoiceSubtitle>{ dayjs(order.createdAt).format('MM/DD/YY') }</InvoiceSubtitle>
                                     <InvoiceSubtitle>Status: { order.status.toUpperCase()}</InvoiceSubtitle>
@@ -220,7 +222,7 @@ const Invoice = ({ order, products, getOrder }) => {
                                 </InvoiceAddressContainer>
                                 <InvoiceAddressContainer>
                                 </InvoiceAddressContainer>
-                            </InvoiceDetailsContainer>
+                            </ColumnContainer>
                             <InvoiceAddressesContainer>
                                 <InvoiceAddressContainer>
                                     <InvoiceSubtitle>Billing</InvoiceSubtitle>
@@ -310,15 +312,15 @@ const Invoice = ({ order, products, getOrder }) => {
                         </ButtonContainer>
                     }
                     {order.status.toLowerCase() === 'processing' &&
-                        <ButtonContainer>
+                        <ColumnContainer flexDirection={'row'}>
                             <label>Tracking: </label>
                             <input value={tracking} onChange={(e) => setTracking(e.target.value)} placeholder='Tracking' />
                             <Button onClick={() => confirmShipOrder()} >Ship Order</Button>
-                        </ButtonContainer>
+                        </ColumnContainer>
                     }
                 </>
             }
-        </MainContent>
+        </MainContainer>
     );
 }
 

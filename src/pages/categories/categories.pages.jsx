@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 
 
 import AddCategory from '../../components/category/add-category/add-category.component';
-import SearchBar from '../../components/reusable/search-bar/search-bar.component';
 import CategoriesTable from '../../components/reusable/tables/categories-table/categories-table.component';
+import Pagination from '../../components/reusable/pagination/pagination.component';
+import SearchBar from '../../components/reusable/search-bar/search-bar.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
 import Client from '../../tools/client';
@@ -15,7 +16,11 @@ import {
 } from './categories.styles';
 
 import {
-    MainTitle
+    ContentContainer,
+    MainContainer,
+    MainTitle,
+    Option,
+    Select
 } from '../../styles/page.styles';
 
 const client = new Client();
@@ -25,9 +30,10 @@ const CategoriesPage = () => {
     const [ loading, setLoading ] = useState(true);
     const [ loadData, setLoadData ] = useState(true);
     const [ categories, setCategories ] = useState([]);
+    const [ categoriesCount, setCategoriesCount ] = useState(null);
 
     const [ page, setPage ] = useState(0);
-    const [ size, setSize ] = useState(100);
+    const [ size, setSize ] = useState(10);
     const [ search, setSearch ] = useState('');
     const [ sortKey, setSortKey ] = useState('');
     const [ sortDirection, setSortDirection ] = useState('');
@@ -55,7 +61,19 @@ const CategoriesPage = () => {
         sortKey && (query = query + `&sortKey=${sortKey}`);
         const res = await client.getCategories(query);
         setCategories(res.rows);
+        setCategoriesCount(res.count);
         setLoading(false);
+    }
+
+    const changeSize = (data) => {
+        setSize(data);
+        setPage(0);
+        setLoadData(true);
+    }
+
+    const changePage = (data) => {
+        setPage(data);
+        setLoadData(true);
     }
 
     const activateTabOne = () => {
@@ -82,13 +100,19 @@ const CategoriesPage = () => {
                 {loading ?
                     <Spinner />
                 :
-                    <>
+                    <ContentContainer>
                         <MainTitle>Categories</MainTitle>
                         <SearchBar 
                             search={search}
                             setSearch={setSearch}
                             submitSearch={setLoadData}
                         />
+                        <Select value={size} onChange={(e) => changeSize(e.target.value)} maxWidth={'100px'} marginBottom={'20px'}>
+                            <Option key={1} value={10}>10</Option>
+                            <Option key={2} value={25}>25</Option>
+                            <Option key={3} value={50}>50</Option>
+                            <Option key={4} value={100}>100</Option>
+                        </Select>
                         <CategoriesTable 
                             categories={categories}
                             sortKey={sortKey}
@@ -97,20 +121,26 @@ const CategoriesPage = () => {
                             setSortDirection={setSortDirection}
                             reloadTable={setLoadData}
                         />
-                    </>
+                        <Pagination
+                            count={categoriesCount}
+                            size={size}
+                            page={page}
+                            changePage={changePage}
+                        />
+                    </ContentContainer>
             }
             </>
         )
     }
 
     return (
-        <div>
+        <MainContainer>
             <TabContainer>
                 <TabSelector active={tabOneActive} onClick={() => activateTabOne()}>Categories</TabSelector>
                 <TabSelector active={tabTwoActive} onClick={() => activateTabTwo()}>Add Category</TabSelector>
             </TabContainer>
             { showCurrentTab() }
-        </div>
+        </MainContainer>
     )
 }
 

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Button from '../../components/reusable/button/button.component';
 import OrdersTable from '../../components/reusable/tables/orders-table/orders-table.component';
 import Spinner from '../../components/reusable/spinner/spinner.component';
 
@@ -22,28 +23,70 @@ const client = new Client();
 const AccountPage = () => {
     const [ loading, setLoading ] = useState(true);
     const { id } = useParams();
-    const [ account, setAccount ] = useState('');
+    const [ account, setAccount ] = useState(null);
+    const [ username, setUsername ] = useState('');
+    const [ role, setRole ] = useState('');
+    const [ email, setEmail ] = useState('');
+    const [ phone, setPhone ] = useState('');
+    const [ firstName, setFirstName ] = useState('');
+    const [ lastName, setLastName ] = useState('');
+    const [ billingAddress, setBillingAddress ] = useState('');
+    const [ shippingAddress, setShippingAddress ] = useState('');
     const [ activationLink, setActivationLink ] = useState('');
+    const [ showUpdateAccount, setShowUpdateAccount ] = useState(false);
+
+    const [ roles, setRoles ] = useState(null);
+    const [ roleId, setRoleId ] = useState('');
     
-    const { successToast } = useContext(ToastContext);
+    const { successToast, errorToast } = useContext(ToastContext);
 
     useEffect(() => {
-        const getAccount = async () => {
-            const res = await client.getAccountById(id);
-
-            if(res.status === 'pending' && res.passwordToken) {
-                const subdomain = res.roleId === 4 ? 'www' : 'admin';
-                setActivationLink(`https://${subdomain}.cosmicstrains.com/accounts/activate/${res.passwordToken}`);
-            }
-
-            setAccount(res);
-            setLoading(false);
-        }
-
         getAccount();
 
         // eslint-disable-next-line
     }, []);
+
+    const getAccount = async () => {
+        setLoading(true);
+        const res = await client.getAccountById(id);
+
+        if(res.status === 'pending' && res.passwordToken) {
+            const subdomain = res.roleId === 4 ? 'www' : 'admin';
+            setActivationLink(`https://${subdomain}.cosmicstrains.com/accounts/activate/${res.passwordToken}`);
+        }
+
+        const getRoles = await client.getRoles();
+        const filteredRoles = getRoles.rows.filter(role => role.id !== 1);
+        setRoles(filteredRoles);
+        const roleName = getRoles.rows.filter(role => role.id === res.roleId);
+        
+        setRole(roleName[0].role);
+        setRoleId(res.roleId);
+
+        setAccount(res);
+        setLoading(false);
+    }
+
+    const updateAccount = async () => {
+        if(roleId === '') {
+            return
+        }
+
+        const data = {
+            id: account.id,
+            roleId
+        }
+
+        const res = await client.updateAccount(data);
+
+        if(res.length > 0) {
+            await getAccount();
+            setShowUpdateAccount(false);
+            successToast('Account Updated');
+        } else {
+            errorToast('There was an error updating account. Please try again.')
+        }
+    }
 
     const copyActivationLinkToClipBoard = () => {
         navigator.clipboard.writeText(activationLink);
@@ -65,6 +108,7 @@ const AccountPage = () => {
                 :
                     <>
                         <h4>Username: { account.username ? account.username : 'No Username' }</h4>
+                        <h4>Role: { role }</h4>
                         <h4>Name: { account.firstName } { account.lastName }</h4>
                         <h4>Phone: { account.phone }</h4>
                         <h4>Billing Address:</h4>
@@ -87,6 +131,26 @@ const AccountPage = () => {
                         <OrdersTable orders={account.Orders} />
                     </>
                 }
+                <Button onClick={() => setShowUpdateAccount(true)}>Update Account</Button>
+            </ContentContainer>
+        )
+    }
+
+    const updateAccountDisplay = () => {
+        return (
+            <ContentContainer>
+                <h2>Update Account</h2>
+                <select value={roleId} onChange={(e) => setRoleId(e.target.value)}>
+                    <option key={'default'} value={''}>Please Select A Role</option>
+                    {roles &&
+                        roles.map((role, index) => (
+                            <option key={index} value={role.id}>{ role.role }</option>
+                        ))}
+                </select>
+                <ContentContainer flexDirection={'row'}>
+                    <Button onClick={() => setShowUpdateAccount(false)}>Cancel</Button>
+                    <Button onClick={() => updateAccount(false)}>Confirm</Button>
+                </ContentContainer>
             </ContentContainer>
         )
     }
@@ -100,7 +164,10 @@ const AccountPage = () => {
                 account.length === 0 ?
                     <MainTitle>No account to Display</MainTitle>
                 :
-                    accountDisplay()
+                    showUpdateAccount ?
+                        updateAccountDisplay()
+                    :
+                        accountDisplay()
             }
         </MainContainer>
     )

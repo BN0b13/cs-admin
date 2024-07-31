@@ -42,6 +42,12 @@ const AddInventory = ({ product, getProduct }) => {
         size === '' ||
         sizeDescription === '' ||
         sku === '') {
+            console.log('Type: ', type);
+            console.log('quantity: ', quantity);
+            console.log('price: ', price);
+            console.log('size: ', size);
+            console.log('sizeDescription: ', sizeDescription);
+            console.log('sku: ', sku);
             return {
                 result: false,
                 error: 'Please complete all fields to create inventory'
@@ -95,7 +101,7 @@ const AddInventory = ({ product, getProduct }) => {
                     <Input type='number' min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder='Quantity' />
                     <Input type='number' min={0} value={price} onChange={(e) => setPrice(e.target.value)} placeholder='Price' />
                     <RowContainer margin={'10px 0'}>
-                        <Select name='inventoryType' onChange={(e) => setType(e.target.value)}>
+                        <Select name='inventoryType' value={type} onChange={(e) => setType(e.target.value)}>
                             <Option value={''} disabled> -- Seed Type -- </Option>
                             <Option value={'regular'}>Regular</Option>
                             <Option value={'feminized'}>Feminized</Option>

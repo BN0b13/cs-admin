@@ -23,7 +23,7 @@ const client = new Client();
 
 const GrowRoomPage = () => {
     const [ loading, setLoading ] = useState(true);
-    const [ loadData, setLoadData ] = useState(true);
+    const [ loadData, setLoadData ] = useState(false);
     const [ serverHealth, setServerHealth ] = useState(false);
     const [ logs, setLogs ] = useState([]);
     const [ deleteLogId, setDeleteLogId ] = useState(null);
@@ -40,8 +40,6 @@ const GrowRoomPage = () => {
 
     useEffect(() => {
         getHealth();
-        getPowerStatus();
-        getLogs();
 
         // eslint-disable-next-line
     }, []);
@@ -56,9 +54,15 @@ const GrowRoomPage = () => {
 
     const getHealth = async () => {
         setLoading(true);
+        
         const res = await client.getGRServerHealth();
+        if(res.status === 500) {
+            setServerHealth(res.status);
+            return setLoading(false);
+        }
+        
         setServerHealth(res.status);
-        setLoading(false);
+        setLoadData(true);
     }
 
     const getPowerStatus = async () => {

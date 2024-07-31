@@ -217,3 +217,31 @@ export const DeleteButton = styled.button`
     border: 1px solid red;
     }
 `;
+
+export const PaginationText = styled.h4`
+    margin: 0 5px;
+    padding: 5px;
+`;
+
+export const PaginationDots = styled.h4`
+    margin: 0 5px;
+    padding: 5px;
+`;
+
+export const PaginationContainer = styled.div`
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+`;
+
+export const PaginationNumberContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    cursor: ${props => props.cursor ?? 'pointer'};
+    border: ${props => props.border ?? ''};
+`;
