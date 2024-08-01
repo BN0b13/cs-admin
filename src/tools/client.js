@@ -176,9 +176,23 @@ export default class Client {
         return res;
     }
 
+    async getCompany() {
+        const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
+        const companies = await fetch(`${api}/admin/company`, requestOptions);
+        const res = await companies.json();
+        return res;
+    }
+
     async getCompanyById(id) {
         const requestOptions = this.fetchOptions(this.fetchMethods.get, '', true);
         const company = await fetch(`${api}/admin/companies/${id}`, requestOptions);
+        const res = await company.json();
+        return res;
+    }
+
+    async createContributorCompany(data) {
+        const requestOptions = this.fetchOptions(this.fetchMethods.post, data, true);
+        const company = await fetch(`${api}/admin/company`, requestOptions);
         const res = await company.json();
         return res;
     }

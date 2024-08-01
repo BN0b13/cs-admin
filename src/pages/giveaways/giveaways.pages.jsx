@@ -36,7 +36,7 @@ const GiveawaysPage = () => {
 
     const getCompany = async () => {
         setLoading(true);
-        const res = await client.getCompanies();
+        const res = await client.getCompany();
         setCompany(res.rows[0]);
         setLoading(false);
     }
