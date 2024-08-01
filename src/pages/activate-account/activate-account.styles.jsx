@@ -24,6 +24,26 @@ export const ButtonContainer = styled.div`
     margin: 20px;
 `;
 
+
+export const PasswordContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const PasswordIconContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    padding: 5px;
+    width: 20px;
+    height: 20px;
+    margin-left: 280px;
+`;
+
 export const MainTitle = styled.h2`
     margin: 10px 0;
 `;
@@ -40,7 +60,7 @@ export const MainImage = styled.img`
 
 export const ActivateAccountInput = styled.input`
     margin: 5px;
-    width: 300px
+    width: 300px;
 `;
 
 export const AddressBottomInput = styled.input`
