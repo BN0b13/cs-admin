@@ -79,3 +79,11 @@ export const Select = styled.select`
     margin-bottom: ${props => props.marginBottom ? props.marginBottom : ''};
     padding: ${props => props.padding ? props.padding : ''};
 `;
+
+export const Input = styled.input`
+    margin: 10px;
+`;
+
+export const Textarea = styled.textarea`
+    margin: 10px;
+`;
