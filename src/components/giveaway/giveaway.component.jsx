@@ -20,6 +20,7 @@ import {
 const client = new Client();
 
 const Giveaway = ({ giveaway, getGiveaway, setShowUpdate, setShowEntries }) => {
+    console.log('Giveaway: ',giveaway);
     const [ loading, setLoading ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
     
@@ -99,9 +100,10 @@ const Giveaway = ({ giveaway, getGiveaway, setShowUpdate, setShowEntries }) => {
                         <RowContainer key={index} width={'300px'} flexDirection={'column'}>
                             <Subtitle textAlign={'left'}>{ index + 1 }. { prize.prizeType === 'credit' ? `$${parseInt(prize.prize)/100} credit on account` : prize.prize } - { prize.prizeWinnerLimit } Winner{ prize.prizeWinnerLimit > 1 ? 's' : ''}</Subtitle>
                             {giveaway.status === 'completed' &&
-                                giveaway.winners.forEach((winner, index) => {
+                                giveaway.winners.map((winner, index) => {
                                     if(winner.prize.id === prize.id) {
-                                        return(
+                                        console.log('True');
+                                        return (
                                             <RowContainer key={index} justifyContent='flex-start' margin='0 0 0 30px' cursor='pointer'>
                                                 <Subtitle textAlign={'center'} onClick={() => copyEmailToClipboard(winner.email)}>Username: { winner.username } - Email: { winner.email }</Subtitle>
                                             </RowContainer>
